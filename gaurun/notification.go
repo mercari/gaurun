@@ -93,12 +93,6 @@ func classifyByDevice(reqGaurun *RequestGaurun) ([]RequestGaurunNotification, []
 
 func pushNotificationIos(req RequestGaurunNotification, client *apns.Client) bool {
 	LogError.Debug("START push notification for iOS")
-	var ep string
-	if ConfGaurun.Ios.Sandbox {
-		ep = EpApnsSandbox
-	} else {
-		ep = EpApnsProd
-	}
 
 	for i, token := range req.Tokens {
 		id := req.IDs[i]
@@ -120,28 +114,16 @@ func pushNotificationIos(req RequestGaurunNotification, client *apns.Client) boo
 		if resp.Error != nil {
 			atomic.AddInt64(&StatGaurun.Ios.PushError, 1)
 			LogPush(req.IDs[i], StatusFailedPush, token, ptime, req)
-			// reconnect
 			client.Conn.Close()
 			client.ConnTls.Close()
-			client, err := apns.NewClient(
-				ep,
-				ConfGaurun.Ios.PemCertPath,
-				ConfGaurun.Ios.PemKeyPath,
-				time.Duration(ConfGaurun.Ios.Timeout)*time.Second,
-			)
-			if err != nil {
-				client = nil
-				atomic.AddInt64(&StatGaurun.Ios.PushError, int64(len(req.Tokens)-i))
-				LogPush(req.IDs[i], StatusFailedPush, token, 0, req)
-				return false
-			}
-			client.TimeoutWaitError = time.Duration(ConfGaurun.Ios.TimeoutError) * time.Millisecond
+			return false
 		} else {
 			LogPush(id, StatusSucceededPush, token, ptime, req)
 			atomic.AddInt64(&StatGaurun.Ios.PushSuccess, 1)
 		}
 	}
 
+	client = nil
 	LogError.Debug("END push notification for iOS")
 	return true
 }
@@ -194,12 +176,12 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 
 func pushNotificationWorker() {
 	var (
-		success  bool
-		retryMax int
-		ep string
+		success    bool
+		retryMax   int
+		ep         string
 		apnsClient *apns.Client
-		loop int
-		err error
+		loop       int
+		err        error
 	)
 	if ConfGaurun.Ios.Sandbox {
 		ep = EpApnsSandbox
@@ -239,6 +221,9 @@ func pushNotificationWorker() {
 		switch notification.Platform {
 		case PlatFormIos:
 			success = pushNotificationIos(notification, apnsClient)
+			if !success {
+				apnsClient = nil
+			}
 			retryMax = ConfGaurun.Ios.RetryMax
 		case PlatFormAndroid:
 			success = pushNotificationAndroid(notification)
