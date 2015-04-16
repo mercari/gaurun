@@ -41,7 +41,7 @@ See [SPEC.md](SPEC.md) about details for APIs.
 |timeout      |int   |timeout for push notication to APNS            |5(sec)    |zero makes connection keepalive|
 |retry_max    |int   |maximum retry count for push notication to APNS|0         |    |
 |timeout_error|int   |timeout for waiting error message from APNS    |1000(msec)|    |
-|keepalive_max|int   |try-counts for each keepalive connection       |100       |    |
+|keepalive_max|int   |try-counts for each keepalive connection       |100       |zero makes unlimied|
 
 ## Android Section
 
