@@ -77,6 +77,10 @@ func main() {
 		if err != nil {
 			gaurun.LogError.Fatal("A key file for iOS is not found.")
 		}
+
+		if gaurun.ConfGaurun.Ios.KeepAliveMax <= 0 {
+			gaurun.LogError.Fatal("set keepalive_max bigger than zero.")
+		}
 	}
 
 	if gaurun.ConfGaurun.Android.Enabled {

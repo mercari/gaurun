@@ -45,6 +45,7 @@ type SectionIos struct {
 	Timeout      int    `toml:"timeout"`
 	RetryMax     int    `toml:"retry_max"`
 	TimeoutError int    `toml:"timeout_error"`
+	KeepAliveMax int    `toml:"keepalive_max"`
 }
 
 type SectionLog struct {
@@ -78,6 +79,7 @@ func BuildDefaultConfGaurun() ConfToml {
 	conf.Ios.Timeout = 5
 	conf.Ios.RetryMax = 0
 	conf.Ios.TimeoutError = 1000
+	conf.Ios.KeepAliveMax = 100
 	// log
 	conf.Log.AccessLog = "stdout"
 	conf.Log.ErrorLog = "stderr"
