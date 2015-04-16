@@ -1,0 +1,3 @@
+.vendor
+bin/gaurun
+bin/gaurun_recover
