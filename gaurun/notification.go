@@ -130,6 +130,7 @@ func pushNotificationIos(req RequestGaurunNotification, client *apns.Client) boo
 				time.Duration(ConfGaurun.Ios.Timeout)*time.Second,
 			)
 			if err != nil {
+				client = nil
 				atomic.AddInt64(&StatGaurun.Ios.PushError, int64(len(req.Tokens)-i))
 				LogPush(req.IDs[i], StatusFailedPush, token, 0, req)
 				return false
@@ -225,7 +226,7 @@ func pushNotificationWorker() {
 			apnsClient.TimeoutWaitError = time.Duration(ConfGaurun.Ios.TimeoutError) * time.Millisecond
 		}
 
-		if loop > ConfGaurun.Ios.KeepAliveMax {
+		if ConfGaurun.Ios.KeepAliveMax > 0 && loop > ConfGaurun.Ios.KeepAliveMax {
 			apnsClient.Conn.Close()
 			apnsClient.ConnTls.Close()
 			apnsClient = nil
