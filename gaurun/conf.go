@@ -76,10 +76,10 @@ func BuildDefaultConfGaurun() ConfToml {
 	conf.Ios.PemCertPath = ""
 	conf.Ios.PemKeyPath = ""
 	conf.Ios.Sandbox = true
-	conf.Ios.Timeout = 5
+	conf.Ios.Timeout = 0
 	conf.Ios.RetryMax = 0
 	conf.Ios.TimeoutError = 1000
-	conf.Ios.KeepAliveMax = 100
+	conf.Ios.KeepAliveMax = 0
 	// log
 	conf.Log.AccessLog = "stdout"
 	conf.Log.ErrorLog = "stderr"
