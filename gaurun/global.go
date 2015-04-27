@@ -2,6 +2,8 @@ package gaurun
 
 import (
 	"github.com/Sirupsen/logrus"
+	"github.com/alexjlockwood/gcm"
+	"net/http"
 	"sync"
 )
 
@@ -13,7 +15,9 @@ var (
 	LogError          *logrus.Logger
 	StatGaurun        StatApp
 	// for numbering push
-	OnceNumbering sync.Once
-	WgNumbering   *sync.WaitGroup
-	SeqID         uint64
+	OnceNumbering   sync.Once
+	WgNumbering     *sync.WaitGroup
+	SeqID           uint64
+	GCMClient       *gcm.Sender
+	TransportGaurun *http.Transport
 )

@@ -43,6 +43,13 @@ type CertificatePem struct {
 	Key  []byte
 }
 
+func InitGCMClient() {
+	TransportGaurun = &http.Transport{MaxIdleConnsPerHost: ConfGaurun.Core.WorkerNum}
+	GCMClient = &gcm.Sender{ApiKey: ConfGaurun.Android.ApiKey}
+	GCMClient.Http = &http.Client{Transport: TransportGaurun}
+	GCMClient.Http.Timeout = time.Duration(ConfGaurun.Android.Timeout) * time.Second
+}
+
 func StartPushWorkers(workerNum, queueNum int) {
 	QueueNotification = make(chan RequestGaurunNotification, queueNum)
 	for i := 0; i < workerNum; i++ {
@@ -137,12 +144,8 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive
 
-	sender := &gcm.Sender{ApiKey: ConfGaurun.Android.ApiKey}
-	sender.Http = new(http.Client)
-	sender.Http.Timeout = time.Duration(ConfGaurun.Android.Timeout) * time.Second
-
 	stime := time.Now()
-	resp, err := sender.SendNoRetry(msg)
+	resp, err := GCMClient.SendNoRetry(msg)
 	etime := time.Now()
 	ptime := etime.Sub(stime).Seconds()
 	if err != nil {
