@@ -29,6 +29,7 @@ type LogPushEntry struct {
 	Token    string  `json:"token"`
 	Message  string  `json:"message"`
 	Ptime    float64 `json:"ptime"`
+	Error    string  `json:"error"`
 	// Android
 	CollapseKey    string `json:"collapse_key,omitempty"`
 	DelayWhileIdle bool   `json:"delay_while_idle,omitempty"`
@@ -96,7 +97,7 @@ func LogAcceptedRequest(uri, method, proto string, length int64) {
 	LogAccess.Info(string(logJSON))
 }
 
-func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNotification) {
+func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNotification, errPush error) {
 	var plat string
 	switch req.Platform {
 	case PlatFormIos:
@@ -108,6 +109,11 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 	ptime3 := fmt.Sprintf("%.3f", ptime)
 	ptime, _ = strconv.ParseFloat(ptime3, 64)
 
+	errMsg := ""
+	if errPush != nil {
+		errMsg = errPush.Error()
+	}
+
 	log := &LogPushEntry{
 		Type:           status,
 		Time:           time.Now().Format("2006/01/02 15:04:05 MST"),
@@ -116,6 +122,7 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		Token:          token,
 		Message:        req.Message,
 		Ptime:          ptime,
+		Error:          errMsg,
 		CollapseKey:    req.CollapseKey,
 		DelayWhileIdle: req.DelayWhileIdle,
 		TimeToLive:     req.TimeToLive,

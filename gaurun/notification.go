@@ -75,7 +75,7 @@ func enqueueNotifications(notifications []RequestGaurunNotification) {
 			notification.IDs = make([]uint64, len(notification.Tokens))
 			for i := 0; i < len(notification.IDs); i++ {
 				notification.IDs[i] = numberingPush()
-				LogPush(notification.IDs[i], StatusAcceptedPush, notification.Tokens[i], 0, notification)
+				LogPush(notification.IDs[i], StatusAcceptedPush, notification.Tokens[i], 0, notification, nil)
 			}
 			QueueNotification <- notification
 		}
@@ -120,12 +120,12 @@ func pushNotificationIos(req RequestGaurunNotification, client *apns.Client) boo
 
 		if resp.Error != nil {
 			atomic.AddInt64(&StatGaurun.Ios.PushError, 1)
-			LogPush(req.IDs[i], StatusFailedPush, token, ptime, req)
+			LogPush(req.IDs[i], StatusFailedPush, token, ptime, req, resp.Error)
 			client.Conn.Close()
 			client.ConnTls.Close()
 			return false
 		} else {
-			LogPush(id, StatusSucceededPush, token, ptime, req)
+			LogPush(id, StatusSucceededPush, token, ptime, req, nil)
 			atomic.AddInt64(&StatGaurun.Ios.PushSuccess, 1)
 		}
 	}
@@ -151,7 +151,7 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 	if err != nil {
 		atomic.AddInt64(&StatGaurun.Android.PushError, 1)
 		for i, token := range req.Tokens {
-			LogPush(req.IDs[i], StatusFailedPush, token, ptime, req)
+			LogPush(req.IDs[i], StatusFailedPush, token, ptime, req, err)
 		}
 		return false
 	}
@@ -162,7 +162,7 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 		if len(resp.Results) == len(req.Tokens) {
 			for i, token := range req.Tokens {
 				if resp.Results[i].Error != "" {
-					LogPush(req.IDs[i], StatusFailedPush, token, ptime, req)
+					LogPush(req.IDs[i], StatusFailedPush, token, ptime, req, errors.New(resp.Results[i].Error))
 				}
 			}
 		}
@@ -170,7 +170,7 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 	}
 
 	for i, token := range req.Tokens {
-		LogPush(req.IDs[i], StatusSucceededPush, token, ptime, req)
+		LogPush(req.IDs[i], StatusSucceededPush, token, ptime, req, nil)
 	}
 	StatGaurun.Android.PushSuccess += int64(len(req.Tokens))
 	LogError.Debug("END push notification for Android")
