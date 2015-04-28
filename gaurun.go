@@ -87,6 +87,7 @@ func main() {
 	}
 
 	gaurun.ConfGaurun = conf
+	gaurun.InitGCMClient()
 	gaurun.InitStatGaurun()
 	statsGo.PrettyPrintEnabled()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
