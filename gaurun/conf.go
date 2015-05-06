@@ -59,7 +59,7 @@ func BuildDefaultConfGaurun() ConfToml {
 	// Core
 	conf.Core.Port = "1056"
 	conf.Core.WorkerNum = runtime.NumCPU()
-	conf.Core.QueueNum = 512
+	conf.Core.QueueNum = 8192
 	conf.Core.NotificationMax = 100
 	// Api
 	conf.Api.PushUri = "/push"

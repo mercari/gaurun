@@ -16,7 +16,7 @@ A configuration for Gaurun has some sections. A example is [here](conf/gaurun.to
 |----------------|------|--------------------------------------------|----------------|------------------------------------|
 |port            |string|port number or unix socket path             |1056            |e.g.)1056, unix:/tmp/gaurun.sock    |
 |workers         |int   |number of workers for push notification     |runtime.NumCPU()|                                    |
-|queues          |int   |size of internal queue for push notification|512             |                                    |
+|queues          |int   |size of internal queue for push notification|8192            |                                    |
 |notificatoin_max|int   |limit of push notifications once            |100             |                                    |
 
 ## API Section
