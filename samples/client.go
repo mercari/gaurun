@@ -82,6 +82,9 @@ func main() {
 		log.Fatal(err.Error())
 	}
 	fmt.Println("status: " + resp.Status)
-	respBody, _ := ioutil.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 	fmt.Println("response body:" + string(respBody))
 }
