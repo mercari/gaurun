@@ -301,8 +301,12 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 	LogError.Debug("parse request body")
 	var reqGaurun RequestGaurun
 
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	err := json.Unmarshal(reqBody, &reqGaurun)
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		sendResponse(w, "failed to read request-body", http.StatusInternalServerError)
+		return
+	}
+	err = json.Unmarshal(reqBody, &reqGaurun)
 	if err != nil {
 		sendResponse(w, "Request-body is malformed", http.StatusBadRequest)
 		return
