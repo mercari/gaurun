@@ -78,7 +78,7 @@ func BuildDefaultConfGaurun() ConfToml {
 	conf.Ios.Sandbox = true
 	conf.Ios.Timeout = 0
 	conf.Ios.RetryMax = 0
-	conf.Ios.TimeoutError = 1000
+	conf.Ios.TimeoutError = 500
 	conf.Ios.KeepAliveMax = 0
 	// log
 	conf.Log.AccessLog = "stdout"
