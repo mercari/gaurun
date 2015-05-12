@@ -30,7 +30,7 @@ See [SPEC.md](https://github.com/mercari/gaurun/blob/master/SPEC.md) about detai
 ## Run
 
 ```
-gaurun -c conf/gaurun.toml
+bin/gaurun -c conf/gaurun.toml
 ```
 
 ## Crash Recovery
@@ -38,7 +38,7 @@ gaurun -c conf/gaurun.toml
 Gaurun supports re-push notifications lost by server-crash with access.log.
 
 ```
-gaurun_recovery -c conf/gaurun.toml -l /tmp/gaurun.log
+bin/gaurun_recovery -c conf/gaurun.toml -l /tmp/gaurun.log
 ```
 
 ## Commiters
