@@ -31,7 +31,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	// Core
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.Port, "1056")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.WorkerNum, runtime.NumCPU())
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.QueueNum, 512)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.QueueNum, 8192)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, 100)
 	// API
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.PushUri, "/push")
@@ -48,9 +48,9 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.PemCertPath, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.PemKeyPath, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Sandbox, true)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Timeout, 5)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Timeout, 0)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.RetryMax, 0)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.TimeoutError, 1000)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.TimeoutError, 500)
 	// Lo
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.AccessLog, "stdout")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.ErrorLog, "stderr")
@@ -78,7 +78,7 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.PemCertPath, "cert.pem")
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.PemKeyPath, "key.pem")
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Sandbox, true)
-	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Timeout, 5)
+	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Timeout, 0)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.RetryMax, 0)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.TimeoutError, 500)
 	// Lo
