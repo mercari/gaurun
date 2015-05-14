@@ -42,14 +42,14 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.ApiKey, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Timeout, 5)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.RetryMax, 0)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.RetryMax, 1)
 	// Ios
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.PemCertPath, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.PemKeyPath, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Sandbox, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Timeout, 0)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.RetryMax, 0)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.RetryMax, 1)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.TimeoutError, 500)
 	// Lo
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.AccessLog, "stdout")

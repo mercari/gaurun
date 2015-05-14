@@ -70,14 +70,14 @@ func BuildDefaultConfGaurun() ConfToml {
 	conf.Android.ApiKey = ""
 	conf.Android.Enabled = true
 	conf.Android.Timeout = 5
-	conf.Android.RetryMax = 0
+	conf.Android.RetryMax = 1
 	// iOS
 	conf.Ios.Enabled = true
 	conf.Ios.PemCertPath = ""
 	conf.Ios.PemKeyPath = ""
 	conf.Ios.Sandbox = true
 	conf.Ios.Timeout = 0
-	conf.Ios.RetryMax = 0
+	conf.Ios.RetryMax = 1
 	conf.Ios.TimeoutError = 500
 	conf.Ios.KeepAliveMax = 0
 	// log
