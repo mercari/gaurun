@@ -1,6 +1,6 @@
 gom 'github.com/alexjlockwood/gcm',               :commit => '3cef374f3d8e0b92ed8815541baeaf1b97302f23'
 gom 'github.com/cubicdaiya/apns',                 :commit => '6d38c938db5c90d739edc5779aef0c3e5a741635'
-gom 'github.com/fukata/golang-stats-api-handler', :commit => '7acca2d11b9a64063bf5b1d212fcc96c32c88e3a'
+gom 'github.com/fukata/golang-stats-api-handler', :commit => '1610ed23a3c23f91642064f0ead60dc4b4f44847'
 gom 'github.com/BurntSushi/toml',                 :commit => '3883ac1ce943878302255f538fce319d23226223'
 gom 'github.com/Sirupsen/logrus',                 :tag    => 'v0.6.0'
 gom 'github.com/stretchr/testify',                :commit => 'd6577e08ec30538639ac0ea38b562b6f250e9055'
