@@ -289,7 +289,7 @@ func sendResponse(w http.ResponseWriter, msg string, code int) {
 }
 
 func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
-	LogAcceptedRequest("/push", r.Method, r.Proto, r.ContentLength)
+	LogAcceptedRequest(ConfGaurun.Api.PushUri, r.Method, r.Proto, r.ContentLength)
 	LogError.Debug("push-request is Accepted")
 
 	LogError.Debug("method check")
