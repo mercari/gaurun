@@ -43,6 +43,8 @@ See [SPEC.md](SPEC.md) about details for APIs.
 |timeout_error|int   |timeout for waiting error message from APNS    |500(msec) |                               |
 |keepalive_max|int   |try-counts for each keepalive connection       |0         |zero makes unlimied            |
 
+The value of `timeout` should be zero in production.
+
 ## Android Section
 
 |name         |type  |description                                   |default|note|
