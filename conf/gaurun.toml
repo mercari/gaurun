@@ -2,8 +2,8 @@
 port = "1056"
 #port = "unix:/tmp/gaurun.sock"
 workers = 8
-queues = 512
-notification_max = 1000
+queues = 8192
+notification_max = 100
 
 [api]
 push_uri = "/push"
