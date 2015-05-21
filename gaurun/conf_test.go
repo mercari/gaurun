@@ -61,7 +61,7 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	// Core
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.Port, "1056")
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.WorkerNum, 8)
-	assert.Equal(suite.T(), suite.ConfGaurun.Core.QueueNum, 512)
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.QueueNum, 8192)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, 100)
 	// API
 	assert.Equal(suite.T(), suite.ConfGaurun.Api.PushUri, "/push")
