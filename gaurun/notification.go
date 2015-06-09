@@ -26,12 +26,18 @@ type RequestGaurunNotification struct {
 	DelayWhileIdle bool   `json:"delay_while_idle,omitempty"`
 	TimeToLive     int    `json:"time_to_live,omitempty"`
 	// iOS
-	Badge  int    `json:"badge,omitempty"`
-	Sound  string `json:"sound,omitempty"`
-	Expiry int    `json:"expiry,omitempty"`
-	Retry  int    `json:"retry,omitempty"`
+	Badge  int          `json:"badge,omitempty"`
+	Sound  string       `json:"sound,omitempty"`
+	Expiry int          `json:"expiry,omitempty"`
+	Retry  int          `json:"retry,omitempty"`
+	Extend []ExtendJSON `json:"extend,omitempty"`
 	// meta
 	IDs []uint64 `json:"seq_id,omitempty"`
+}
+
+type ExtendJSON struct {
+	Key   string `json:"key"`
+	Value string `json:"val"`
 }
 
 type ResponseGaurun struct {
@@ -113,6 +119,12 @@ func pushNotificationIos(req RequestGaurunNotification, client *apns.Client) boo
 		pn.Expiry = uint32(req.Expiry)
 		pn.AddPayload(payload)
 
+		if len(req.Extend) > 0 {
+			for _, extend := range req.Extend {
+				pn.Set(extend.Key, extend.Value)
+			}
+		}
+
 		stime := time.Now()
 		resp := client.Send(pn)
 		etime := time.Now()
@@ -139,6 +151,12 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 	LogError.Debug("START push notification for Android")
 
 	data := map[string]interface{}{"message": req.Message}
+	if len(req.Extend) > 0 {
+		for _, extend := range req.Extend {
+			data[extend.Key] = extend.Value
+		}
+	}
+
 	msg := gcm.NewMessage(data, req.Tokens...)
 	msg.CollapseKey = req.CollapseKey
 	msg.DelayWhileIdle = req.DelayWhileIdle
