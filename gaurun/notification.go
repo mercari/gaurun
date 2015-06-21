@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/alexjlockwood/gcm"
 	"github.com/cubicdaiya/apns"
-	"io/ioutil"
 	"net/http"
 	"sync/atomic"
 	"time"
@@ -280,7 +279,6 @@ func validateNotification(notification *RequestGaurunNotification) error {
 
 func sendResponse(w http.ResponseWriter, msg string, code int) {
 	var (
-		respBody   []byte
 		respGaurun ResponseGaurun
 	)
 
@@ -288,22 +286,13 @@ func sendResponse(w http.ResponseWriter, msg string, code int) {
 	w.Header().Set("Server", fmt.Sprintf("Gaurun %s", Version))
 
 	respGaurun.Message = msg
-	respBody, err := json.Marshal(respGaurun)
+	err := json.NewEncoder(w).Encode(&respGaurun)
 	if err != nil {
 		msg := "Response-body could not be created"
 		http.Error(w, msg, http.StatusInternalServerError)
 		LogError.Error(msg)
 		return
 	}
-
-	switch code {
-	case http.StatusOK:
-		fmt.Fprintf(w, string(respBody))
-	default:
-		http.Error(w, string(respBody), code)
-		LogError.Error(msg)
-	}
-
 }
 
 func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
@@ -319,12 +308,7 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 	LogError.Debug("parse request body")
 	var reqGaurun RequestGaurun
 
-	reqBody, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		sendResponse(w, "failed to read request-body", http.StatusInternalServerError)
-		return
-	}
-	err = json.Unmarshal(reqBody, &reqGaurun)
+	err := json.NewDecoder(r.Body).Decode(&reqGaurun)
 	if err != nil {
 		sendResponse(w, "Request-body is malformed", http.StatusBadRequest)
 		return
