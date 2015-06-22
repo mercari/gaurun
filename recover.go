@@ -136,7 +136,7 @@ func main() {
 		JSONStr := line[idx+1:]
 		err := json.Unmarshal([]byte(JSONStr), &logPush)
 		if err != nil {
-			log.Println("JSON parse error(%s)", JSONStr)
+			log.Printf("JSON parse error(%s)", JSONStr)
 		}
 		if logPush.Type == "accepted-request" {
 			continue
