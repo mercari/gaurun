@@ -285,6 +285,7 @@ func sendResponse(w http.ResponseWriter, msg string, code int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Server", fmt.Sprintf("Gaurun %s", Version))
 
+	w.WriteHeader(code)
 	respGaurun.Message = msg
 	err := json.NewEncoder(w).Encode(&respGaurun)
 	if err != nil {
