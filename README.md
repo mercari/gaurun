@@ -44,7 +44,7 @@ Gaurun supports re-push notifications lost by server-crash with access.log.
 bin/gaurun_recovery -c conf/gaurun.toml -l /tmp/gaurun.log
 ```
 
-## Commiters
+## Committers
 
  * Tatsuhiko Kubo([@cubicdaiya](https://github.com/cubicdaiya))
 
