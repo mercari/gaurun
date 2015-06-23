@@ -289,8 +289,10 @@ func sendResponse(w http.ResponseWriter, msg string, code int) {
 	respGaurun.Message = msg
 	err := json.NewEncoder(w).Encode(&respGaurun)
 	if err != nil {
+		// Internal Server Error(500) should be returned by right.
+		// But 'code' is returned because of the limitation of json.NewEncoder and WriteHeader.
 		msg := "Response-body could not be created"
-		http.Error(w, msg, http.StatusInternalServerError)
+		fmt.Fprintf(w, msg)
 		LogError.Error(msg)
 		return
 	}
