@@ -1,6 +1,6 @@
 # Specification for Gaurun
 
-Gaurun is a general push notificaiton server. It accepts a HTTP request.
+Gaurun is a general push notification server. It accepts a HTTP request.
 
 ## API
 
@@ -43,7 +43,7 @@ The following JSON is a request-body example.
 }
 ```
 
-A request-body must has a `notifications` array. The following is a paramter table for each notification.
+A request-body must has a `notifications` array. The following is a parameter table for each notification.
 
 |name            |type        |description                              |required|note            |
 |----------------|------------|-----------------------------------------|--------|----------------|
@@ -53,7 +53,7 @@ A request-body must has a `notifications` array. The following is a paramter tab
 |badge           |int         |badge count                              |-       |only iOS        |
 |sound           |string      |sound type                               |-       |only iOS        |
 |expiry          |int         |expiration for notification              |-       |only iOS        |
-|collapse_key    |string      |a key for collasing notifications        |-       |only Android    |
+|collapse_key    |string      |a key for collapsing notifications       |-       |only Android    |
 |delay_while_idle|bool        |a flag for device idling                 |-       |only Android    |
 |time_to_live    |int         |expiration of message kept on GCM storage|-       |only Android    |
 |extend          |string array|extensible partition                     |-       |                |
