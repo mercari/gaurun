@@ -110,6 +110,6 @@ func ConfigGaurunHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "text/plain")
-	w.Header().Set("Server", fmt.Sprintf("Gaurun %s", Version))
+	w.Header().Set("Server", serverHeader())
 	fmt.Fprintf(w, b.String())
 }

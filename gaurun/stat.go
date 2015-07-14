@@ -50,6 +50,6 @@ func StatsGaurunHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Server", fmt.Sprintf("Gaurun %s", Version))
+	w.Header().Set("Server", serverHeader())
 	fmt.Fprintf(w, string(respBody))
 }

@@ -15,3 +15,7 @@ Copyright (C) 2014-2015 Mercari, Inc.
 		runtime.Version())
 
 }
+
+func serverHeader() string {
+	return fmt.Sprintf("Gaurun %s", Version)
+}
