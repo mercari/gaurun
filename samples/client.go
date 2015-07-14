@@ -71,7 +71,7 @@ func main() {
 
 	reqJson, err := json.Marshal(req)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 	reqBody := strings.NewReader(string(reqJson))
 
@@ -79,12 +79,12 @@ func main() {
 	resp, err := http.Post("http://"+*host+"/push", "application/json", reqBody)
 	defer resp.Body.Close()
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 	fmt.Println("status: " + resp.Status)
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 	fmt.Println("response body:" + string(respBody))
 }

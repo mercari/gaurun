@@ -66,7 +66,7 @@ func enqueueNotifications(notifications []RequestGaurunNotification) {
 	for _, notification := range notifications {
 		err := validateNotification(&notification)
 		if err != nil {
-			LogError.Error(err.Error())
+			LogError.Error(err)
 			continue
 		}
 		var enabledPush bool
