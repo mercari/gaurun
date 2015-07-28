@@ -77,10 +77,10 @@ func main() {
 
 	// send push request to gaurun
 	resp, err := http.Post("http://"+*host+"/push", "application/json", reqBody)
-	defer resp.Body.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer resp.Body.Close()
 	fmt.Println("status: " + resp.Status)
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
