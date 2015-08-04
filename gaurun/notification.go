@@ -220,8 +220,7 @@ func pushNotificationWorker() {
 				time.Duration(ConfGaurun.Ios.Timeout)*time.Second,
 			)
 			if err != nil {
-				msg := fmt.Sprintf("failed to connect to APNS: %s", err.Error())
-				LogError.Error(msg)
+				LogError.Errorf("failed to connect to APNS: %s", err.Error())
 				apnsClient = nil
 				continue
 			}
