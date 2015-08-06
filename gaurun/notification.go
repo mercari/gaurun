@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/alexjlockwood/gcm"
 	"github.com/cubicdaiya/apns"
+	"io/ioutil"
 	"net/http"
 	"sync/atomic"
 	"time"
@@ -307,10 +308,24 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	LogError.Debug("parse request body")
-	var reqGaurun RequestGaurun
+	var (
+		reqGaurun RequestGaurun
+		err       error
+	)
 
-	err := json.NewDecoder(r.Body).Decode(&reqGaurun)
+	if ConfGaurun.Log.Level == "debug" {
+		reqBody, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			sendResponse(w, "failed to read request-body", http.StatusInternalServerError)
+			return
+		}
+		LogError.Debugf("parse request body: %s", reqBody)
+		err = json.Unmarshal(reqBody, &reqGaurun)
+	} else {
+		LogError.Debug("parse request body")
+		err = json.NewDecoder(r.Body).Decode(&reqGaurun)
+	}
+
 	if err != nil {
 		sendResponse(w, "Request-body is malformed", http.StatusBadRequest)
 		return
