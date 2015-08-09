@@ -29,7 +29,7 @@ The following JSON is a request-body example.
             "badge" : 1,
             "sound" : "default",
             "expiry" : 10,
-            "extend" : [{ 'key': 'url', 'val': '...' }, { 'key': 'intent', 'val': '...' }]
+            "extend" : [{ "key": "url", "val": "..." }, { "key": "intent", "val": "..." }]
         },
         {
             "token" : ["yyy"],
