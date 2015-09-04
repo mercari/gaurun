@@ -10,7 +10,7 @@ import (
 type StatApp struct {
 	QueueMax   int         `json:"queue_max"`
 	QueueUsage int         `json:"queue_usage"`
-	Ios        StatAndroid `json:"ios"`
+	Ios        StatIos     `json:"ios"`
 	Android    StatAndroid `json:"android"`
 }
 
