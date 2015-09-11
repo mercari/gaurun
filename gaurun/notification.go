@@ -218,7 +218,7 @@ func pushNotificationWorker() {
 				ep,
 				ConfGaurun.Ios.PemCertPath,
 				ConfGaurun.Ios.PemKeyPath,
-				time.Duration(ConfGaurun.Ios.Timeout)*time.Second,
+				0,
 			)
 			if err != nil {
 				LogError.Errorf("failed to connect to APNS: %s", err.Error())

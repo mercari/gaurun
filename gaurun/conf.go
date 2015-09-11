@@ -42,7 +42,6 @@ type SectionIos struct {
 	PemCertPath  string `toml:"pem_cert_path"`
 	PemKeyPath   string `toml:"pem_key_path"`
 	Sandbox      bool   `toml:"sandbox"`
-	Timeout      int    `toml:"timeout"`
 	RetryMax     int    `toml:"retry_max"`
 	TimeoutError int    `toml:"timeout_error"`
 	KeepAliveMax int    `toml:"keepalive_max"`
@@ -76,7 +75,6 @@ func BuildDefaultConfGaurun() ConfToml {
 	conf.Ios.PemCertPath = ""
 	conf.Ios.PemKeyPath = ""
 	conf.Ios.Sandbox = true
-	conf.Ios.Timeout = 0
 	conf.Ios.RetryMax = 1
 	conf.Ios.TimeoutError = 500
 	conf.Ios.KeepAliveMax = 0

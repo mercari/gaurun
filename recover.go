@@ -51,7 +51,7 @@ func pushNotificationIos(req gaurun.RequestGaurunNotification) bool {
 		ep,
 		gaurun.ConfGaurun.Ios.PemCertPath,
 		gaurun.ConfGaurun.Ios.PemKeyPath,
-		time.Duration(gaurun.ConfGaurun.Ios.Timeout)*time.Second,
+		0,
 	)
 	if err != nil {
 		return false
@@ -80,7 +80,7 @@ func pushNotificationIos(req gaurun.RequestGaurunNotification) bool {
 				ep,
 				gaurun.ConfGaurun.Ios.PemCertPath,
 				gaurun.ConfGaurun.Ios.PemKeyPath,
-				time.Duration(gaurun.ConfGaurun.Ios.Timeout)*time.Second,
+				0,
 			)
 			if err != nil {
 				return false

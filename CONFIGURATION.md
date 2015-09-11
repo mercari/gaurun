@@ -38,7 +38,6 @@ See [SPEC.md](SPEC.md) about details for APIs.
 |pem_cert_path|string|certification file path for APNS               |          |                               |
 |pem_key_path |string|secret key file path for APNS                  |          |                               |
 |sandbox      |bool  |On/Off for sandbox environment                 |true      |                               |
-|timeout      |int   |connection timeout for push notication to APNS |0(sec)    |zero makes connection keepalive|
 |retry_max    |int   |maximum retry count for push notication to APNS|1         |                               |
 |timeout_error|int   |timeout for waiting error message from APNS    |500(msec) |                               |
 |keepalive_max|int   |try-counts for each keepalive connection       |0         |zero makes unlimited           |
