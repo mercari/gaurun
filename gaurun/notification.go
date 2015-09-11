@@ -213,9 +213,29 @@ func pushNotificationWorker() {
 	apnsClient = nil
 	loop = 0
 	for {
+		stime := time.Now()
+
 		notification := <-QueueNotification
 
-		if notification.PlatFormIos == PlatFormIos {
+		etime := time.Now()
+		itime := etime.Sub(stime).Seconds()
+
+		if notification.Platform == PlatFormIos {
+			if apnsClient != nil && int(itime) > ConfGaurun.Ios.KeepAliveIdleTimeout {
+				apnsClient.Conn.Close()
+				apnsClient.ConnTls.Close()
+				apnsClient = nil
+			}
+
+			if apnsClient != nil && ConfGaurun.Ios.KeepAliveMax > 0 && loop > ConfGaurun.Ios.KeepAliveMax {
+				apnsClient.Conn.Close()
+				apnsClient.ConnTls.Close()
+				apnsClient = nil
+				loop = 0
+			}
+
+			loop++
+
 			if apnsClient == nil {
 				apnsClient, err = apns.NewClient(
 					ep,
@@ -226,21 +246,12 @@ func pushNotificationWorker() {
 				if err != nil {
 					LogError.Errorf("failed to connect to APNS: %s", err.Error())
 					apnsClient = nil
+					loop = 0
+					QueueNotification <- notification
 					continue
 				}
 				apnsClient.TimeoutWaitError = time.Duration(ConfGaurun.Ios.TimeoutError) * time.Millisecond
 			}
-
-			if ConfGaurun.Ios.KeepAliveMax > 0 && loop > ConfGaurun.Ios.KeepAliveMax {
-				apnsClient.Conn.Close()
-				apnsClient.ConnTls.Close()
-				apnsClient = nil
-				loop = 0
-				QueueNotification <- notification
-				continue
-			}
-
-			loop++
 		}
 
 		switch notification.Platform {

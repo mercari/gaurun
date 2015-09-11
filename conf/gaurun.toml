@@ -23,7 +23,8 @@ pem_key_path = "key.pem"
 sandbox = true
 enabled = true
 keepalive_max = 0
-retry_max = 0
+keepalive_idle_timeout = 300
+retry_max = 1
 timeout_error = 500 # msec
 
 [log]
