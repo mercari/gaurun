@@ -41,7 +41,7 @@ bin/gaurun -c conf/gaurun.toml
 Gaurun supports re-push notifications lost by server-crash with access.log.
 
 ```
-bin/gaurun_recovery -c conf/gaurun.toml -l /tmp/gaurun.log
+bin/gaurun_recover -c conf/gaurun.toml -l /tmp/gaurun.log
 ```
 
 ## Committers
