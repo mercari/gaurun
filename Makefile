@@ -1,5 +1,16 @@
+VERSION=0.4.0
 
 all: bin/gaurun bin/gaurun_recover
+
+build-cross: gaurun.go recover.go gaurun/*.go
+	GOOS=linux GOARCH=amd64 gom build -o bin/linux/amd64/gaurun-${VERSION}/gaurun gaurun.go
+	GOOS=linux GOARCH=amd64 gom build -o bin/linux/amd64/gaurun-${VERSION}/gaurun_recover recover.go
+	GOOS=darwin GOARCH=amd64 gom build -o bin/darwin/amd64/gaurun-${VERSION}/gaurun gaurun.go
+	GOOS=darwin GOARCH=amd64 gom build -o bin/darwin/amd64/gaurun-${VERSION}/gaurun_recover recover.go
+
+dist: build-cross
+	cd bin/linux/amd64 && tar zcvf gaurun-linux-amd64-${VERSION}.tar.gz gaurun-${VERSION}
+	cd bin/darwin/amd64 && tar zcvf gaurun-darwin-amd64-${VERSION}.tar.gz gaurun-${VERSION}
 
 bin/gaurun: gaurun.go gaurun/*.go
 	gom build -o bin/gaurun gaurun.go

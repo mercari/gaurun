@@ -3,3 +3,5 @@ _vendor
 bin/gaurun
 bin/gaurun_client
 bin/gaurun_recover
+bin/darwin
+bin/linux
