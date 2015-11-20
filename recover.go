@@ -112,7 +112,7 @@ func main() {
 	// load configuration
 	conf, err := gaurun.LoadConfGaurun(gaurun.ConfGaurun, *confPath)
 	if err != nil {
-		gaurun.LogError.Fatal(err)
+		log.Fatal(err)
 	}
 	gaurun.ConfGaurun = conf
 
