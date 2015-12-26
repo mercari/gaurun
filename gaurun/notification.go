@@ -190,7 +190,7 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 	for i, token := range req.Tokens {
 		LogPush(req.IDs[i], StatusSucceededPush, token, ptime, req, nil)
 	}
-	StatGaurun.Android.PushSuccess += int64(len(req.Tokens))
+	atomic.AddInt64(&StatGaurun.Android.PushSuccess, int64(len(req.Tokens)))
 	LogError.Debug("END push notification for Android")
 	return true
 }
