@@ -18,6 +18,7 @@ import (
 func main() {
 	versionPrinted := flag.Bool("v", false, "gaurun version")
 	confPath := flag.String("c", "", "configuration file path for gaurun")
+	listenPort := flag.String("p", "", "port number or unix socket path")
 	flag.Parse()
 
 	if *versionPrinted {
@@ -44,6 +45,11 @@ func main() {
 		gaurun.LogError.Fatal(err)
 	}
 	gaurun.ConfGaurun = conf
+
+	// overwrite if port is specified by flags
+	if *listenPort != "" {
+		gaurun.ConfGaurun.Core.Port = *listenPort
+	}
 
 	// set logger
 	err = gaurun.SetLogLevel(gaurun.LogAccess, "info")
@@ -86,7 +92,6 @@ func main() {
 		}
 	}
 
-	gaurun.ConfGaurun = conf
 	gaurun.InitGCMClient()
 	gaurun.InitStatGaurun()
 	statsGo.PrettyPrintEnabled()
