@@ -47,6 +47,7 @@ bin/gaurun_recover -c conf/gaurun.toml -l /tmp/gaurun.log
 ## Committers
 
  * Tatsuhiko Kubo([@cubicdaiya](https://github.com/cubicdaiya))
+ * Masahiro Sano([@kazegusuri](https://github.com/kazegusuri))
 
 ## License
 
