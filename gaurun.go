@@ -19,6 +19,8 @@ func main() {
 	versionPrinted := flag.Bool("v", false, "gaurun version")
 	confPath := flag.String("c", "", "configuration file path for gaurun")
 	listenPort := flag.String("p", "", "port number or unix socket path")
+	workerNum := flag.Int("w", 0, "number of workers for push notification")
+	queueNum := flag.Int("q", 0, "size of internal queue for push notification")
 	flag.Parse()
 
 	if *versionPrinted {
@@ -49,6 +51,16 @@ func main() {
 	// overwrite if port is specified by flags
 	if *listenPort != "" {
 		gaurun.ConfGaurun.Core.Port = *listenPort
+	}
+
+	// overwrite if workerNum is specified by flags
+	if *workerNum > 0 {
+		gaurun.ConfGaurun.Core.WorkerNum = *workerNum
+	}
+
+	// overwrite if queueNum is specified by flags
+	if *queueNum > 0 {
+		gaurun.ConfGaurun.Core.QueueNum = *queueNum
 	}
 
 	// set logger
