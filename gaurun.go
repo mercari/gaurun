@@ -23,7 +23,7 @@ func main() {
 
 	if *versionPrinted {
 		gaurun.PrintGaurunVersion()
-		os.Exit(0)
+		return
 	}
 
 	// set concurrency
