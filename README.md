@@ -51,7 +51,7 @@ bin/gaurun_recover -c conf/gaurun.toml -l /tmp/gaurun.log
 
 ## License
 
-Copyright 2014-2015 Mercari, Inc.
+Copyright 2014-2016 Mercari, Inc.
 
 
 Licensed under the MIT License.
