@@ -2,6 +2,7 @@ package main
 
 import (
 	"./gaurun"
+	"errors"
 	"flag"
 	"github.com/Sirupsen/logrus"
 	statsGo "github.com/fukata/golang-stats-api-handler"
@@ -14,6 +15,23 @@ import (
 	"strconv"
 	"strings"
 )
+
+func listenUnix(port string) (net.Listener, error) {
+	sockPath := port[5:]
+	fi, err := os.Lstat(sockPath)
+	if err == nil && (fi.Mode()&os.ModeSocket) == os.ModeSocket {
+		err := os.Remove(sockPath)
+		if err != nil {
+			return nil, errors.New("failed to remove " + sockPath)
+		}
+	}
+	l, err := net.Listen("unix", sockPath)
+	if err != nil {
+		return nil, errors.New("failed to listen: " + sockPath)
+	}
+
+	return l, nil
+}
 
 func main() {
 	versionPrinted := flag.Bool("v", false, "gaurun version")
@@ -109,32 +127,55 @@ func main() {
 	statsGo.PrettyPrintEnabled()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
 
-	http.HandleFunc(gaurun.ConfGaurun.Api.PushUri, gaurun.PushNotificationHandler)
-	http.HandleFunc(gaurun.ConfGaurun.Api.StatGoUri, statsGo.Handler)
-	http.HandleFunc(gaurun.ConfGaurun.Api.StatAppUri, gaurun.StatsGaurunHandler)
-	http.HandleFunc(gaurun.ConfGaurun.Api.ConfigAppUri, gaurun.ConfigGaurunHandler)
-
-	// Listen TCP Port
-	if _, err := strconv.Atoi(gaurun.ConfGaurun.Core.Port); err == nil {
-		http.ListenAndServe(":"+gaurun.ConfGaurun.Core.Port, nil)
-	}
-
-	// Listen UNIX Socket
-	if strings.HasPrefix(gaurun.ConfGaurun.Core.Port, "unix:/") {
-		sockPath := gaurun.ConfGaurun.Core.Port[5:]
-		fi, err := os.Lstat(sockPath)
-		if err == nil && (fi.Mode()&os.ModeSocket) == os.ModeSocket {
-			err := os.Remove(sockPath)
+	// push and stat server
+	if gaurun.ConfGaurun.Core.Port == gaurun.ConfGaurun.Stat.Port {
+		http.HandleFunc(gaurun.ConfGaurun.Api.StatGoUri, statsGo.Handler)
+		http.HandleFunc(gaurun.ConfGaurun.Api.StatAppUri, gaurun.StatsGaurunHandler)
+		http.HandleFunc(gaurun.ConfGaurun.Api.ConfigAppUri, gaurun.ConfigGaurunHandler)
+		http.HandleFunc(gaurun.ConfGaurun.Api.PushUri, gaurun.PushNotificationHandler)
+		if _, err := strconv.Atoi(gaurun.ConfGaurun.Core.Port); err == nil { // Listen TCP
+			http.ListenAndServe(":"+gaurun.ConfGaurun.Core.Port, nil)
+		} else if strings.HasPrefix(gaurun.ConfGaurun.Core.Port, "unix:/") { // Listen Unix
+			l, err := listenUnix(gaurun.ConfGaurun.Core.Port)
 			if err != nil {
-				log.Fatal("failed to remove " + sockPath)
+				log.Fatal(err.Error())
 			}
+			http.Serve(l, nil)
 		}
-		l, err := net.Listen("unix", sockPath)
-		if err != nil {
-			log.Fatal("failed to listen: " + sockPath)
-		}
-		http.Serve(l, nil)
+		log.Fatal("core.port parameter is invalid: " + gaurun.ConfGaurun.Core.Port)
 	}
 
-	log.Fatal("port parameter is invalid: " + gaurun.ConfGaurun.Core.Port)
+	// stat server
+	muxStat := http.NewServeMux()
+	muxStat.HandleFunc(gaurun.ConfGaurun.Api.StatGoUri, statsGo.Handler)
+	muxStat.HandleFunc(gaurun.ConfGaurun.Api.StatAppUri, gaurun.StatsGaurunHandler)
+	muxStat.HandleFunc(gaurun.ConfGaurun.Api.ConfigAppUri, gaurun.ConfigGaurunHandler)
+
+	if _, err := strconv.Atoi(gaurun.ConfGaurun.Stat.Port); err == nil {
+		go http.ListenAndServe(":"+gaurun.ConfGaurun.Stat.Port, muxStat)
+	} else if strings.HasPrefix(gaurun.ConfGaurun.Stat.Port, "unix:/") {
+		l, err := listenUnix(gaurun.ConfGaurun.Stat.Port)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		go http.Serve(l, muxStat)
+	} else {
+		log.Fatal("stat.port parameter is invalid: " + gaurun.ConfGaurun.Stat.Port)
+	}
+
+	// push server
+	muxPush := http.NewServeMux()
+	muxPush.HandleFunc(gaurun.ConfGaurun.Api.PushUri, gaurun.PushNotificationHandler)
+
+	if _, err := strconv.Atoi(gaurun.ConfGaurun.Core.Port); err == nil {
+		http.ListenAndServe(":"+gaurun.ConfGaurun.Core.Port, muxPush)
+	} else if strings.HasPrefix(gaurun.ConfGaurun.Core.Port, "unix:/") {
+		l, err := listenUnix(gaurun.ConfGaurun.Core.Port)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		http.Serve(l, muxPush)
+	}
+
+	log.Fatal("core.port parameter is invalid: " + gaurun.ConfGaurun.Core.Port)
 }

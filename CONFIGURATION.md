@@ -63,3 +63,9 @@ The value of `timeout` should be zero in production.
 |level     |string|log level      |error  |panic,fatal,error,warn,info,debug|
 
 `access_log` and `error_log` are allowed to give not only file-path but `stdout` and `stderr`.
+
+## Stat Section
+
+|name      |type  |description                    |default|note                             |
+|----------|------|-------------------------------|-------|---------------------------------|
+|port      |string|port number or unix socket path|1056   |e.g.)1056, unix:/tmp/gaurun.sock |

@@ -31,3 +31,6 @@ timeout_error = 500 # msec
 access_log = "stdout"
 error_log = "stderr"
 level = "error"
+
+[stat]
+port = "1056"

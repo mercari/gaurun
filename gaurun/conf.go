@@ -14,6 +14,7 @@ type ConfToml struct {
 	Android SectionAndroid `toml:"android"`
 	Ios     SectionIos     `toml:"ios"`
 	Log     SectionLog     `toml:"log"`
+	Stat    SectionStat    `toml:"stat"`
 }
 
 type SectionCore struct {
@@ -35,6 +36,10 @@ type SectionAndroid struct {
 	ApiKey   string `toml:"apikey"`
 	Timeout  int    `toml:"timeout"`
 	RetryMax int    `toml:"retry_max"`
+}
+
+type SectionStat struct {
+	Port string `toml:"port"`
 }
 
 type SectionIos struct {
@@ -84,6 +89,8 @@ func BuildDefaultConfGaurun() ConfToml {
 	conf.Log.AccessLog = "stdout"
 	conf.Log.ErrorLog = "stderr"
 	conf.Log.Level = "error"
+	// stat
+	conf.Stat.Port = "1056"
 	return conf
 }
 
