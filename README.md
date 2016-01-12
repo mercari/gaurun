@@ -1,5 +1,7 @@
 # Gaurun
 
+![logo](https://raw.githubusercontent.com/mercari/gaurun/master/img/logo.png)
+
 Gaurun is a general push notification server in Go.
 
 ## Status
