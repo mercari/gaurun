@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/alexjlockwood/gcm"
-	"github.com/cubicdaiya/apns"
 	"io/ioutil"
 	"net/http"
 	"sync/atomic"
 	"time"
+
+	"github.com/alexjlockwood/gcm"
+	"github.com/cubicdaiya/apns"
 )
 
 type RequestGaurun struct {

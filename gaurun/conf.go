@@ -3,9 +3,10 @@ package gaurun
 import (
 	"bytes"
 	"fmt"
-	"github.com/BurntSushi/toml"
 	"net/http"
 	"runtime"
+
+	"github.com/BurntSushi/toml"
 )
 
 type ConfToml struct {

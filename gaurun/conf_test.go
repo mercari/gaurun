@@ -1,11 +1,12 @@
 package gaurun
 
 import (
+	"runtime"
+	"testing"
+
 	_ "github.com/BurntSushi/toml"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
-	"runtime"
-	"testing"
 )
 
 const (

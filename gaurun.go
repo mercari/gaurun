@@ -1,10 +1,7 @@
 package main
 
 import (
-	"./gaurun"
 	"flag"
-	"github.com/Sirupsen/logrus"
-	statsGo "github.com/fukata/golang-stats-api-handler"
 	"io/ioutil"
 	"log"
 	"net"
@@ -13,6 +10,10 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+
+	"./gaurun"
+	"github.com/Sirupsen/logrus"
+	statsGo "github.com/fukata/golang-stats-api-handler"
 )
 
 func main() {

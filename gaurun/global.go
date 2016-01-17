@@ -1,10 +1,11 @@
 package gaurun
 
 import (
-	"github.com/Sirupsen/logrus"
-	"github.com/alexjlockwood/gcm"
 	"net/http"
 	"sync"
+
+	"github.com/Sirupsen/logrus"
+	"github.com/alexjlockwood/gcm"
 )
 
 var (
