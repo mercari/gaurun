@@ -1,4 +1,4 @@
-VERSION=0.4.1
+VERSION=0.4.2
 
 all: bin/gaurun bin/gaurun_recover
 
