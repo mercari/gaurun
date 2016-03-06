@@ -1,9 +1,13 @@
 package gaurun
 
-const Version = "0.4.2"
+const (
+	Version = "0.4.2"
+)
 
-const EpApnsProd = "gateway.push.apple.com:2195"
-const EpApnsSandbox = "gateway.sandbox.push.apple.com:2195"
+const (
+	EpApnsProd    = "gateway.push.apple.com:2195"
+	EpApnsSandbox = "gateway.sandbox.push.apple.com:2195"
+)
 
 const (
 	PlatFormIos = iota + 1
