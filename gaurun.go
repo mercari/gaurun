@@ -4,15 +4,9 @@ import (
 	"flag"
 	"io/ioutil"
 	"log"
-	"net"
-	"net/http"
-	"os"
-	"strconv"
-	"strings"
 
 	"./gaurun"
 	"github.com/Sirupsen/logrus"
-	statsGo "github.com/fukata/golang-stats-api-handler"
 )
 
 func main() {
@@ -103,35 +97,8 @@ func main() {
 
 	gaurun.InitGCMClient()
 	gaurun.InitStatGaurun()
-	statsGo.PrettyPrintEnabled()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
 
-	http.HandleFunc(gaurun.ConfGaurun.Api.PushUri, gaurun.PushNotificationHandler)
-	http.HandleFunc(gaurun.ConfGaurun.Api.StatGoUri, statsGo.Handler)
-	http.HandleFunc(gaurun.ConfGaurun.Api.StatAppUri, gaurun.StatsGaurunHandler)
-	http.HandleFunc(gaurun.ConfGaurun.Api.ConfigAppUri, gaurun.ConfigGaurunHandler)
-
-	// Listen TCP Port
-	if _, err := strconv.Atoi(gaurun.ConfGaurun.Core.Port); err == nil {
-		http.ListenAndServe(":"+gaurun.ConfGaurun.Core.Port, nil)
-	}
-
-	// Listen UNIX Socket
-	if strings.HasPrefix(gaurun.ConfGaurun.Core.Port, "unix:/") {
-		sockPath := gaurun.ConfGaurun.Core.Port[5:]
-		fi, err := os.Lstat(sockPath)
-		if err == nil && (fi.Mode()&os.ModeSocket) == os.ModeSocket {
-			err := os.Remove(sockPath)
-			if err != nil {
-				log.Fatal("failed to remove " + sockPath)
-			}
-		}
-		l, err := net.Listen("unix", sockPath)
-		if err != nil {
-			log.Fatal("failed to listen: " + sockPath)
-		}
-		http.Serve(l, nil)
-	}
-
-	log.Fatal("port parameter is invalid: " + gaurun.ConfGaurun.Core.Port)
+	gaurun.RegisterHTTPHandlers()
+	gaurun.RunHTTPServer()
 }
