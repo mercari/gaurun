@@ -29,9 +29,6 @@ func main() {
 		return
 	}
 
-	// set concurrency
-	runtime.GOMAXPROCS(runtime.NumCPU())
-
 	// set default parameters
 	gaurun.ConfGaurun = gaurun.BuildDefaultConfGaurun()
 
