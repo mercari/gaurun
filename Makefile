@@ -31,7 +31,7 @@ fmt:
 	go fmt ./...
 
 check:
-	cd gaurun; gom test
+	gom test ./...
 
 clean:
 	rm -rf bin/*
