@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"log"
 
-	"./gaurun"
 	"github.com/Sirupsen/logrus"
+	"github.com/mercari/gaurun/gaurun"
 )
 
 func main() {

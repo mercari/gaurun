@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"./gaurun"
 	"github.com/alexjlockwood/gcm"
 	"github.com/cubicdaiya/apns"
+	"github.com/mercari/gaurun/gaurun"
 )
 
 func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {

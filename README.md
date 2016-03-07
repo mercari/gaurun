@@ -16,9 +16,7 @@ Gaurun is production ready.
 ## Installation
 
 ```
-make gom
-make bundle
-make
+go get -u github.com/mercari/gaurun/...
 ```
 
 ## Configuration
