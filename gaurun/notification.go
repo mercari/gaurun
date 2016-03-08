@@ -148,6 +148,36 @@ func pushNotificationIos(req RequestGaurunNotification, client *apns.Client) boo
 	return true
 }
 
+func pushNotificationIos2(req RequestGaurunNotification, client *http.Client) bool {
+	LogError.Debug("START push notification for iOS")
+
+	service := newApnsServiceHttp2(client)
+
+	for i, token := range req.Tokens {
+		id := req.IDs[i]
+		payload := newApnsPayloadHttp2(&req)
+
+		stime := time.Now()
+		err := apnsPushHttp2(token, service, nil, payload)
+
+		etime := time.Now()
+		ptime := etime.Sub(stime).Seconds()
+
+		if err != nil {
+			atomic.AddInt64(&StatGaurun.Ios.PushError, 1)
+			LogPush(req.IDs[i], StatusFailedPush, token, ptime, req, err)
+			return false
+		} else {
+			LogPush(id, StatusSucceededPush, token, ptime, req, nil)
+			atomic.AddInt64(&StatGaurun.Ios.PushSuccess, 1)
+		}
+	}
+
+	client = nil
+	LogError.Debug("END push notification for iOS")
+	return true
+}
+
 func pushNotificationAndroid(req RequestGaurunNotification) bool {
 	LogError.Debug("START push notification for Android")
 
@@ -198,12 +228,13 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 
 func pushNotificationWorker() {
 	var (
-		success    bool
-		retryMax   int
-		ep         string
-		apnsClient *apns.Client
-		loop       int
-		err        error
+		success     bool
+		retryMax    int
+		ep          string
+		apnsClient  *apns.Client
+		apnsClient2 *http.Client
+		loop        int
+		err         error
 	)
 	if ConfGaurun.Ios.Sandbox {
 		ep = EpApnsSandbox
@@ -212,6 +243,7 @@ func pushNotificationWorker() {
 	}
 
 	apnsClient = nil
+	apnsClient2 = nil
 	loop = 0
 	for {
 		stime := time.Now()
@@ -222,13 +254,13 @@ func pushNotificationWorker() {
 		itime := etime.Sub(stime).Seconds()
 
 		if notification.Platform == PlatFormIos {
-			if apnsClient != nil && int(itime) > ConfGaurun.Ios.KeepAliveIdleTimeout {
+			if !ConfGaurun.Ios.Http2 && apnsClient != nil && int(itime) > ConfGaurun.Ios.KeepAliveIdleTimeout {
 				apnsClient.Conn.Close()
 				apnsClient.ConnTls.Close()
 				apnsClient = nil
 			}
 
-			if apnsClient != nil && ConfGaurun.Ios.KeepAliveMax > 0 && loop > ConfGaurun.Ios.KeepAliveMax {
+			if !ConfGaurun.Ios.Http2 && apnsClient != nil && ConfGaurun.Ios.KeepAliveMax > 0 && loop > ConfGaurun.Ios.KeepAliveMax {
 				apnsClient.Conn.Close()
 				apnsClient.ConnTls.Close()
 				apnsClient = nil
@@ -237,29 +269,45 @@ func pushNotificationWorker() {
 
 			loop++
 
-			if apnsClient == nil {
-				apnsClient, err = apns.NewClient(
-					ep,
-					ConfGaurun.Ios.PemCertPath,
-					ConfGaurun.Ios.PemKeyPath,
-					0,
-				)
-				if err != nil {
-					LogError.Errorf("failed to connect to APNS: %s", err.Error())
-					apnsClient = nil
-					loop = 0
-					QueueNotification <- notification
-					continue
+			if ConfGaurun.Ios.Http2 {
+				if apnsClient2 == nil {
+					apnsClient2, err = newApnsClientHttp2(
+						ConfGaurun.Ios.PemCertPath,
+						ConfGaurun.Ios.PemKeyPath,
+					)
 				}
-				apnsClient.TimeoutWaitError = time.Duration(ConfGaurun.Ios.TimeoutError) * time.Millisecond
+			} else {
+				if apnsClient == nil {
+					apnsClient, err = apns.NewClient(
+						ep,
+						ConfGaurun.Ios.PemCertPath,
+						ConfGaurun.Ios.PemKeyPath,
+						0,
+					)
+					if err != nil {
+						LogError.Errorf("failed to connect to APNS: %s", err.Error())
+						apnsClient = nil
+						loop = 0
+						QueueNotification <- notification
+						continue
+					}
+					apnsClient.TimeoutWaitError = time.Duration(ConfGaurun.Ios.TimeoutError) * time.Millisecond
+				}
 			}
 		}
 
 		switch notification.Platform {
 		case PlatFormIos:
-			success = pushNotificationIos(notification, apnsClient)
-			if !success {
-				apnsClient = nil
+			if ConfGaurun.Ios.Http2 {
+				success = pushNotificationIos2(notification, apnsClient2)
+				if !success {
+					apnsClient = nil
+				}
+			} else {
+				success = pushNotificationIos(notification, apnsClient)
+				if !success {
+					apnsClient2 = nil
+				}
 			}
 			retryMax = ConfGaurun.Ios.RetryMax
 		case PlatFormAndroid:

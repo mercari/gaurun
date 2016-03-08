@@ -42,6 +42,7 @@ See [SPEC.md](SPEC.md) about details for APIs.
 |timeout_error         |int   |timeout for waiting error message from APNS      |500(msec) |                               |
 |keepalive_max         |int   |try-counts for each keepalive connection         |0         |zero makes unlimited           |
 |keepalive_idle_timeout|int   |timeout for idleling keepalive connectio for APNS|300       |                               |
+|http2                 |bool  |enable HTTP/2                                    |false     |experimental                   |
 
 The value of `timeout` should be zero in production.
 
