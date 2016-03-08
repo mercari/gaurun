@@ -155,10 +155,11 @@ func pushNotificationIos2(req RequestGaurunNotification, client *http.Client) bo
 
 	for i, token := range req.Tokens {
 		id := req.IDs[i]
+		headers := newApnsHeadersHttp2(&req)
 		payload := newApnsPayloadHttp2(&req)
 
 		stime := time.Now()
-		err := apnsPushHttp2(token, service, nil, payload)
+		err := apnsPushHttp2(token, service, headers, payload)
 
 		etime := time.Now()
 		ptime := etime.Sub(stime).Seconds()
