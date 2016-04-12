@@ -11,7 +11,7 @@ import (
 	"github.com/RobotsAndPencils/buford/push"
 )
 
-func newApnsClientHttp2(certPath, keyPath string) (*http.Client, error) {
+func NewApnsClientHttp2(certPath, keyPath string) (*http.Client, error) {
 	var client *http.Client
 	var cert tls.Certificate
 	var err error
@@ -28,7 +28,7 @@ func newApnsClientHttp2(certPath, keyPath string) (*http.Client, error) {
 	return client, nil
 }
 
-func newApnsServiceHttp2(client *http.Client) *push.Service {
+func NewApnsServiceHttp2(client *http.Client) *push.Service {
 	var host string
 	if ConfGaurun.Ios.Sandbox {
 		host = push.Development
@@ -41,7 +41,7 @@ func newApnsServiceHttp2(client *http.Client) *push.Service {
 	}
 }
 
-func newApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} {
+func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} {
 	p := payload.APS{
 		Alert: payload.Alert{Body: req.Message},
 		Badge: badge.New(uint(req.Badge)),
@@ -59,13 +59,13 @@ func newApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} 
 	return pm
 }
 
-func newApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
+func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
 	return &push.Headers{
 		Expiration: time.Unix(int64(req.Expiry), 0),
 	}
 }
 
-func apnsPushHttp2(token string, service *push.Service, headers *push.Headers, payload map[string]interface{}) error {
+func ApnsPushHttp2(token string, service *push.Service, headers *push.Headers, payload map[string]interface{}) error {
 	fmt.Println(token)
 	_, err := service.Push(token, headers, payload)
 	return err

@@ -95,7 +95,9 @@ func main() {
 		}
 	}
 
-	gaurun.InitGCMClient()
+	if err := gaurun.InitHttpClient(); err != nil {
+		gaurun.LogError.Fatal("failed to init http client")
+	}
 	gaurun.InitStatGaurun()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
 

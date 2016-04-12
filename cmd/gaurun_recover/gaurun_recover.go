@@ -13,7 +13,6 @@ import (
 	"time"
 
 	"github.com/alexjlockwood/gcm"
-	"github.com/cubicdaiya/apns"
 	"github.com/mercari/gaurun/gaurun"
 )
 
@@ -40,58 +39,20 @@ func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 	return true
 }
 
-func pushNotificationIos(req gaurun.RequestGaurunNotification) bool {
-	var ep string
-	if gaurun.ConfGaurun.Ios.Sandbox {
-		ep = gaurun.EpApnsSandbox
-	} else {
-		ep = gaurun.EpApnsProd
-	}
+func pushNotificationIos(client *http.Client, req gaurun.RequestGaurunNotification) bool {
 
-	client, err := apns.NewClient(
-		ep,
-		gaurun.ConfGaurun.Ios.PemCertPath,
-		gaurun.ConfGaurun.Ios.PemKeyPath,
-		0,
-	)
-	if err != nil {
-		return false
-	}
-
-	client.TimeoutWaitError = time.Duration(gaurun.ConfGaurun.Ios.TimeoutError) * time.Millisecond
+	service := gaurun.NewApnsServiceHttp2(client)
 
 	for _, token := range req.Tokens {
-		payload := apns.NewPayload()
-		payload.Alert = req.Message
-		payload.Badge = req.Badge
-		payload.Sound = req.Sound
 
-		pn := apns.NewPushNotification()
-		pn.DeviceToken = token
-		pn.Expiry = uint32(req.Expiry)
-		pn.AddPayload(payload)
+		headers := gaurun.NewApnsHeadersHttp2(&req)
+		payload := gaurun.NewApnsPayloadHttp2(&req)
 
-		resp := client.Send(pn)
-
-		if resp.Error != nil {
-			// reconnect
-			client.Conn.Close()
-			client.ConnTls.Close()
-			client, err = apns.NewClient(
-				ep,
-				gaurun.ConfGaurun.Ios.PemCertPath,
-				gaurun.ConfGaurun.Ios.PemKeyPath,
-				0,
-			)
-			if err != nil {
-				return false
-			}
-			client.TimeoutWaitError = time.Duration(gaurun.ConfGaurun.Ios.TimeoutError) * time.Millisecond
+		err := gaurun.ApnsPushHttp2(token, service, headers, payload)
+		if err != nil {
+			return false
 		}
 	}
-
-	client.Conn.Close()
-	client.ConnTls.Close()
 
 	return true
 }
@@ -160,6 +121,15 @@ func main() {
 
 	done := make(chan bool, len(losts))
 
+	apnsClient, err := gaurun.NewApnsClientHttp2(
+		gaurun.ConfGaurun.Ios.PemCertPath,
+		gaurun.ConfGaurun.Ios.PemKeyPath,
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	apnsClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
+	
 	for _, logPush := range losts {
 		tokens := make([]string, 1)
 		var platform int
@@ -187,7 +157,7 @@ func main() {
 			var result bool
 			switch logPush.Platform {
 			case "ios":
-				result = pushNotificationIos(*req)
+				result = pushNotificationIos(apnsClient, *req)
 			case "android":
 				result = pushNotificationAndroid(*req)
 			}

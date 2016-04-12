@@ -50,8 +50,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.PemKeyPath, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Sandbox, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.RetryMax, 1)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.TimeoutError, 500)
-	// Lo
+	// Log
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.AccessLog, "stdout")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.ErrorLog, "stderr")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.Level, "error")
@@ -79,7 +78,7 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.PemKeyPath, "key.pem")
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Sandbox, true)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.RetryMax, 1)
-	assert.Equal(suite.T(), suite.ConfGaurun.Ios.TimeoutError, 500)
+	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Timeout, 5)
 	// Lo
 	assert.Equal(suite.T(), suite.ConfGaurun.Log.AccessLog, "stdout")
 	assert.Equal(suite.T(), suite.ConfGaurun.Log.ErrorLog, "stderr")

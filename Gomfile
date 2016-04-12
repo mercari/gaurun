@@ -1,5 +1,4 @@
 gom 'github.com/alexjlockwood/gcm',               :commit => '3cef374f3d8e0b92ed8815541baeaf1b97302f23'
-gom 'github.com/cubicdaiya/apns',                 :commit => '6d38c938db5c90d739edc5779aef0c3e5a741635'
 gom 'github.com/fukata/golang-stats-api-handler', :commit => 'e7ee1630fdb679c86ec8e3d0755e3576675fdb10'
 gom 'github.com/BurntSushi/toml',                 :commit => '75869ce70f3cd0f6d1473c58f4adac5941f1055a'
 gom 'github.com/Sirupsen/logrus',                 :tag    => 'v0.9.0'

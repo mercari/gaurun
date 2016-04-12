@@ -39,12 +39,9 @@ See [SPEC.md](SPEC.md) about details for APIs.
 |pem_key_path          |string|secret key file path for APNS                    |          |                               |
 |sandbox               |bool  |On/Off for sandbox environment                   |true      |                               |
 |retry_max             |int   |maximum retry count for push notication to APNS  |1         |                               |
-|timeout_error         |int   |timeout for waiting error message from APNS      |500(msec) |                               |
+|timeout               |int   |timeout for push notification to APNS            |5         |                               |
 |keepalive_max         |int   |try-counts for each keepalive connection         |0         |zero makes unlimited           |
 |keepalive_idle_timeout|int   |timeout for idleling keepalive connectio for APNS|300       |                               |
-|http2                 |bool  |enable HTTP/2                                    |false     |experimental                   |
-
-The value of `timeout` should be zero in production.
 
 ## Android Section
 
