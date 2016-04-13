@@ -2,7 +2,6 @@ package gaurun
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -66,7 +65,6 @@ func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
 }
 
 func ApnsPushHttp2(token string, service *push.Service, headers *push.Headers, payload map[string]interface{}) error {
-	fmt.Println(token)
 	_, err := service.Push(token, headers, payload)
 	return err
 }
