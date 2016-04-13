@@ -129,7 +129,7 @@ func main() {
 		log.Fatal(err)
 	}
 	apnsClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
-	
+
 	for _, logPush := range losts {
 		tokens := make([]string, 1)
 		var platform int

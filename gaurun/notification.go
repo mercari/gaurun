@@ -195,8 +195,8 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 
 func pushNotificationWorker() {
 	var (
-		success     bool
-		retryMax    int
+		success  bool
+		retryMax int
 	)
 
 	for {
