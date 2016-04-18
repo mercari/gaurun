@@ -1,6 +1,0 @@
-gom 'github.com/alexjlockwood/gcm',               :commit => '3cef374f3d8e0b92ed8815541baeaf1b97302f23'
-gom 'github.com/fukata/golang-stats-api-handler', :commit => 'e7ee1630fdb679c86ec8e3d0755e3576675fdb10'
-gom 'github.com/BurntSushi/toml',                 :commit => '75869ce70f3cd0f6d1473c58f4adac5941f1055a'
-gom 'github.com/Sirupsen/logrus',                 :tag    => 'v0.9.0'
-gom 'github.com/stretchr/testify',                :tag    => 'v1.1.3'
-gom 'github.com/RobotsAndPencils/buford',         :tag    => 'v0.4.2'
