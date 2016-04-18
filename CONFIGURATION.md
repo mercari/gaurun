@@ -17,7 +17,7 @@ A configuration for Gaurun has some sections. A example is [here](conf/gaurun.to
 |port            |string|port number or unix socket path             |1056            |e.g.)1056, unix:/tmp/gaurun.sock <br/> `-p` option can overwrite    |
 |workers         |int   |number of workers for push notification     |runtime.NumCPU()|`-w` options can overwrite          |
 |queues          |int   |size of internal queue for push notification|8192            |`-q` options can overwrite          |
-|notificatoin_max|int   |limit of push notifications once            |100             |                                    |
+|notification_max|int   |limit of push notifications once            |100             |                                    |
 
 ## API Section
 

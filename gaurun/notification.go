@@ -288,15 +288,18 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
+		LogError.Error(err)
 		sendResponse(w, "Request-body is malformed", http.StatusBadRequest)
 		return
 	}
 
 	if len(reqGaurun.Notifications) == 0 {
+		LogError.Error("empty notification")
 		sendResponse(w, "empty notification", http.StatusBadRequest)
 		return
 	} else if len(reqGaurun.Notifications) > ConfGaurun.Core.NotificationMax {
 		msg := fmt.Sprintf("number of notifications(%d) over limit(%d)", len(reqGaurun.Notifications), ConfGaurun.Core.NotificationMax)
+		LogError.Error(msg)
 		sendResponse(w, msg, http.StatusBadRequest)
 		return
 	}
