@@ -1,0 +1,29 @@
+hash: 616cb35d7572fa82b4d1181036968b197d326a96cb85cd193f64eb68a4a2d29f
+updated: 2016-04-18T16:58:41.341720253+09:00
+imports:
+- name: github.com/alexjlockwood/gcm
+  version: 3cef374f3d8e0b92ed8815541baeaf1b97302f23
+- name: github.com/BurntSushi/toml
+  version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
+- name: github.com/fukata/golang-stats-api-handler
+  version: e7ee1630fdb679c86ec8e3d0755e3576675fdb10
+- name: github.com/RobotsAndPencils/buford
+  version: 8fc56b99ffeae3ce6f3baa890455667ab04a8a7b
+  subpackages:
+  - payload
+  - payload/badge
+  - push
+- name: github.com/Sirupsen/logrus
+  version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
+- name: github.com/stretchr/testify
+  version: f390dcf405f7b83c997eac1b06768bb9f44dec18
+- name: golang.org/x/net
+  version: fb93926129b8ec0056f2f458b1f519654814edf0
+  subpackages:
+  - http2
+  - http2/hpack
+- name: golang.org/x/sys
+  version: f64b50fbea64174967a8882830d621a18ee1548e
+  subpackages:
+  - unix
+devImports: []
