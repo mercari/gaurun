@@ -26,6 +26,7 @@ keepalive_max = 0
 keepalive_idle_timeout = 300
 retry_max = 1
 timeout_error = 500 # msec
+http2 = false
 
 [log]
 access_log = "stdout"
