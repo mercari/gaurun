@@ -22,8 +22,6 @@ pem_cert_path = "cert.pem"
 pem_key_path = "key.pem"
 sandbox = true
 enabled = true
-keepalive_max = 0
-keepalive_idle_timeout = 300
 timeout = 5
 retry_max = 1
 
