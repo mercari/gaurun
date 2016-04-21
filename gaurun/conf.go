@@ -45,8 +45,6 @@ type SectionIos struct {
 	Sandbox              bool   `toml:"sandbox"`
 	RetryMax             int    `toml:"retry_max"`
 	Timeout              int    `toml:"timeout"`
-	KeepAliveMax         int    `toml:"keepalive_max"`
-	KeepAliveIdleTimeout int    `toml:"keepalive_idle_timeout"`
 }
 
 type SectionLog struct {
@@ -78,8 +76,6 @@ func BuildDefaultConfGaurun() ConfToml {
 	conf.Ios.PemKeyPath = ""
 	conf.Ios.Sandbox = true
 	conf.Ios.RetryMax = 1
-	conf.Ios.KeepAliveMax = 0
-	conf.Ios.KeepAliveIdleTimeout = 300
 	// log
 	conf.Log.AccessLog = "stdout"
 	conf.Log.ErrorLog = "stderr"

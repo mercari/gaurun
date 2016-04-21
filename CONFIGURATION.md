@@ -40,8 +40,6 @@ See [SPEC.md](SPEC.md) about details for APIs.
 |sandbox               |bool  |On/Off for sandbox environment                   |true      |                               |
 |retry_max             |int   |maximum retry count for push notication to APNS  |1         |                               |
 |timeout               |int   |timeout for push notification to APNS            |5         |                               |
-|keepalive_max         |int   |try-counts for each keepalive connection         |0         |zero makes unlimited           |
-|keepalive_idle_timeout|int   |timeout for idleling keepalive connectio for APNS|300       |                               |
 
 ## Android Section
 
