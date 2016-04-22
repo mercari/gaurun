@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/alexjlockwood/gcm"
-	"github.com/cubicdaiya/apns"
 )
 
 type RequestGaurun struct {
@@ -50,11 +49,22 @@ type CertificatePem struct {
 	Key  []byte
 }
 
-func InitGCMClient() {
+func InitHttpClient() error {
 	TransportGaurun = &http.Transport{MaxIdleConnsPerHost: ConfGaurun.Core.WorkerNum}
 	GCMClient = &gcm.Sender{ApiKey: ConfGaurun.Android.ApiKey}
 	GCMClient.Http = &http.Client{Transport: TransportGaurun}
 	GCMClient.Http.Timeout = time.Duration(ConfGaurun.Android.Timeout) * time.Second
+
+	var err error
+	APNSClient, err = NewApnsClientHttp2(
+		ConfGaurun.Ios.PemCertPath,
+		ConfGaurun.Ios.PemKeyPath,
+	)
+	if err != nil {
+		return err
+	}
+	APNSClient.Timeout = time.Duration(ConfGaurun.Ios.Timeout) * time.Second
+	return nil
 }
 
 func StartPushWorkers(workerNum, queueNum int) {
@@ -105,45 +115,32 @@ func classifyByDevice(reqGaurun *RequestGaurun) ([]RequestGaurunNotification, []
 	return reqGaurunNotificationIos, reqGaurunNotificationAndroid
 }
 
-func pushNotificationIos(req RequestGaurunNotification, client *apns.Client) bool {
+func pushNotificationIos(req RequestGaurunNotification) bool {
 	LogError.Debug("START push notification for iOS")
+
+	service := NewApnsServiceHttp2(APNSClient)
 
 	for i, token := range req.Tokens {
 		id := req.IDs[i]
-		payload := apns.NewPayload()
-		payload.Alert = req.Message
-		payload.Badge = req.Badge
-		payload.Sound = req.Sound
-
-		pn := apns.NewPushNotification()
-		pn.DeviceToken = token
-		pn.Expiry = uint32(req.Expiry)
-		pn.AddPayload(payload)
-
-		if len(req.Extend) > 0 {
-			for _, extend := range req.Extend {
-				pn.Set(extend.Key, extend.Value)
-			}
-		}
+		headers := NewApnsHeadersHttp2(&req)
+		payload := NewApnsPayloadHttp2(&req)
 
 		stime := time.Now()
-		resp := client.Send(pn)
+		err := ApnsPushHttp2(token, service, headers, payload)
+
 		etime := time.Now()
 		ptime := etime.Sub(stime).Seconds()
 
-		if resp.Error != nil {
+		if err != nil {
 			atomic.AddInt64(&StatGaurun.Ios.PushError, 1)
-			LogPush(req.IDs[i], StatusFailedPush, token, ptime, req, resp.Error)
-			client.Conn.Close()
-			client.ConnTls.Close()
+			LogPush(req.IDs[i], StatusFailedPush, token, ptime, req, err)
 			return false
 		} else {
-			LogPush(id, StatusSucceededPush, token, ptime, req, nil)
 			atomic.AddInt64(&StatGaurun.Ios.PushSuccess, 1)
+			LogPush(id, StatusSucceededPush, token, ptime, req, nil)
 		}
 	}
 
-	client = nil
 	LogError.Debug("END push notification for iOS")
 	return true
 }
@@ -198,69 +195,16 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 
 func pushNotificationWorker() {
 	var (
-		success    bool
-		retryMax   int
-		ep         string
-		apnsClient *apns.Client
-		loop       int
-		err        error
+		success  bool
+		retryMax int
 	)
-	if ConfGaurun.Ios.Sandbox {
-		ep = EpApnsSandbox
-	} else {
-		ep = EpApnsProd
-	}
 
-	apnsClient = nil
-	loop = 0
 	for {
-		stime := time.Now()
-
 		notification := <-QueueNotification
-
-		etime := time.Now()
-		itime := etime.Sub(stime).Seconds()
-
-		if notification.Platform == PlatFormIos {
-			if apnsClient != nil && int(itime) > ConfGaurun.Ios.KeepAliveIdleTimeout {
-				apnsClient.Conn.Close()
-				apnsClient.ConnTls.Close()
-				apnsClient = nil
-			}
-
-			if apnsClient != nil && ConfGaurun.Ios.KeepAliveMax > 0 && loop > ConfGaurun.Ios.KeepAliveMax {
-				apnsClient.Conn.Close()
-				apnsClient.ConnTls.Close()
-				apnsClient = nil
-				loop = 0
-			}
-
-			loop++
-
-			if apnsClient == nil {
-				apnsClient, err = apns.NewClient(
-					ep,
-					ConfGaurun.Ios.PemCertPath,
-					ConfGaurun.Ios.PemKeyPath,
-					0,
-				)
-				if err != nil {
-					LogError.Errorf("failed to connect to APNS: %s", err.Error())
-					apnsClient = nil
-					loop = 0
-					QueueNotification <- notification
-					continue
-				}
-				apnsClient.TimeoutWaitError = time.Duration(ConfGaurun.Ios.TimeoutError) * time.Millisecond
-			}
-		}
 
 		switch notification.Platform {
 		case PlatFormIos:
-			success = pushNotificationIos(notification, apnsClient)
-			if !success {
-				apnsClient = nil
-			}
+			success = pushNotificationIos(notification)
 			retryMax = ConfGaurun.Ios.RetryMax
 		case PlatFormAndroid:
 			success = pushNotificationAndroid(notification)
