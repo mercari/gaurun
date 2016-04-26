@@ -39,12 +39,12 @@ type SectionAndroid struct {
 }
 
 type SectionIos struct {
-	Enabled              bool   `toml:"enabled"`
-	PemCertPath          string `toml:"pem_cert_path"`
-	PemKeyPath           string `toml:"pem_key_path"`
-	Sandbox              bool   `toml:"sandbox"`
-	RetryMax             int    `toml:"retry_max"`
-	Timeout              int    `toml:"timeout"`
+	Enabled     bool   `toml:"enabled"`
+	PemCertPath string `toml:"pem_cert_path"`
+	PemKeyPath  string `toml:"pem_key_path"`
+	Sandbox     bool   `toml:"sandbox"`
+	RetryMax    int    `toml:"retry_max"`
+	Timeout     int    `toml:"timeout"`
 }
 
 type SectionLog struct {
