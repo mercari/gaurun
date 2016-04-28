@@ -11,7 +11,7 @@ Gaurun is production ready.
 ## Supported Platforms
 
  * [APNs](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html)
- * [GCM](https://developer.android.com/google/gcm/index.html)
+ * [GCM](https://developers.google.com/cloud-messaging/)
 
 ## Installation
 
