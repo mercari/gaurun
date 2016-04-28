@@ -10,7 +10,7 @@ Gaurun is production ready.
 
 ## Supported Platforms
 
- * [APNS](https://developer.apple.com/library/ios/documentation/networkinginternet/conceptual/remotenotificationspg/Chapters/ApplePushService.html)
+ * [APNs](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html)
  * [GCM](https://developer.android.com/google/gcm/index.html)
 
 ## Installation

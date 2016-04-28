@@ -32,7 +32,7 @@ type RequestGaurunNotification struct {
 
 func main() {
 	host := flag.String("s", "127.0.0.1:1056", "gaurun server")
-	iOSToken := flag.String("i", "", "device token for APNS")
+	iOSToken := flag.String("i", "", "device token for APNs")
 	androidToken := flag.String("a", "", "device token for Android")
 	flag.Parse()
 

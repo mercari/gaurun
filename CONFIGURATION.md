@@ -34,12 +34,12 @@ See [SPEC.md](SPEC.md) about details for APIs.
 
 |name                  |type  |description                                      |default   |note                           |
 |----------------------|------|-------------------------------------------------|----------|-------------------------------|
-|enabled               |bool  |On/Off for push notication to APNS               |true      |                               |
-|pem_cert_path         |string|certification file path for APNS                 |          |                               |
-|pem_key_path          |string|secret key file path for APNS                    |          |                               |
+|enabled               |bool  |On/Off for push notication to APNs               |true      |                               |
+|pem_cert_path         |string|certification file path for APNs                 |          |                               |
+|pem_key_path          |string|secret key file path for APNs                    |          |                               |
 |sandbox               |bool  |On/Off for sandbox environment                   |true      |                               |
-|retry_max             |int   |maximum retry count for push notication to APNS  |1         |                               |
-|timeout               |int   |timeout for push notification to APNS            |5         |                               |
+|retry_max             |int   |maximum retry count for push notication to APNs  |1         |                               |
+|timeout               |int   |timeout for push notification to APNs            |5         |                               |
 
 ## Android Section
 
