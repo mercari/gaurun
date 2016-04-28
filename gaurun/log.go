@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"sync"
 	"sync/atomic"
 	"time"
 
@@ -148,16 +147,5 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 }
 
 func numberingPush() uint64 {
-	var result uint64
-
-	// nubmering push
-	OnceNumbering.Do(func() {
-		WgNumbering = new(sync.WaitGroup)
-	})
-	WgNumbering.Add(1)
-	atomic.AddUint64(&SeqID, 1)
-	result = SeqID
-	WgNumbering.Done()
-	WgNumbering.Wait()
-	return result
+	return atomic.AddUint64(&SeqID, 1)
 }
