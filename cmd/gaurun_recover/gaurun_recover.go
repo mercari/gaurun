@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"runtime"
 	"strings"
 	"time"
 
@@ -77,9 +76,6 @@ func main() {
 		log.Fatal(err)
 	}
 	gaurun.ConfGaurun = conf
-
-	// set concurrency
-	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	f, err := os.Open(*logPath)
 	if err != nil {
