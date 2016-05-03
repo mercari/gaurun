@@ -162,7 +162,7 @@ func main() {
 				result = pushNotificationAndroid(*req)
 			}
 			if !result {
-				msg := fmt.Sprintf("failed to push notification: %s %s %s", logPush.Token, logPush.Platform, logPush.Message)
+				msg := fmt.Sprintf("failed to push notification: %s %s %s", token, platform, message)
 				log.Println(msg)
 			} else {
 				msg := fmt.Sprintf("succeeded push notification: %s %s %s", token, platform, message)
