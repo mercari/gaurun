@@ -50,6 +50,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.PemKeyPath, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Sandbox, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.RetryMax, 1)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Topic, "")
 	// Log
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.AccessLog, "stdout")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.ErrorLog, "stderr")

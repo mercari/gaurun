@@ -32,14 +32,17 @@ See [SPEC.md](SPEC.md) about details for APIs.
 
 ## iOS Section
 
-|name                  |type  |description                                      |default   |note                           |
-|----------------------|------|-------------------------------------------------|----------|-------------------------------|
-|enabled               |bool  |On/Off for push notication to APNs               |true      |                               |
-|pem_cert_path         |string|certification file path for APNs                 |          |                               |
-|pem_key_path          |string|secret key file path for APNs                    |          |                               |
-|sandbox               |bool  |On/Off for sandbox environment                   |true      |                               |
-|retry_max             |int   |maximum retry count for push notication to APNs  |1         |                               |
-|timeout               |int   |timeout for push notification to APNs            |5         |                               |
+|name                  |type  |description                                           |default   |note                           |
+|----------------------|------|------------------------------------------------------|----------|-------------------------------|
+|enabled               |bool  |On/Off for push notication to APNs                    |true      |                               |
+|pem_cert_path         |string|certification file path for APNs                      |          |                               |
+|pem_key_path          |string|secret key file path for APNs                         |          |                               |
+|sandbox               |bool  |On/Off for sandbox environment                        |true      |                               |
+|retry_max             |int   |maximum retry count for push notication to APNs       |1         |                               |
+|timeout               |int   |timeout for push notification to APNs                 |5         |                               |
+|topic                 |string|the assigned value of `apns-topic` for Request headers|          |                               |
+
+`topic` is mandatory when the client is connected using a certificate that supports multiple topics.
 
 ## Android Section
 

@@ -45,6 +45,7 @@ type SectionIos struct {
 	Sandbox     bool   `toml:"sandbox"`
 	RetryMax    int    `toml:"retry_max"`
 	Timeout     int    `toml:"timeout"`
+	Topic       string `toml:"topic"`
 }
 
 type SectionLog struct {
@@ -77,6 +78,7 @@ func BuildDefaultConfGaurun() ConfToml {
 	conf.Ios.Sandbox = true
 	conf.Ios.RetryMax = 1
 	conf.Ios.Timeout = 5
+	conf.Ios.Topic = ""
 	// log
 	conf.Log.AccessLog = "stdout"
 	conf.Log.ErrorLog = "stderr"
