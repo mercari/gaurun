@@ -9,7 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/alexjlockwood/gcm"
+	"github.com/mercari/gcm"
 )
 
 type RequestGaurun struct {

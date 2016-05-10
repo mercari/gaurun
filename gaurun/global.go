@@ -5,7 +5,7 @@ import (
 	"sync"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/alexjlockwood/gcm"
+	"github.com/mercari/gcm"
 )
 
 var (

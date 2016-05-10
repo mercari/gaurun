@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/alexjlockwood/gcm"
+	"github.com/mercari/gcm"
 	"github.com/mercari/gaurun/gaurun"
 )
 
