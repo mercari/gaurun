@@ -5,20 +5,8 @@ const (
 )
 
 const (
-	EpApnsProd    = "gateway.push.apple.com:2195"
-	EpApnsSandbox = "gateway.sandbox.push.apple.com:2195"
-)
-
-const (
 	PlatFormIos = iota + 1
 	PlatFormAndroid
-)
-
-const (
-	ErrorStatusUnknown = iota
-	ErrorStatusNotRegistered
-	ErrorStatusMismatchSenderId
-	ErrorStatusCanonicalId
 )
 
 const (
