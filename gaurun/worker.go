@@ -15,7 +15,7 @@ func pushNotificationWorker() {
 
 	for {
 		notification := <-QueueNotification
-
+	Retry:
 		switch notification.Platform {
 		case PlatFormIos:
 			success = pushNotificationIos(notification)
@@ -28,10 +28,8 @@ func pushNotificationWorker() {
 			continue
 		}
 		if !success && notification.Retry < retryMax {
-			if len(QueueNotification) < cap(QueueNotification) {
-				notification.Retry++
-				QueueNotification <- notification
-			}
+			notification.Retry++
+			goto Retry
 		}
 	}
 }
