@@ -67,13 +67,6 @@ func InitHttpClient() error {
 	return nil
 }
 
-func StartPushWorkers(workerNum, queueNum int) {
-	QueueNotification = make(chan RequestGaurunNotification, queueNum)
-	for i := 0; i < workerNum; i++ {
-		go pushNotificationWorker()
-	}
-}
-
 func enqueueNotifications(notifications []RequestGaurunNotification) {
 	for _, notification := range notifications {
 		err := validateNotification(&notification)
@@ -191,32 +184,6 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 	atomic.AddInt64(&StatGaurun.Android.PushSuccess, int64(len(req.Tokens)))
 	LogError.Debug("END push notification for Android")
 	return true
-}
-
-func pushNotificationWorker() {
-	var (
-		success  bool
-		retryMax int
-	)
-
-	for {
-		notification := <-QueueNotification
-
-		switch notification.Platform {
-		case PlatFormIos:
-			success = pushNotificationIos(notification)
-			retryMax = ConfGaurun.Ios.RetryMax
-		case PlatFormAndroid:
-			success = pushNotificationAndroid(notification)
-			retryMax = ConfGaurun.Android.RetryMax
-		}
-		if !success && notification.Retry < retryMax {
-			if len(QueueNotification) < cap(QueueNotification) {
-				notification.Retry++
-				QueueNotification <- notification
-			}
-		}
-	}
 }
 
 func validateNotification(notification *RequestGaurunNotification) error {
