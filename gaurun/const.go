@@ -1,7 +1,7 @@
 package gaurun
 
 const (
-	Version = "0.4.3"
+	Version = "0.5.0"
 )
 
 const (
