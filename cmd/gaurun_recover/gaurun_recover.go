@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mercari/gcm"
 	"github.com/mercari/gaurun/gaurun"
+	"github.com/mercari/gcm"
 )
 
 func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
