@@ -23,6 +23,9 @@ func pushNotificationWorker() {
 		case PlatFormAndroid:
 			success = pushNotificationAndroid(notification)
 			retryMax = ConfGaurun.Android.RetryMax
+		default:
+			LogError.Warnf("invalid platform: %d", notification.Platform)
+			continue
 		}
 		if !success && notification.Retry < retryMax {
 			if len(QueueNotification) < cap(QueueNotification) {
