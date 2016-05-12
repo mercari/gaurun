@@ -63,7 +63,7 @@ func main() {
 	flag.Parse()
 
 	if *versionPrinted {
-		gaurun.PrintGaurunVersion()
+		gaurun.PrintVersion()
 		os.Exit(0)
 	}
 

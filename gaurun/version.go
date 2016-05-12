@@ -5,7 +5,7 @@ import (
 	"runtime"
 )
 
-func PrintGaurunVersion() {
+func PrintVersion() {
 	fmt.Printf(`Gaurun %s
 Compiler: %s %s
 Copyright (C) 2014-2016 Mercari, Inc.
