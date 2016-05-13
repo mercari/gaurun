@@ -13,8 +13,8 @@ import (
 
 func RegisterHTTPHandlers() {
 	http.HandleFunc(ConfGaurun.Api.PushUri, PushNotificationHandler)
-	http.HandleFunc(ConfGaurun.Api.StatAppUri, StatsGaurunHandler)
-	http.HandleFunc(ConfGaurun.Api.ConfigAppUri, ConfigGaurunHandler)
+	http.HandleFunc(ConfGaurun.Api.StatAppUri, StatsHandler)
+	http.HandleFunc(ConfGaurun.Api.ConfigAppUri, ConfigHandler)
 	statsGo.PrettyPrintEnabled()
 	http.HandleFunc(ConfGaurun.Api.StatGoUri, statsGo.Handler)
 }

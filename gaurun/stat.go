@@ -24,7 +24,7 @@ type StatIos struct {
 	PushError   int64 `json:"push_error"`
 }
 
-func InitStatGaurun() {
+func InitStat() {
 	StatGaurun.QueueUsage = 0
 	StatGaurun.Ios.PushSuccess = 0
 	StatGaurun.Ios.PushError = 0
@@ -32,7 +32,7 @@ func InitStatGaurun() {
 	StatGaurun.Android.PushError = 0
 }
 
-func StatsGaurunHandler(w http.ResponseWriter, r *http.Request) {
+func StatsHandler(w http.ResponseWriter, r *http.Request) {
 	var result StatApp
 	result.QueueMax = cap(QueueNotification)
 	result.QueueUsage = len(QueueNotification)

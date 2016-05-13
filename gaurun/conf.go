@@ -54,7 +54,7 @@ type SectionLog struct {
 	Level     string `toml:"level"`
 }
 
-func BuildDefaultConfGaurun() ConfToml {
+func BuildDefaultConf() ConfToml {
 	var conf ConfToml
 	// Core
 	conf.Core.Port = "1056"
@@ -86,7 +86,7 @@ func BuildDefaultConfGaurun() ConfToml {
 	return conf
 }
 
-func LoadConfGaurun(confGaurun ConfToml, confPath string) (ConfToml, error) {
+func LoadConf(confGaurun ConfToml, confPath string) (ConfToml, error) {
 	_, err := toml.DecodeFile(confPath, &confGaurun)
 	if err != nil {
 		return confGaurun, err
@@ -94,7 +94,7 @@ func LoadConfGaurun(confGaurun ConfToml, confPath string) (ConfToml, error) {
 	return confGaurun, nil
 }
 
-func ConfigGaurunHandler(w http.ResponseWriter, r *http.Request) {
+func ConfigHandler(w http.ResponseWriter, r *http.Request) {
 	var b bytes.Buffer
 	e := toml.NewEncoder(&b)
 	result := ConfGaurun

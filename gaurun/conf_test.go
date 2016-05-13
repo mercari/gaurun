@@ -20,9 +20,9 @@ type ConfigTestSuite struct {
 }
 
 func (suite *ConfigTestSuite) SetupTest() {
-	suite.ConfGaurunDefault = BuildDefaultConfGaurun()
+	suite.ConfGaurunDefault = BuildDefaultConf()
 	var err error
-	suite.ConfGaurun, err = LoadConfGaurun(suite.ConfGaurun, ConfGaurunPath)
+	suite.ConfGaurun, err = LoadConf(suite.ConfGaurun, ConfGaurunPath)
 	if err != nil {
 		panic("failed to load " + ConfGaurunPath)
 	}
