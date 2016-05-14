@@ -9,11 +9,31 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/mercari/gaurun/gaurun"
 	"github.com/mercari/gcm"
 )
+
+func pushNotification(wg *sync.WaitGroup, req gaurun.RequestGaurunNotification, logPush gaurun.LogPushEntry, apnsClient *http.Client) {
+	var result bool
+	switch logPush.Platform {
+	case "ios":
+		result = pushNotificationIos(apnsClient, req)
+	case "android":
+		result = pushNotificationAndroid(req)
+	}
+	if !result {
+		msg := fmt.Sprintf("failed to push notification: %s %s %s", logPush.Token, logPush.Platform, logPush.Message)
+		log.Println(msg)
+	} else {
+		msg := fmt.Sprintf("succeeded push notification: %s %s %s", logPush.Token, logPush.Platform, logPush.Message)
+		log.Println(msg)
+	}
+
+	wg.Done()
+}
 
 func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 	data := map[string]interface{}{"message": req.Message}
@@ -115,8 +135,6 @@ func main() {
 		}
 	}
 
-	done := make(chan bool, len(losts))
-
 	apnsClient, err := gaurun.NewApnsClientHttp2(
 		gaurun.ConfGaurun.Ios.PemCertPath,
 		gaurun.ConfGaurun.Ios.PemKeyPath,
@@ -126,6 +144,7 @@ func main() {
 	}
 	apnsClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
 
+	wg := new(sync.WaitGroup)
 	for _, logPush := range losts {
 		tokens := make([]string, 1)
 		var platform int
@@ -138,7 +157,7 @@ func main() {
 
 		}
 
-		req := &gaurun.RequestGaurunNotification{
+		req := gaurun.RequestGaurunNotification{
 			Tokens:         tokens,
 			Platform:       platform,
 			Message:        logPush.Message,
@@ -149,27 +168,9 @@ func main() {
 			Sound:          logPush.Sound,
 			Expiry:         logPush.Expiry,
 		}
-		go func(req *gaurun.RequestGaurunNotification, token, platform, message string) {
-			var result bool
-			switch logPush.Platform {
-			case "ios":
-				result = pushNotificationIos(apnsClient, *req)
-			case "android":
-				result = pushNotificationAndroid(*req)
-			}
-			if !result {
-				msg := fmt.Sprintf("failed to push notification: %s %s %s", token, platform, message)
-				log.Println(msg)
-			} else {
-				msg := fmt.Sprintf("succeeded push notification: %s %s %s", token, platform, message)
-				log.Println(msg)
-			}
-			done <- true
-		}(req, logPush.Token, logPush.Platform, logPush.Message)
+		wg.Add(1)
+		go pushNotification(wg, req, logPush, apnsClient)
 	}
 
-	for i := 0; i < len(losts); i++ {
-		<-done
-	}
-
+	wg.Wait()
 }
