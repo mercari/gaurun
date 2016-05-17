@@ -49,6 +49,12 @@ bin/gaurun_recover -c conf/gaurun.toml -l /tmp/gaurun.log
  * Tatsuhiko Kubo([@cubicdaiya](https://github.com/cubicdaiya))
  * Masahiro Sano([@kazegusuri](https://github.com/kazegusuri))
 
+## Contribution
+
+Please read the CLA below carefully before submitting your contribution.
+
+https://www.mercari.com/cla/
+
 ## License
 
 Copyright 2014-2016 Mercari, Inc.
