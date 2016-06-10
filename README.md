@@ -8,6 +8,10 @@ Gaurun is a general push notification server in Go.
 
 Gaurun is production ready.
 
+## Requirements
+
+Gaurun requires Go1.6.2 or later.
+
 ## Supported Platforms
 
  * [APNs](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html)
