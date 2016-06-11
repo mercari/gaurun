@@ -8,23 +8,40 @@ import (
 	"github.com/RobotsAndPencils/buford/payload"
 	"github.com/RobotsAndPencils/buford/payload/badge"
 	"github.com/RobotsAndPencils/buford/push"
+
+	"golang.org/x/net/http2"
 )
 
+func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {
+	config := &tls.Config{
+		Certificates: []tls.Certificate{cert},
+	}
+	config.BuildNameToCertificate()
+
+	transport := &http.Transport{
+		TLSClientConfig:     config,
+		MaxIdleConnsPerHost: ConfGaurun.Core.WorkerNum,
+	}
+
+	if err := http2.ConfigureTransport(transport); err != nil {
+		return nil, err
+	}
+
+	return transport, nil
+}
+
 func NewApnsClientHttp2(certPath, keyPath string) (*http.Client, error) {
-	var client *http.Client
-	var cert tls.Certificate
-	var err error
-	cert, err = tls.LoadX509KeyPair(certPath, keyPath)
+	cert, err := tls.LoadX509KeyPair(certPath, keyPath)
 	if err != nil {
-		return client, err
+		return nil, err
 	}
 
-	client, err = push.NewClient(cert)
+	transport, err := NewTransportHttp2(cert)
 	if err != nil {
-		return client, err
+		return nil, err
 	}
 
-	return client, nil
+	return &http.Client{Transport: transport}, nil
 }
 
 func NewApnsServiceHttp2(client *http.Client) *push.Service {
