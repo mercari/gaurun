@@ -236,6 +236,12 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	LogError.Debug("content-length check")
+	if r.ContentLength == 0 {
+		sendResponse(w, "request body is empty", http.StatusBadRequest)
+		return
+	}
+
 	var (
 		reqGaurun RequestGaurun
 		err       error
