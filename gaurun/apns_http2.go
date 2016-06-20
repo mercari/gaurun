@@ -60,7 +60,7 @@ func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} 
 
 func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
 	return &push.Headers{
-		Expiration: time.Now().Add(time.Duration(int64(req.Expiry)) * time.Second),
+		Expiration: time.Now().Add(time.Duration(int64(req.Expiry)) * time.Second).UTC(),
 		Topic:      ConfGaurun.Ios.Topic,
 	}
 }
