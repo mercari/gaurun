@@ -3,6 +3,7 @@ import:
 - package: github.com/BurntSushi/toml
   version: v0.2.0
 - package: github.com/RobotsAndPencils/buford
+  version: v0.7.0
   subpackages:
   - payload
   - payload/badge

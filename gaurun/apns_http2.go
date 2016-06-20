@@ -2,6 +2,7 @@ package gaurun
 
 import (
 	"crypto/tls"
+	"encoding/json"
 	"net/http"
 	"time"
 
@@ -83,6 +84,10 @@ func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
 }
 
 func ApnsPushHttp2(token string, service *push.Service, headers *push.Headers, payload map[string]interface{}) error {
-	_, err := service.Push(token, headers, payload)
+	b, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+	_, err = service.Push(token, headers, b)
 	return err
 }
