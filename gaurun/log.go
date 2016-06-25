@@ -35,9 +35,10 @@ type LogPushEntry struct {
 	DelayWhileIdle bool   `json:"delay_while_idle,omitempty"`
 	TimeToLive     int    `json:"time_to_live,omitempty"`
 	// iOS
-	Badge  int    `json:"badge,omitempty"`
-	Sound  string `json:"sound,omitempty"`
-	Expiry int    `json:"expiry,omitempty"`
+	Badge            int    `json:"badge,omitempty"`
+	Sound            string `json:"sound,omitempty"`
+	ContentAvailable bool   `json:"content_available,omitempty"`
+	Expiry           int    `json:"expiry,omitempty"`
 }
 
 type GaurunFormatter struct {
@@ -115,20 +116,21 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 	}
 
 	log := &LogPushEntry{
-		Type:           status,
-		Time:           time.Now().Format("2006/01/02 15:04:05 MST"),
-		ID:             id,
-		Platform:       plat,
-		Token:          token,
-		Message:        req.Message,
-		Ptime:          ptime,
-		Error:          errMsg,
-		CollapseKey:    req.CollapseKey,
-		DelayWhileIdle: req.DelayWhileIdle,
-		TimeToLive:     req.TimeToLive,
-		Badge:          req.Badge,
-		Sound:          req.Sound,
-		Expiry:         req.Expiry,
+		Type:             status,
+		Time:             time.Now().Format("2006/01/02 15:04:05 MST"),
+		ID:               id,
+		Platform:         plat,
+		Token:            token,
+		Message:          req.Message,
+		Ptime:            ptime,
+		Error:            errMsg,
+		CollapseKey:      req.CollapseKey,
+		DelayWhileIdle:   req.DelayWhileIdle,
+		TimeToLive:       req.TimeToLive,
+		Badge:            req.Badge,
+		Sound:            req.Sound,
+		ContentAvailable: req.ContentAvailable,
+		Expiry:           req.Expiry,
 	}
 	logJSON, err := json.Marshal(log)
 	if err != nil {

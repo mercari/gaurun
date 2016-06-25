@@ -25,9 +25,10 @@ type RequestGaurunNotification struct {
 	DelayWhileIdle bool   `json:"data_while_idle"`
 	TimeToLive     int    `json:"time_to_live"`
 	// iOS
-	Badge  int    `json:"badge"`
-	Sound  string `json:"sound"`
-	Expiry int    `json:"expiry"`
+	Badge            int    `json:"badge"`
+	Sound            string `json:"sound"`
+	ContentAvailable bool   `json:"content_available"`
+	Expiry           int    `json:"expiry"`
 }
 
 func main() {
@@ -60,6 +61,7 @@ func main() {
 		req.Notifications[i].Message = "Hello, iOS!"
 		req.Notifications[i].Badge = 1
 		req.Notifications[i].Sound = "default"
+		req.Notifications[i].ContentAvailable = true
 		i++
 	}
 

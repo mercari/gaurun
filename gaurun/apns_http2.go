@@ -63,6 +63,7 @@ func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} 
 		Alert: payload.Alert{Body: req.Message},
 		Badge: badge.New(uint(req.Badge)),
 		Sound: req.Sound,
+		ContentAvailable: req.ContentAvailable,
 	}
 
 	pm := p.Map()
