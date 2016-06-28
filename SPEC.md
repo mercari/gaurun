@@ -28,6 +28,7 @@ The following JSON is a request-body example.
             "message" : "Hello, iOS!",
             "badge" : 1,
             "sound" : "default",
+            "content_available" : true,
             "expiry" : 10,
             "extend" : [{ "key": "url", "val": "..." }, { "key": "intent", "val": "..." }]
         },
@@ -45,18 +46,19 @@ The following JSON is a request-body example.
 
 A request-body must has a `notifications` array. The following is a parameter table for each notification.
 
-|name            |type        |description                              |required|note            |
-|----------------|------------|-----------------------------------------|--------|----------------|
-|token           |string array|device tokens                            |o       |                |
-|platform        |int         |platform(iOS,Android)                    |o       |1=iOS, 2=Android|
-|message         |string      |message for notification                 |o       |                |
-|badge           |int         |badge count                              |-       |only iOS        |
-|sound           |string      |sound type                               |-       |only iOS        |
-|expiry          |int         |expiration for notification              |-       |only iOS        |
-|collapse_key    |string      |a key for collapsing notifications       |-       |only Android    |
-|delay_while_idle|bool        |a flag for device idling                 |-       |only Android    |
-|time_to_live    |int         |expiration of message kept on GCM storage|-       |only Android    |
-|extend          |string array|extensible partition                     |-       |                |
+|name             |type        |description                              |required|note            |
+|-----------------|------------|-----------------------------------------|--------|----------------|
+|token            |string array|device tokens                            |o       |                |
+|platform         |int         |platform(iOS,Android)                    |o       |1=iOS, 2=Android|
+|message          |string      |message for notification                 |o       |                |
+|badge            |int         |badge count                              |-       |only iOS        |
+|sound            |string      |sound type                               |-       |only iOS        |
+|expiry           |int         |expiration for notification              |-       |only iOS        |
+|content_available|bool        |indicate that new content is available   |-       |only iOS        |
+|collapse_key     |string      |a key for collapsing notifications       |-       |only Android    |
+|delay_while_idle |bool        |a flag for device idling                 |-       |only Android    |
+|time_to_live     |int         |expiration of message kept on GCM storage|-       |only Android    |
+|extend           |string array|extensible partition                     |-       |                |
 
 The following JSON is a response-body example from Gaurun. In this case, a status is 200(OK).
 
