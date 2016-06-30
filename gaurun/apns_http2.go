@@ -60,9 +60,10 @@ func NewApnsServiceHttp2(client *http.Client) *push.Service {
 
 func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} {
 	p := payload.APS{
-		Alert: payload.Alert{Body: req.Message},
-		Badge: badge.New(uint(req.Badge)),
-		Sound: req.Sound,
+		Alert:            payload.Alert{Body: req.Message},
+		Badge:            badge.New(uint(req.Badge)),
+		Sound:            req.Sound,
+		ContentAvailable: req.ContentAvailable,
 	}
 
 	pm := p.Map()

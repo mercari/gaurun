@@ -158,15 +158,16 @@ func main() {
 		}
 
 		req := gaurun.RequestGaurunNotification{
-			Tokens:         tokens,
-			Platform:       platform,
-			Message:        logPush.Message,
-			CollapseKey:    logPush.CollapseKey,
-			DelayWhileIdle: logPush.DelayWhileIdle,
-			TimeToLive:     logPush.TimeToLive,
-			Badge:          logPush.Badge,
-			Sound:          logPush.Sound,
-			Expiry:         logPush.Expiry,
+			Tokens:           tokens,
+			Platform:         platform,
+			Message:          logPush.Message,
+			CollapseKey:      logPush.CollapseKey,
+			DelayWhileIdle:   logPush.DelayWhileIdle,
+			TimeToLive:       logPush.TimeToLive,
+			Badge:            logPush.Badge,
+			Sound:            logPush.Sound,
+			ContentAvailable: logPush.ContentAvailable,
+			Expiry:           logPush.Expiry,
 		}
 		wg.Add(1)
 		go pushNotification(wg, req, logPush, apnsClient)
