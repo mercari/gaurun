@@ -21,5 +21,4 @@ var (
 	SeqID           uint64
 	GCMClient       *gcm.Sender
 	APNSClient      *http.Client
-	TransportGaurun *http.Transport
 )

@@ -3,6 +3,7 @@ package gaurun
 import (
 	"crypto/tls"
 	"encoding/json"
+	"net"
 	"net/http"
 	"time"
 
@@ -22,6 +23,10 @@ func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {
 	transport := &http.Transport{
 		TLSClientConfig:     config,
 		MaxIdleConnsPerHost: ConfGaurun.Core.WorkerNum,
+		Dial: (&net.Dialer{
+			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+			KeepAlive: time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
+		}).Dial,
 	}
 
 	if err := http2.ConfigureTransport(transport); err != nil {
@@ -42,7 +47,10 @@ func NewApnsClientHttp2(certPath, keyPath string) (*http.Client, error) {
 		return nil, err
 	}
 
-	return &http.Client{Transport: transport}, nil
+	return &http.Client{
+		Transport: transport,
+		Timeout: time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+	}, nil
 }
 
 func NewApnsServiceHttp2(client *http.Client) *push.Service {

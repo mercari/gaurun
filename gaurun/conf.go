@@ -35,6 +35,7 @@ type SectionAndroid struct {
 	Enabled  bool   `toml:"enabled"`
 	ApiKey   string `toml:"apikey"`
 	Timeout  int    `toml:"timeout"`
+	KeepAliveTimeout int `toml:"keepalive_timeout"`
 	RetryMax int    `toml:"retry_max"`
 }
 
@@ -45,6 +46,7 @@ type SectionIos struct {
 	Sandbox     bool   `toml:"sandbox"`
 	RetryMax    int    `toml:"retry_max"`
 	Timeout     int    `toml:"timeout"`
+	KeepAliveTimeout int `toml:"keepalive_timeout"`
 	Topic       string `toml:"topic"`
 }
 
@@ -70,6 +72,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Android.ApiKey = ""
 	conf.Android.Enabled = true
 	conf.Android.Timeout = 5
+	conf.Android.KeepAliveTimeout = 30
 	conf.Android.RetryMax = 1
 	// iOS
 	conf.Ios.Enabled = true
@@ -78,6 +81,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Ios.Sandbox = true
 	conf.Ios.RetryMax = 1
 	conf.Ios.Timeout = 5
+	conf.Ios.KeepAliveTimeout = 30
 	conf.Ios.Topic = ""
 	// log
 	conf.Log.AccessLog = "stdout"
