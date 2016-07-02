@@ -63,7 +63,7 @@ func InitHttpClient() error {
 		ApiKey: ConfGaurun.Android.ApiKey,
 		Http: &http.Client{
 			Transport: TransportGCM,
-			Timeout: time.Duration(ConfGaurun.Android.Timeout) * time.Second,
+			Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
 		},
 	}
 

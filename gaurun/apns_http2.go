@@ -49,7 +49,7 @@ func NewApnsClientHttp2(certPath, keyPath string) (*http.Client, error) {
 
 	return &http.Client{
 		Transport: transport,
-		Timeout: time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+		Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
 	}, nil
 }
 
