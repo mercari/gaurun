@@ -111,7 +111,7 @@ func classifyByDevice(reqGaurun *RequestGaurun) ([]RequestGaurunNotification, []
 	return reqGaurunNotificationIos, reqGaurunNotificationAndroid
 }
 
-func pushNotificationIos(req RequestGaurunNotification) bool {
+func pushNotificationIos(req RequestGaurunNotification) error {
 	LogError.Debug("START push notification for iOS")
 
 	service := NewApnsServiceHttp2(APNSClient)
@@ -130,17 +130,18 @@ func pushNotificationIos(req RequestGaurunNotification) bool {
 	if err != nil {
 		atomic.AddInt64(&StatGaurun.Ios.PushError, 1)
 		LogPush(req.ID, StatusFailedPush, token, ptime, req, err)
-		return false
+		return err
 	}
 
 	atomic.AddInt64(&StatGaurun.Ios.PushSuccess, 1)
 	LogPush(req.ID, StatusSucceededPush, token, ptime, req, nil)
 
 	LogError.Debug("END push notification for iOS")
-	return true
+
+	return nil
 }
 
-func pushNotificationAndroid(req RequestGaurunNotification) bool {
+func pushNotificationAndroid(req RequestGaurunNotification) error {
 	LogError.Debug("START push notification for Android")
 
 	data := map[string]interface{}{"message": req.Message}
@@ -164,23 +165,22 @@ func pushNotificationAndroid(req RequestGaurunNotification) bool {
 	if err != nil {
 		atomic.AddInt64(&StatGaurun.Android.PushError, 1)
 		LogPush(req.ID, StatusFailedPush, token, ptime, req, err)
-		return false
+		return err
 	}
 
 	if resp.Failure > 0 {
 		atomic.AddInt64(&StatGaurun.Android.PushSuccess, int64(resp.Success))
 		atomic.AddInt64(&StatGaurun.Android.PushError, int64(resp.Failure))
-		if resp.Results[0].Error != "" {
-			LogPush(req.ID, StatusFailedPush, token, ptime, req, errors.New(resp.Results[0].Error))
-		}
-		return true
+		LogPush(req.ID, StatusFailedPush, token, ptime, req, errors.New(resp.Results[0].Error))
+		return errors.New(resp.Results[0].Error)
 	}
 
 	LogPush(req.ID, StatusSucceededPush, token, ptime, req, nil)
 
 	atomic.AddInt64(&StatGaurun.Android.PushSuccess, int64(len(req.Tokens)))
 	LogError.Debug("END push notification for Android")
-	return true
+
+	return nil
 }
 
 func validateNotification(notification *RequestGaurunNotification) error {

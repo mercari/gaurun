@@ -1,5 +1,9 @@
 package gaurun
 
+import (
+	"github.com/RobotsAndPencils/buford/push"
+)
+
 func StartPushWorkers(workerNum, queueNum int) {
 	QueueNotification = make(chan RequestGaurunNotification, queueNum)
 	for i := 0; i < workerNum; i++ {
@@ -9,7 +13,7 @@ func StartPushWorkers(workerNum, queueNum int) {
 
 func pushNotificationWorker() {
 	var (
-		success  bool
+		err      error
 		retryMax int
 	)
 
@@ -18,16 +22,32 @@ func pushNotificationWorker() {
 	Retry:
 		switch notification.Platform {
 		case PlatFormIos:
-			success = pushNotificationIos(notification)
+			err = pushNotificationIos(notification)
 			retryMax = ConfGaurun.Ios.RetryMax
 		case PlatFormAndroid:
-			success = pushNotificationAndroid(notification)
+			err = pushNotificationAndroid(notification)
 			retryMax = ConfGaurun.Android.RetryMax
 		default:
 			LogError.Warnf("invalid platform: %d", notification.Platform)
 			continue
 		}
-		if !success && notification.Retry < retryMax {
+		if err != nil && notification.Retry < retryMax {
+			// gaurun does not retry to push notification
+			// when token is invalid.
+			switch notification.Platform {
+			case PlatFormIos:
+				if err == push.ErrUnregistered || err == push.ErrDeviceTokenNotForTopic {
+					continue
+				}
+			case PlatFormAndroid:
+				if err.Error() == "NotRegistered" {
+					continue
+				}
+			default:
+				// not through
+				continue
+			}
+
 			notification.Retry++
 			goto Retry
 		}
