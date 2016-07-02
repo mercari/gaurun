@@ -47,13 +47,13 @@ See [SPEC.md](SPEC.md) about details for APIs.
 
 ## Android Section
 
-|name         |type  |description                                   |default|note|
-|-------------|------|----------------------------------------------|-------|----|
-|enabled      |bool  |On/Off for push notication to GCM             |true   |    |
-|apikey       |string|API key string for GCM                        |       |    |
-|timeout      |int   |timeout for push notication to GCM            |5(sec) |    |
-|keepalive_timeout|int   |time for continuing keep-alive connection to GCM  |30        |                               |
-|retry_max    |int   |maximum retry count for push notication to GCM|1      |    |
+|name             |type  |description                                     |default|note|
+|-----------------|------|------------------------------------------------|-------|----|
+|enabled          |bool  |On/Off for push notication to GCM               |true   |    |
+|apikey           |string|API key string for GCM                          |       |    |
+|timeout          |int   |timeout for push notication to GCM              |5(sec) |    |
+|keepalive_timeout|int   |time for continuing keep-alive connection to GCM|30     |    |
+|retry_max        |int   |maximum retry count for push notication to GCM  |1      |    |
 
 ## Log Section
 
