@@ -1,5 +1,10 @@
 package gaurun
 
+import (
+	"github.com/RobotsAndPencils/buford/push"
+	"strings"
+)
+
 func StartPushWorkers(workerNum, queueNum int) {
 	QueueNotification = make(chan RequestGaurunNotification, queueNum)
 	for i := 0; i < workerNum; i++ {
@@ -9,7 +14,7 @@ func StartPushWorkers(workerNum, queueNum int) {
 
 func pushNotificationWorker() {
 	var (
-		success  bool
+		err      error
 		retryMax int
 	)
 
@@ -18,18 +23,33 @@ func pushNotificationWorker() {
 	Retry:
 		switch notification.Platform {
 		case PlatFormIos:
-			success = pushNotificationIos(notification)
+			err = pushNotificationIos(notification)
 			retryMax = ConfGaurun.Ios.RetryMax
 		case PlatFormAndroid:
-			success = pushNotificationAndroid(notification)
+			err = pushNotificationAndroid(notification)
 			retryMax = ConfGaurun.Android.RetryMax
 		default:
 			LogError.Warnf("invalid platform: %d", notification.Platform)
 			continue
 		}
-		if !success && notification.Retry < retryMax {
-			notification.Retry++
-			goto Retry
+		// retry when server error is occurred.
+		if err != nil && notification.Retry < retryMax {
+			switch notification.Platform {
+			case PlatFormIos:
+				if err == push.ErrIdleTimeout || err == push.ErrShutdown || err == push.ErrInternalServerError || err == push.ErrServiceUnavailable {
+					notification.Retry++
+					goto Retry
+				}
+			case PlatFormAndroid:
+				if err.Error() == "Unavailable" || err.Error() == "InternalServerError" || strings.Contains(err.Error(), "Timeout") {
+					notification.Retry++
+					goto Retry
+				}
+			default:
+				// not through
+				continue
+			}
+
 		}
 	}
 }
