@@ -2,6 +2,7 @@ package gaurun
 
 import (
 	"github.com/RobotsAndPencils/buford/push"
+	"strings"
 )
 
 func StartPushWorkers(workerNum, queueNum int) {
@@ -31,25 +32,24 @@ func pushNotificationWorker() {
 			LogError.Warnf("invalid platform: %d", notification.Platform)
 			continue
 		}
+		// retry when server error is occurred.
 		if err != nil && notification.Retry < retryMax {
-			// gaurun does not retry to push notification
-			// when token is invalid.
 			switch notification.Platform {
 			case PlatFormIos:
-				if err == push.ErrUnregistered || err == push.ErrDeviceTokenNotForTopic {
-					continue
+				if err == push.ErrIdleTimeout || err == push.ErrShutdown || err == push.ErrInternalServerError || err == push.ErrServiceUnavailable {
+					notification.Retry++
+					goto Retry
 				}
 			case PlatFormAndroid:
-				if err.Error() == "NotRegistered" {
-					continue
+				if err.Error() == "Unavailable" || err.Error() == "InternalServerError" || strings.Contains(err.Error(), "Timeout") {
+					notification.Retry++
+					goto Retry
 				}
 			default:
 				// not through
 				continue
 			}
 
-			notification.Retry++
-			goto Retry
 		}
 	}
 }
