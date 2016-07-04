@@ -88,8 +88,8 @@ func enqueueNotifications(notifications []RequestGaurunNotification) {
 				notification2 := notification
 				notification2.Tokens = []string{token}
 				notification2.ID = numberingPush()
-				QueueNotification <- notification2
 				LogPush(notification2.ID, StatusAcceptedPush, token, 0, notification2, nil)
+				QueueNotification <- notification2
 			}
 		}
 	}
