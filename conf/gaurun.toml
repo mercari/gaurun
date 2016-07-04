@@ -15,7 +15,7 @@ config_app_uri = "/config/app"
 apikey = "apikey for GCM"
 enabled = true
 timeout = 5 # sec
-retry_max = 0
+retry_max = 1
 
 [ios]
 pem_cert_path = "cert.pem"
