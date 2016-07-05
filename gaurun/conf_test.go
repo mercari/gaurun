@@ -43,6 +43,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.ApiKey, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Timeout, 5)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.KeepAliveTimeout, 30)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.RetryMax, 1)
 	// Ios
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Enabled, true)
@@ -50,6 +51,8 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.PemKeyPath, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Sandbox, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.RetryMax, 1)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Timeout, 5)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.KeepAliveTimeout, 30)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Topic, "")
 	// Log
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.AccessLog, "stdout")
@@ -72,6 +75,7 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.ApiKey, "apikey for GCM")
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.Timeout, 5)
+	assert.Equal(suite.T(), suite.ConfGaurun.Android.KeepAliveTimeout, 30)
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.RetryMax, 0)
 	// Ios
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Enabled, true)
@@ -80,6 +84,7 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Sandbox, true)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.RetryMax, 1)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Timeout, 5)
+	assert.Equal(suite.T(), suite.ConfGaurun.Ios.KeepAliveTimeout, 30)
 	// Lo
 	assert.Equal(suite.T(), suite.ConfGaurun.Log.AccessLog, "stdout")
 	assert.Equal(suite.T(), suite.ConfGaurun.Log.ErrorLog, "stderr")
