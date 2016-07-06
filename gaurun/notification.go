@@ -210,7 +210,7 @@ func validateNotification(notification *RequestGaurunNotification) error {
 }
 
 func sendResponse(w http.ResponseWriter, msg string, code int) {
-	// TODO: validate JSON
+	// TODO: validate JSON explicitly
 	if strings.Contains(msg, "\"") {
 		msg = strings.Replace(msg, "\"", "", -1)
 	}
