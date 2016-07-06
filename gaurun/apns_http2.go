@@ -2,29 +2,55 @@ package gaurun
 
 import (
 	"crypto/tls"
+	"encoding/json"
+	"net"
 	"net/http"
 	"time"
 
 	"github.com/RobotsAndPencils/buford/payload"
 	"github.com/RobotsAndPencils/buford/payload/badge"
 	"github.com/RobotsAndPencils/buford/push"
+
+	"golang.org/x/net/http2"
 )
 
+func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {
+	config := &tls.Config{
+		Certificates: []tls.Certificate{cert},
+	}
+	config.BuildNameToCertificate()
+
+	transport := &http.Transport{
+		TLSClientConfig:     config,
+		MaxIdleConnsPerHost: ConfGaurun.Core.WorkerNum,
+		Dial: (&net.Dialer{
+			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+			KeepAlive: time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
+		}).Dial,
+	}
+
+	if err := http2.ConfigureTransport(transport); err != nil {
+		return nil, err
+	}
+
+	return transport, nil
+}
+
 func NewApnsClientHttp2(certPath, keyPath string) (*http.Client, error) {
-	var client *http.Client
-	var cert tls.Certificate
-	var err error
-	cert, err = tls.LoadX509KeyPair(certPath, keyPath)
+	cert, err := tls.LoadX509KeyPair(certPath, keyPath)
 	if err != nil {
-		return client, err
+		return nil, err
 	}
 
-	client, err = push.NewClient(cert)
+	transport, err := NewTransportHttp2(cert)
 	if err != nil {
-		return client, err
+		return nil, err
 	}
 
-	return client, nil
+	return &http.Client{
+		Transport: transport,
+		Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+	}, nil
 }
 
 func NewApnsServiceHttp2(client *http.Client) *push.Service {
@@ -42,9 +68,10 @@ func NewApnsServiceHttp2(client *http.Client) *push.Service {
 
 func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} {
 	p := payload.APS{
-		Alert: payload.Alert{Body: req.Message},
-		Badge: badge.New(uint(req.Badge)),
-		Sound: req.Sound,
+		Alert:            payload.Alert{Body: req.Message},
+		Badge:            badge.New(uint(req.Badge)),
+		Sound:            req.Sound,
+		ContentAvailable: req.ContentAvailable,
 	}
 
 	pm := p.Map()
@@ -60,12 +87,16 @@ func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} 
 
 func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
 	return &push.Headers{
-		Expiration: time.Unix(int64(req.Expiry), 0),
+		Expiration: time.Now().Add(time.Duration(int64(req.Expiry)) * time.Second).UTC(),
 		Topic:      ConfGaurun.Ios.Topic,
 	}
 }
 
 func ApnsPushHttp2(token string, service *push.Service, headers *push.Headers, payload map[string]interface{}) error {
-	_, err := service.Push(token, headers, payload)
+	b, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+	_, err = service.Push(token, headers, b)
 	return err
 }

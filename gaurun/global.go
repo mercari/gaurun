@@ -16,10 +16,9 @@ var (
 	LogError          *logrus.Logger
 	StatGaurun        StatApp
 	// for numbering push
-	OnceNumbering   sync.Once
-	WgNumbering     *sync.WaitGroup
-	SeqID           uint64
-	GCMClient       *gcm.Sender
-	APNSClient      *http.Client
-	TransportGaurun *http.Transport
+	OnceNumbering sync.Once
+	WgNumbering   *sync.WaitGroup
+	SeqID         uint64
+	GCMClient     *gcm.Sender
+	APNSClient    *http.Client
 )
