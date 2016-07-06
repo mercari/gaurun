@@ -42,10 +42,6 @@ type ExtendJSON struct {
 	Value string `json:"val"`
 }
 
-type ResponseGaurun struct {
-	Message string `json:"message"`
-}
-
 type CertificatePem struct {
 	Cert []byte
 	Key  []byte
@@ -213,24 +209,14 @@ func validateNotification(notification *RequestGaurunNotification) error {
 }
 
 func sendResponse(w http.ResponseWriter, msg string, code int) {
-	var (
-		respGaurun ResponseGaurun
-	)
+	msgJson := "{\"message\":\"" + msg + "\"}"
+
+	w.WriteHeader(code)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Server", serverHeader())
 
-	w.WriteHeader(code)
-	respGaurun.Message = msg
-	err := json.NewEncoder(w).Encode(&respGaurun)
-	if err != nil {
-		// Internal Server Error(500) should be returned by right.
-		// But 'code' is returned because of the limitation of json.NewEncoder and WriteHeader.
-		msg := "Response-body could not be created"
-		fmt.Fprintf(w, msg)
-		LogError.Error(msg)
-		return
-	}
+	fmt.Fprint(w, msgJson)
 }
 
 func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
