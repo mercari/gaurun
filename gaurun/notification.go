@@ -219,7 +219,7 @@ func sendResponse(w http.ResponseWriter, msg string, code int) {
 
 	err := json.Unmarshal([]byte(msgJson), &respGaurun)
 	if err != nil {
-		msgJson = "{\"message\":\"unknown\"}"
+		msgJson = "{\"message\":\"Response-body could not be created\"}"
 	}
 
 	w.WriteHeader(code)
