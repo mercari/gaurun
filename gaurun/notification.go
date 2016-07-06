@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	"strings"
 	"sync/atomic"
 	"time"
 
@@ -209,12 +210,18 @@ func validateNotification(notification *RequestGaurunNotification) error {
 }
 
 func sendResponse(w http.ResponseWriter, msg string, code int) {
-	msgJson := fmt.Sprintf("{\"message\":\"%s\"}", msg)
+	// TODO: validate JSON
+	if strings.Contains(msg, "\"") {
+		msg = strings.Replace(msg, "\"", "", -1)
+	}
+	msgJson := "{\"message\":\"" + msg + "\"}"
+
+	w.WriteHeader(code)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Server", serverHeader())
 
-	http.Error(w, msgJson, code)
+	fmt.Fprint(w, msgJson)
 }
 
 func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
