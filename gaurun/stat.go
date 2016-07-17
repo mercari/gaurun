@@ -8,12 +8,12 @@ import (
 )
 
 type StatApp struct {
-	QueueMax   int         `json:"queue_max"`
-	QueueUsage int         `json:"queue_usage"`
-	PusherMax  int64       `json:"pusher_max"`
-	PusherCount int64      `json:"pusher_count"`
-	Ios        StatIos     `json:"ios"`
-	Android    StatAndroid `json:"android"`
+	QueueMax    int         `json:"queue_max"`
+	QueueUsage  int         `json:"queue_usage"`
+	PusherMax   int64       `json:"pusher_max"`
+	PusherCount int64       `json:"pusher_count"`
+	Ios         StatIos     `json:"ios"`
+	Android     StatAndroid `json:"android"`
 }
 
 type StatAndroid struct {
