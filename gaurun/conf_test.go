@@ -34,6 +34,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.WorkerNum, runtime.NumCPU())
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.QueueNum, 8192)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, 100)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.PusherMax, int64(0))
 	// API
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.PushUri, "/push")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.StatGoUri, "/stat/go")
@@ -65,7 +66,8 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.Port, "1056")
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.WorkerNum, 8)
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.QueueNum, 8192)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, 100)
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.NotificationMax, 100)
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.PusherMax, int64(16))
 	// API
 	assert.Equal(suite.T(), suite.ConfGaurun.Api.PushUri, "/push")
 	assert.Equal(suite.T(), suite.ConfGaurun.Api.StatGoUri, "/stat/go")
@@ -85,7 +87,7 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.RetryMax, 1)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Timeout, 5)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.KeepAliveTimeout, 30)
-	// Lo
+	// Log
 	assert.Equal(suite.T(), suite.ConfGaurun.Log.AccessLog, "stdout")
 	assert.Equal(suite.T(), suite.ConfGaurun.Log.ErrorLog, "stderr")
 	assert.Equal(suite.T(), suite.ConfGaurun.Log.Level, "error")

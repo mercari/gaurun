@@ -18,6 +18,7 @@ A configuration for Gaurun has some sections. A example is [here](conf/gaurun.to
 |workers         |int   |number of workers for push notification     |runtime.NumCPU()|`-w` options can overwrite          |
 |queues          |int   |size of internal queue for push notification|8192            |`-q` options can overwrite          |
 |notification_max|int   |limit of push notifications once            |100             |                                    |
+|pusher_max      |int64 |maximum asynchronous pushing threads        |0               |If the value is zero, each worker pushes synchronously|
 
 ## API Section
 
