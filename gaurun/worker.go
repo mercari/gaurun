@@ -83,7 +83,7 @@ func pushNotificationWorker() {
 			continue
 		}
 
-		if pusherMax == 0 {
+		if pusherMax <= 0 {
 			pushSync(pusher, notification, retryMax)
 			continue
 		}
