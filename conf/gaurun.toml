@@ -16,6 +16,7 @@ apikey = "apikey for GCM"
 enabled = true
 timeout = 5 # sec
 keepalive_timeout = 30
+keepalive_conns = 4
 retry_max = 1
 
 [ios]
@@ -25,6 +26,7 @@ sandbox = true
 enabled = true
 timeout = 5
 keepalive_timeout = 30
+keepalive_conns = 6
 retry_max = 1
 
 [log]

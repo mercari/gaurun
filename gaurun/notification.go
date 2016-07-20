@@ -53,7 +53,7 @@ type CertificatePem struct {
 
 func InitHttpClient() error {
 	TransportGCM := &http.Transport{
-		MaxIdleConnsPerHost: ConfGaurun.Core.WorkerNum,
+		MaxIdleConnsPerHost: ConfGaurun.Android.KeepAliveConns,
 		Dial: (&net.Dialer{
 			Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
 			KeepAlive: time.Duration(ConfGaurun.Android.KeepAliveTimeout) * time.Second,

@@ -36,6 +36,7 @@ type SectionAndroid struct {
 	ApiKey           string `toml:"apikey"`
 	Timeout          int    `toml:"timeout"`
 	KeepAliveTimeout int    `toml:"keepalive_timeout"`
+	KeepAliveConns   int    `toml:"keepalive_conns"`
 	RetryMax         int    `toml:"retry_max"`
 }
 
@@ -47,6 +48,7 @@ type SectionIos struct {
 	RetryMax         int    `toml:"retry_max"`
 	Timeout          int    `toml:"timeout"`
 	KeepAliveTimeout int    `toml:"keepalive_timeout"`
+	KeepAliveConns   int    `toml:"keepalive_conns"`
 	Topic            string `toml:"topic"`
 }
 
@@ -57,10 +59,12 @@ type SectionLog struct {
 }
 
 func BuildDefaultConf() ConfToml {
+	numCPU := runtime.NumCPU()
+
 	var conf ConfToml
 	// Core
 	conf.Core.Port = "1056"
-	conf.Core.WorkerNum = runtime.NumCPU()
+	conf.Core.WorkerNum = numCPU
 	conf.Core.QueueNum = 8192
 	conf.Core.NotificationMax = 100
 	// Api
@@ -73,6 +77,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Android.Enabled = true
 	conf.Android.Timeout = 5
 	conf.Android.KeepAliveTimeout = 30
+	conf.Android.KeepAliveConns = numCPU
 	conf.Android.RetryMax = 1
 	// iOS
 	conf.Ios.Enabled = true
@@ -82,6 +87,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Ios.RetryMax = 1
 	conf.Ios.Timeout = 5
 	conf.Ios.KeepAliveTimeout = 30
+	conf.Ios.KeepAliveConns = numCPU
 	conf.Ios.Topic = ""
 	// log
 	conf.Log.AccessLog = "stdout"
