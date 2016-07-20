@@ -47,8 +47,6 @@ Retry:
 }
 
 func pushAsync(pusher func(req RequestGaurunNotification) error, req RequestGaurunNotification, retryMax int) {
-	atomic.AddInt64(&PusherCount, 1)
-
 Retry:
 	err := pusher(req)
 	if err != nil && req.Retry < retryMax && isExternalServerError(err, req.Platform) {
@@ -89,6 +87,7 @@ func pushNotificationWorker() {
 		}
 
 		if atomic.LoadInt64(&PusherCount) < pusherMax {
+			atomic.AddInt64(&PusherCount, 1)
 			go pushAsync(pusher, notification, retryMax)
 			continue
 		} else {
