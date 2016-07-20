@@ -91,6 +91,9 @@ func pushNotificationWorker() {
 		if atomic.LoadInt64(&PusherCount) < pusherMax {
 			go pushAsync(pusher, notification, retryMax)
 			continue
+		} else {
+			pushSync(pusher, notification, retryMax)
+			continue
 		}
 	}
 }
