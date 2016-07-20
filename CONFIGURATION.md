@@ -42,6 +42,7 @@ See [SPEC.md](SPEC.md) about details for APIs.
 |retry_max             |int   |maximum retry count for push notication to APNs       |1         |                               |
 |timeout               |int   |timeout for push notification to APNs                 |5         |                               |
 |keepalive_timeout     |int   |time for continuing keep-alive connection to APNs     |30        |                               |
+|keepalive_conns       |int   |number of keep-alive connection to APNs               |runtime.NumCPU()|                         |
 |topic                 |string|the assigned value of `apns-topic` for Request headers|          |                               |
 
 `topic` is mandatory when the client is connected using a certificate that supports multiple topics.
@@ -54,6 +55,7 @@ See [SPEC.md](SPEC.md) about details for APIs.
 |apikey           |string|API key string for GCM                          |       |    |
 |timeout          |int   |timeout for push notication to GCM              |5(sec) |    |
 |keepalive_timeout|int   |time for continuing keep-alive connection to GCM|30     |    |
+|keepalive_conns  |int   |number of keep-alive connection to GCM          |runtime.NumCPU()||
 |retry_max        |int   |maximum retry count for push notication to GCM  |1      |    |
 
 ## Log Section

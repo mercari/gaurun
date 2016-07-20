@@ -22,7 +22,7 @@ func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {
 
 	transport := &http.Transport{
 		TLSClientConfig:     config,
-		MaxIdleConnsPerHost: ConfGaurun.Core.WorkerNum,
+		MaxIdleConnsPerHost: ConfGaurun.Ios.KeepAliveConns,
 		Dial: (&net.Dialer{
 			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
 			KeepAlive: time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
