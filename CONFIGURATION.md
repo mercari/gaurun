@@ -1,8 +1,8 @@
 # Configuration for Gaurun
 
-A configuration file format for Gaurun is [TOML](https://github.com/toml-lang/toml).
+The configuration file format for Gaurun is [TOML](https://github.com/toml-lang/toml).
 
-A configuration for Gaurun has some sections. A example is [here](conf/gaurun.toml).
+The configuration for Gaurun has some sections. The example is [here](conf/gaurun.toml).
 
  * [Core Section](#core-section)
  * [API Section](#api-section)
@@ -45,7 +45,7 @@ See [SPEC.md](SPEC.md) about details for APIs.
 |keepalive_conns       |int   |number of keep-alive connection to APNs               |runtime.NumCPU()|                         |
 |topic                 |string|the assigned value of `apns-topic` for Request headers|          |                               |
 
-`topic` is mandatory when the client is connected using a certificate that supports multiple topics.
+`topic` is mandatory when the client is connected using the certificate that supports multiple topics.
 
 ## Android Section
 

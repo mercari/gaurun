@@ -1,6 +1,6 @@
 # Specification for Gaurun
 
-Gaurun is a general push notification server. It accepts a HTTP request.
+Gaurun is the general push notification server. It accepts the HTTP request.
 
 ## API
 
@@ -60,7 +60,7 @@ The request-body must has the `notifications` array. There is the parameter tabl
 |time_to_live     |int         |expiration of message kept on GCM storage|-       |only Android    |
 |extend           |string array|extensible partition                     |-       |                |
 
-The JSON below is a response-body example from Gaurun. In this case, a status is 200(OK).
+The JSON below is the response-body example from Gaurun. In this case, the status is 200(OK).
 
 ```json
 {
@@ -68,7 +68,7 @@ The JSON below is a response-body example from Gaurun. In this case, a status is
 }
 ```
 
-When Gaurun receives an invalid request(for example, malformed body is included), a status of response it returns is 400(Bad Request).
+When Gaurun receives the invalid request(for example, malformed body is included), the status of response it returns is 400(Bad Request).
 
 
 ### GET /stat/go
