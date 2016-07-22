@@ -11,13 +11,13 @@ Gaurun has some APIs.
  * [GET /stat/app](#get-statapp)
  * [GET /config/app](#get-configapp)
 
-URI of each API is configurable. But a method is fixed.
+URI of each API is configurable. But the method is fixed.
 
 ### POST /push
 
 Accepts a HTTP request for push notifications and pushes notifications asynchronously.
 
-The JSON below is a request-body example.
+The JSON below is the request-body example.
 
 ```json
 {
@@ -44,7 +44,7 @@ The JSON below is a request-body example.
 }
 ```
 
-A request-body must has a `notifications` array. There is the parameter table for each notification below.
+The request-body must has the `notifications` array. There is the parameter table for each notification below.
 
 |name             |type        |description                              |required|note            |
 |-----------------|------------|-----------------------------------------|--------|----------------|
@@ -55,8 +55,8 @@ A request-body must has a `notifications` array. There is the parameter table fo
 |sound            |string      |sound type                               |-       |only iOS        |
 |expiry           |int         |expiration for notification              |-       |only iOS        |
 |content_available|bool        |indicate that new content is available   |-       |only iOS        |
-|collapse_key     |string      |a key for collapsing notifications       |-       |only Android    |
-|delay_while_idle |bool        |a flag for device idling                 |-       |only Android    |
+|collapse_key     |string      |the key for collapsing notifications     |-       |only Android    |
+|delay_while_idle |bool        |the flag for device idling               |-       |only Android    |
 |time_to_live     |int         |expiration of message kept on GCM storage|-       |only Android    |
 |extend           |string array|extensible partition                     |-       |                |
 
@@ -73,12 +73,12 @@ When Gaurun receives an invalid request(for example, malformed body is included)
 
 ### GET /stat/go
 
-Returns a statictics for golang-runtime. See [golang-stats-api-handler](https://github.com/fukata/golang-stats-api-handler) about details.
+Returns the statictics for golang-runtime. See [golang-stats-api-handler](https://github.com/fukata/golang-stats-api-handler) about details.
 
 ### GET /stat/app
 
-Returns a statictics for Gaurun.
+Returns the statictics for Gaurun.
 
 ### GET /config/app
 
-Returns a current configuration for Gaurun.
+Returns the current configuration for Gaurun.
