@@ -23,6 +23,21 @@ Gaurun requires Go1.6.2 or later.
 go get -u github.com/mercari/gaurun/...
 ```
 
+## Build from source code
+
+[glide](https://github.com/Masterminds/glide) is required for For building Gaurun.
+
+```
+go get -u github.com/Masterminds/glide 
+```
+
+Run the commands below.
+
+```
+make bundle
+make
+```
+
 ## Configuration
 
 See [CONFIGURATION.md](https://github.com/mercari/gaurun/blob/master/CONFIGURATION.md) about details.
