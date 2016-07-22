@@ -17,7 +17,7 @@ URI of each API is configurable. But a method is fixed.
 
 Accepts a HTTP request for push notifications and pushes notifications asynchronously.
 
-The following JSON is a request-body example.
+The JSON below is a request-body example.
 
 ```json
 {
@@ -44,7 +44,7 @@ The following JSON is a request-body example.
 }
 ```
 
-A request-body must has a `notifications` array. The following is a parameter table for each notification.
+A request-body must has a `notifications` array. There is the parameter table for each notification below.
 
 |name             |type        |description                              |required|note            |
 |-----------------|------------|-----------------------------------------|--------|----------------|
@@ -60,7 +60,7 @@ A request-body must has a `notifications` array. The following is a parameter ta
 |time_to_live     |int         |expiration of message kept on GCM storage|-       |only Android    |
 |extend           |string array|extensible partition                     |-       |                |
 
-The following JSON is a response-body example from Gaurun. In this case, a status is 200(OK).
+The JSON below is a response-body example from Gaurun. In this case, a status is 200(OK).
 
 ```json
 {
