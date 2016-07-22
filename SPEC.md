@@ -77,7 +77,33 @@ Returns the statictics for golang-runtime. See [golang-stats-api-handler](https:
 
 ### GET /stat/app
 
-Returns the statictics for Gaurun.
+Returns the statictics for Gaurun. The JSON below is the example.
+
+```json
+{
+    "queue_max": 8192,
+    "queue_usage": 9,
+    "pusher_max": 16,
+    "pusher_count": 0,
+    "ios": {
+        "push_success": 2759,
+        "push_error": 10
+    },
+    "android": {
+        "push_success": 2985,
+        "push_error": 35
+    }
+}
+```
+
+|name        |description                                          |note       |
+|------------|-----------------------------------------------------|-----------|
+|queue_max   |size of internal queue for push notification         |           |
+|queue_usage |usage of internal queue for push notification        |           |
+|pusher_max  |maximum number of goroutines for asynchronous pushing|           |
+|pusher_count|current number of goroutines for asynchronous pushing|           |
+|push_success|number of succeeded push notification                |           |
+|push_error  |number of failed push notification                   |           |
 
 ### GET /config/app
 
