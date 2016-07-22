@@ -8,10 +8,12 @@ import (
 )
 
 type StatApp struct {
-	QueueMax   int         `json:"queue_max"`
-	QueueUsage int         `json:"queue_usage"`
-	Ios        StatIos     `json:"ios"`
-	Android    StatAndroid `json:"android"`
+	QueueMax    int         `json:"queue_max"`
+	QueueUsage  int         `json:"queue_usage"`
+	PusherMax   int64       `json:"pusher_max"`
+	PusherCount int64       `json:"pusher_count"`
+	Ios         StatIos     `json:"ios"`
+	Android     StatAndroid `json:"android"`
 }
 
 type StatAndroid struct {
@@ -26,6 +28,7 @@ type StatIos struct {
 
 func InitStat() {
 	StatGaurun.QueueUsage = 0
+	StatGaurun.PusherCount = 0
 	StatGaurun.Ios.PushSuccess = 0
 	StatGaurun.Ios.PushError = 0
 	StatGaurun.Android.PushSuccess = 0
@@ -36,6 +39,8 @@ func StatsHandler(w http.ResponseWriter, r *http.Request) {
 	var result StatApp
 	result.QueueMax = cap(QueueNotification)
 	result.QueueUsage = len(QueueNotification)
+	result.PusherMax = ConfGaurun.Core.PusherMax
+	result.PusherCount = atomic.LoadInt64(&PusherCount)
 	result.Ios.PushSuccess = atomic.LoadInt64(&StatGaurun.Ios.PushSuccess)
 	result.Ios.PushError = atomic.LoadInt64(&StatGaurun.Ios.PushError)
 	result.Android.PushSuccess = atomic.LoadInt64(&StatGaurun.Android.PushSuccess)

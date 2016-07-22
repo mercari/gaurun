@@ -22,6 +22,7 @@ type SectionCore struct {
 	WorkerNum       int    `toml:"workers"`
 	QueueNum        int    `toml:"queues"`
 	NotificationMax int    `toml:"notification_max"`
+	PusherMax       int64  `toml:"pusher_max"`
 }
 
 type SectionApi struct {
@@ -67,6 +68,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Core.WorkerNum = numCPU
 	conf.Core.QueueNum = 8192
 	conf.Core.NotificationMax = 100
+	conf.Core.PusherMax = 0
 	// Api
 	conf.Api.PushUri = "/push"
 	conf.Api.StatGoUri = "/stat/go"

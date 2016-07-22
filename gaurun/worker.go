@@ -3,7 +3,16 @@ package gaurun
 import (
 	"github.com/RobotsAndPencils/buford/push"
 	"strings"
+	"sync/atomic"
 )
+
+var (
+	PusherCount int64
+)
+
+func init() {
+	PusherCount = 0
+}
 
 func StartPushWorkers(workerNum, queueNum int) {
 	QueueNotification = make(chan RequestGaurunNotification, queueNum)
@@ -12,44 +21,78 @@ func StartPushWorkers(workerNum, queueNum int) {
 	}
 }
 
+func isExternalServerError(err error, platform int) bool {
+	switch platform {
+	case PlatFormIos:
+		if err == push.ErrIdleTimeout || err == push.ErrShutdown || err == push.ErrInternalServerError || err == push.ErrServiceUnavailable {
+			return true
+		}
+	case PlatFormAndroid:
+		if err.Error() == "Unavailable" || err.Error() == "InternalServerError" || strings.Contains(err.Error(), "Timeout") {
+			return true
+		}
+	default:
+		// not through
+	}
+	return false
+}
+
+func pushSync(pusher func(req RequestGaurunNotification) error, req RequestGaurunNotification, retryMax int) {
+Retry:
+	err := pusher(req)
+	if err != nil && req.Retry < retryMax && isExternalServerError(err, req.Platform) {
+		req.Retry++
+		goto Retry
+	}
+}
+
+func pushAsync(pusher func(req RequestGaurunNotification) error, req RequestGaurunNotification, retryMax int) {
+Retry:
+	err := pusher(req)
+	if err != nil && req.Retry < retryMax && isExternalServerError(err, req.Platform) {
+		req.Retry++
+		goto Retry
+	}
+
+	atomic.AddInt64(&PusherCount, -1)
+}
+
 func pushNotificationWorker() {
 	var (
-		err      error
-		retryMax int
+		retryMax  int
+		pusher    func(req RequestGaurunNotification) error
+		pusherMax int64
 	)
+
+	pusherMax = ConfGaurun.Core.PusherMax
 
 	for {
 		notification := <-QueueNotification
-	Retry:
+
 		switch notification.Platform {
 		case PlatFormIos:
-			err = pushNotificationIos(notification)
+			pusher = pushNotificationIos
 			retryMax = ConfGaurun.Ios.RetryMax
 		case PlatFormAndroid:
-			err = pushNotificationAndroid(notification)
+			pusher = pushNotificationAndroid
 			retryMax = ConfGaurun.Android.RetryMax
 		default:
 			LogError.Warnf("invalid platform: %d", notification.Platform)
 			continue
 		}
-		// retry when server error is occurred.
-		if err != nil && notification.Retry < retryMax {
-			switch notification.Platform {
-			case PlatFormIos:
-				if err == push.ErrIdleTimeout || err == push.ErrShutdown || err == push.ErrInternalServerError || err == push.ErrServiceUnavailable {
-					notification.Retry++
-					goto Retry
-				}
-			case PlatFormAndroid:
-				if err.Error() == "Unavailable" || err.Error() == "InternalServerError" || strings.Contains(err.Error(), "Timeout") {
-					notification.Retry++
-					goto Retry
-				}
-			default:
-				// not through
-				continue
-			}
 
+		if pusherMax <= 0 {
+			pushSync(pusher, notification, retryMax)
+			continue
+		}
+
+		if atomic.LoadInt64(&PusherCount) < pusherMax {
+			atomic.AddInt64(&PusherCount, 1)
+			go pushAsync(pusher, notification, retryMax)
+			continue
+		} else {
+			pushSync(pusher, notification, retryMax)
+			continue
 		}
 	}
 }
