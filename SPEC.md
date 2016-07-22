@@ -15,7 +15,7 @@ URI of each API is configurable. But the method is fixed.
 
 ### POST /push
 
-Accepts a HTTP request for push notifications and pushes notifications asynchronously.
+Accepts the HTTP request for push notifications and pushes notifications asynchronously.
 
 The JSON below is the request-body example.
 
