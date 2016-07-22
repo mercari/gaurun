@@ -115,6 +115,7 @@ func main() {
 		err := json.Unmarshal([]byte(JSONStr), &logPush)
 		if err != nil {
 			log.Printf("JSON parse error(%s)", JSONStr)
+			continue
 		}
 		if logPush.Type == "accepted-request" {
 			continue
