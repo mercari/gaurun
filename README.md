@@ -43,7 +43,7 @@ make
 See [CONFIGURATION.md](https://github.com/mercari/gaurun/blob/master/CONFIGURATION.md) about details.
 
 The configuration for `gaurun` is conservative by default.
-If you require higher performance of `gaurun`, you can tune the performance with some parameters such as `workers` and `queues` in the `core` section.
+If you require higher performance of `gaurun`, you can tune the performance with some parameters such as `workers` and `queues` and `pusher_max` in the `core` section.
 
 ## Specification
 
