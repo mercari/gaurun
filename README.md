@@ -28,7 +28,7 @@ go get -u github.com/mercari/gaurun/...
 [glide](https://github.com/Masterminds/glide) is required for For building Gaurun.
 
 ```
-go get -u github.com/Masterminds/glide 
+go get -u github.com/Masterminds/glide
 ```
 
 Run the commands below.
