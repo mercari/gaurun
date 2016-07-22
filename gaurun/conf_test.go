@@ -70,7 +70,7 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.WorkerNum, 8)
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.QueueNum, 8192)
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.NotificationMax, 100)
-	assert.Equal(suite.T(), suite.ConfGaurun.Core.PusherMax, int64(16))
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.PusherMax, int64(0))
 	// API
 	assert.Equal(suite.T(), suite.ConfGaurun.Api.PushUri, "/push")
 	assert.Equal(suite.T(), suite.ConfGaurun.Api.StatGoUri, "/stat/go")
