@@ -107,4 +107,4 @@ Returns the statictics for Gaurun. The JSON below is the example.
 
 ### GET /config/app
 
-Returns the current configuration for Gaurun.
+Returns the current configuration string for Gaurun.
