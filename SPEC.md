@@ -96,6 +96,8 @@ Returns the statictics for Gaurun. The JSON below is the example.
 }
 ```
 
+There is the parameter table below.
+
 |name        |description                                          |note       |
 |------------|-----------------------------------------------------|-----------|
 |queue_max   |size of internal queue for push notification         |           |
