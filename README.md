@@ -17,6 +17,8 @@ Gaurun requires Go1.6.2 or later.
  * [APNs](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html)
  * [GCM](https://developers.google.com/cloud-messaging/)
 
+Gaurun sends notifications to these platforms by HTTP/2.
+
 ## Installation
 
 ```
