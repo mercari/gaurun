@@ -27,7 +27,7 @@ go get -u github.com/mercari/gaurun/...
 
 ## Build from source code
 
-[glide](https://github.com/Masterminds/glide) is required for For building Gaurun.
+[glide](https://github.com/Masterminds/glide) is required for building Gaurun.
 
 ```
 go get -u github.com/Masterminds/glide
