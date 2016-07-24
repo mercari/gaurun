@@ -87,7 +87,11 @@ func pushNotificationWorker() {
 		}
 
 		if atomic.LoadInt64(&PusherCount) < pusherMax {
+			// Do not increment PusherCount in pushAsync().
+			// Because PusherCount is sometimes over pusherMax
+			// as the increment in goroutine asynchronously.
 			atomic.AddInt64(&PusherCount, 1)
+
 			go pushAsync(pusher, notification, retryMax)
 			continue
 		} else {
