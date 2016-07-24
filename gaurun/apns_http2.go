@@ -86,10 +86,15 @@ func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} 
 }
 
 func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
-	return &push.Headers{
-		Expiration: time.Now().Add(time.Duration(int64(req.Expiry)) * time.Second).UTC(),
-		Topic:      ConfGaurun.Ios.Topic,
+	headers := &push.Headers{
+		Topic: ConfGaurun.Ios.Topic,
 	}
+
+	if req.Expiry > 0 {
+		headers.Expiration = time.Now().Add(time.Duration(int64(req.Expiry)) * time.Second).UTC()
+	}
+
+	return headers
 }
 
 func ApnsPushHttp2(token string, service *push.Service, headers *push.Headers, payload map[string]interface{}) error {
