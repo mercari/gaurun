@@ -149,7 +149,7 @@ func main() {
 	for _, logPush := range losts {
 		tokens := make([]string, 1)
 		var platform int
-		tokens = append(tokens, logPush.Token)
+		tokens[0] = logPush.Token
 		switch logPush.Platform {
 		case "ios":
 			platform = 1
