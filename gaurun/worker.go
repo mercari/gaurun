@@ -1,9 +1,10 @@
 package gaurun
 
 import (
-	"github.com/RobotsAndPencils/buford/push"
 	"strings"
 	"sync/atomic"
+
+	"github.com/RobotsAndPencils/buford/push"
 )
 
 var (
