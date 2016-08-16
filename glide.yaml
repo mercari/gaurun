@@ -1,4 +1,4 @@
-package: github.com/mercari/gaurun
+package: github.com/togetter/gaurun
 import:
 - package: github.com/BurntSushi/toml
   version: v0.2.0
@@ -10,8 +10,8 @@ import:
   - push
 - package: github.com/Sirupsen/logrus
   version: v0.10.0
-- package: github.com/mercari/gcm
-  version: 987b1dc4ce9034b698395d35de1aadf999388b8f
+- package: github.com/togetter/gcm
+  version: 29640c4376a772e3e055893bccdcf9819e82eb37
 - package: github.com/fukata/golang-stats-api-handler
   version: e7ee1630fdb679c86ec8e3d0755e3576675fdb10
 - package: github.com/stretchr/testify
