@@ -63,7 +63,6 @@ func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 func pushNotificationIos(req gaurun.RequestGaurunNotification) bool {
 
 	service := gaurun.NewApnsServiceHttp2(APNSClient)
-	fmt.Println(service)
 
 	for _, token := range req.Tokens {
 
