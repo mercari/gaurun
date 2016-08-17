@@ -154,7 +154,7 @@ func pushNotificationIos(req RequestGaurunNotification) error {
 func pushNotificationAndroid(req RequestGaurunNotification) error {
 	LogError.Debug("START push notification for Android")
 
-	data := map[string]interface{}{}
+	data := map[string]interface{}{"message": req.Message}
 	if len(req.Extend) > 0 {
 		for _, extend := range req.Extend {
 			data[extend.Key] = extend.Value
