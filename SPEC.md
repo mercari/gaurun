@@ -11,7 +11,7 @@ Gaurun has some APIs.
  * [GET /stat/app](#get-statapp)
  * [GET /config/app](#get-configapp)
 
-URI of each API is configurable. But the method is fixed.
+URI and method of each API is fixed.
 
 ### POST /push
 
