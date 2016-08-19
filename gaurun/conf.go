@@ -4,7 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"net/url"
 	"runtime"
+	"strconv"
+	"sync/atomic"
 
 	"github.com/BurntSushi/toml"
 )
@@ -123,4 +126,47 @@ func ConfigHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	w.Header().Set("Server", serverHeader())
 	fmt.Fprintf(w, b.String())
+}
+
+func ConfigPushersHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		sendResponse(w, "method must be GET", http.StatusBadRequest)
+		return
+	}
+
+	values, err := url.ParseQuery(r.URL.RawQuery)
+	if err != nil {
+		LogError.Error(err)
+		sendResponse(w, "url parameters could not be parsed", http.StatusBadRequest)
+		return
+	}
+
+	in := ""
+	for k, v := range values {
+		if k == "max" {
+			in = v[0]
+			break
+		}
+	}
+
+	if in == "" {
+		sendResponse(w, "malformed value", http.StatusBadRequest)
+		return
+	}
+
+	newPusherMax, err := strconv.ParseInt(in, 0, 64)
+	if err != nil {
+		LogError.Error(err)
+		sendResponse(w, "malformed value", http.StatusBadRequest)
+		return
+	}
+
+	if newPusherMax < 0 {
+		sendResponse(w, "malformed value", http.StatusBadRequest)
+		return
+	}
+
+	atomic.StoreInt64(&ConfGaurun.Core.PusherMax, newPusherMax)
+
+	sendResponse(w, "ok", http.StatusOK)
 }
