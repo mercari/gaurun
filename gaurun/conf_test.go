@@ -36,11 +36,6 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.QueueNum, 8192)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, 100)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.PusherMax, int64(0))
-	// API
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.PushUri, "/push")
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.StatGoUri, "/stat/go")
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.StatAppUri, "/stat/app")
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.ConfigAppUri, "/config/app")
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.ApiKey, "")
@@ -71,11 +66,6 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.QueueNum, 8192)
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.NotificationMax, 100)
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.PusherMax, int64(0))
-	// API
-	assert.Equal(suite.T(), suite.ConfGaurun.Api.PushUri, "/push")
-	assert.Equal(suite.T(), suite.ConfGaurun.Api.StatGoUri, "/stat/go")
-	assert.Equal(suite.T(), suite.ConfGaurun.Api.StatAppUri, "/stat/app")
-	assert.Equal(suite.T(), suite.ConfGaurun.Api.ConfigAppUri, "/config/app")
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.ApiKey, "apikey for GCM")
