@@ -119,3 +119,5 @@ Adjusts the `core.pusher_max`. Give the new value of `core.pusher_max` to `PUT /
 ```
 /config/pushers?max=24
 ```
+
+**Notice**: Not give too large value.
