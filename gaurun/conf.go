@@ -116,8 +116,8 @@ func ConfigHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ConfigPushersHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		sendResponse(w, "method must be GET", http.StatusBadRequest)
+	if r.Method != "PUT" {
+		sendResponse(w, "method must be PUT", http.StatusBadRequest)
 		return
 	}
 
