@@ -17,6 +17,7 @@ func RegisterHTTPHandlers() {
 	http.HandleFunc("/config/app", ConfigHandler)
 	statsGo.PrettyPrintEnabled()
 	http.HandleFunc("/stat/go", statsGo.Handler)
+	http.HandleFunc("/config/pushers", ConfigPushersHandler)
 }
 
 func RunHTTPServer() {

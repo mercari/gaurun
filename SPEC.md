@@ -10,6 +10,7 @@ Gaurun has some APIs.
  * [GET /stat/go](#get-statgo)
  * [GET /stat/app](#get-statapp)
  * [GET /config/app](#get-configapp)
+ * [PUT /config/pushers](#put-configpushers)
 
 URI and method of each API is fixed.
 
@@ -110,3 +111,11 @@ There is the parameter table below.
 ### GET /config/app
 
 Returns the current configuration string for Gaurun.
+
+### PUT /config/pushers
+
+Adjusts the `core.pusher_max`. Give the new value of `core.pusher_max` to `PUT /config/pushers` with the parameter `max` like below.
+
+```
+/config/pushers?max=24
+```
