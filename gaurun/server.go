@@ -12,11 +12,11 @@ import (
 )
 
 func RegisterHTTPHandlers() {
-	http.HandleFunc(ConfGaurun.Api.PushUri, PushNotificationHandler)
-	http.HandleFunc(ConfGaurun.Api.StatAppUri, StatsHandler)
-	http.HandleFunc(ConfGaurun.Api.ConfigAppUri, ConfigHandler)
+	http.HandleFunc("/push", PushNotificationHandler)
+	http.HandleFunc("/stat/app", StatsHandler)
+	http.HandleFunc("/config/app", ConfigHandler)
 	statsGo.PrettyPrintEnabled()
-	http.HandleFunc(ConfGaurun.Api.StatGoUri, statsGo.Handler)
+	http.HandleFunc("/stat/go", statsGo.Handler)
 	http.HandleFunc("/config/pushers", ConfigPushersHandler)
 }
 

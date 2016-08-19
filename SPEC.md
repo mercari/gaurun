@@ -12,7 +12,7 @@ Gaurun has some APIs.
  * [GET /config/app](#get-configapp)
  * [GET /config/pushers](#get-configpushers)
 
-URI of each API is configurable. But the method is fixed.
+URI and method of each API is fixed.
 
 ### POST /push
 

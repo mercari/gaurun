@@ -14,7 +14,6 @@ import (
 
 type ConfToml struct {
 	Core    SectionCore    `toml:"core"`
-	Api     SectionApi     `toml:"api"`
 	Android SectionAndroid `toml:"android"`
 	Ios     SectionIos     `toml:"ios"`
 	Log     SectionLog     `toml:"log"`
@@ -26,13 +25,6 @@ type SectionCore struct {
 	QueueNum        int    `toml:"queues"`
 	NotificationMax int    `toml:"notification_max"`
 	PusherMax       int64  `toml:"pusher_max"`
-}
-
-type SectionApi struct {
-	PushUri      string `toml:"push_uri"`
-	StatGoUri    string `toml:"stat_go_uri"`
-	StatAppUri   string `toml:"stat_app_uri"`
-	ConfigAppUri string `toml:"config_app_uri"`
 }
 
 type SectionAndroid struct {
@@ -72,11 +64,6 @@ func BuildDefaultConf() ConfToml {
 	conf.Core.QueueNum = 8192
 	conf.Core.NotificationMax = 100
 	conf.Core.PusherMax = 0
-	// Api
-	conf.Api.PushUri = "/push"
-	conf.Api.StatGoUri = "/stat/go"
-	conf.Api.StatAppUri = "/stat/app"
-	conf.Api.ConfigAppUri = "/config/app"
 	// Android
 	conf.Android.ApiKey = ""
 	conf.Android.Enabled = true
