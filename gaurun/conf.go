@@ -21,9 +21,9 @@ type ConfToml struct {
 
 type SectionCore struct {
 	Port            string `toml:"port"`
-	WorkerNum       int    `toml:"workers"`
-	QueueNum        int    `toml:"queues"`
-	NotificationMax int    `toml:"notification_max"`
+	WorkerNum       int64  `toml:"workers"`
+	QueueNum        int64  `toml:"queues"`
+	NotificationMax int64  `toml:"notification_max"`
 	PusherMax       int64  `toml:"pusher_max"`
 }
 
@@ -60,7 +60,7 @@ func BuildDefaultConf() ConfToml {
 	var conf ConfToml
 	// Core
 	conf.Core.Port = "1056"
-	conf.Core.WorkerNum = numCPU
+	conf.Core.WorkerNum = int64(numCPU)
 	conf.Core.QueueNum = 8192
 	conf.Core.NotificationMax = 100
 	conf.Core.PusherMax = 0
