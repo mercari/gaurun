@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"sync/atomic"
@@ -79,6 +80,11 @@ func SetLogLevel(log *logrus.Logger, levelString string) error {
 	}
 	log.Level = level
 	return nil
+}
+
+// LogSetupError output error log with log package and exit immediately.
+func LogSetupError(err error) {
+	log.Fatal(err)
 }
 
 func LogAcceptedRequest(uri, method, proto string, length int64) {

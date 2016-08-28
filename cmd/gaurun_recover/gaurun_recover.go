@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -95,7 +94,7 @@ func main() {
 	// load configuration
 	conf, err := gaurun.LoadConf(gaurun.ConfGaurun, *confPath)
 	if err != nil {
-		log.Fatal(err)
+		gaurun.LogSetupError(err)
 	}
 	gaurun.ConfGaurun = conf
 
@@ -143,7 +142,7 @@ func main() {
 		gaurun.ConfGaurun.Ios.PemKeyPath,
 	)
 	if err != nil {
-		log.Fatal(err)
+		gaurun.LogSetupError(err)
 	}
 	APNSClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
 
