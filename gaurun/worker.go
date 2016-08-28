@@ -1,6 +1,7 @@
 package gaurun
 
 import (
+	"fmt"
 	"strings"
 	"sync/atomic"
 
@@ -75,7 +76,7 @@ func pushNotificationWorker() {
 			pusher = pushNotificationAndroid
 			retryMax = ConfGaurun.Android.RetryMax
 		default:
-			LogError.Warnf("invalid platform: %d", notification.Platform)
+			LogError.Warn(fmt.Sprintf("invalid platform: %d", notification.Platform))
 			continue
 		}
 

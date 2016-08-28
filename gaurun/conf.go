@@ -123,7 +123,7 @@ func ConfigPushersHandler(w http.ResponseWriter, r *http.Request) {
 
 	values, err := url.ParseQuery(r.URL.RawQuery)
 	if err != nil {
-		LogError.Error(err)
+		LogError.Error(err.Error())
 		sendResponse(w, "url parameters could not be parsed", http.StatusBadRequest)
 		return
 	}
@@ -143,7 +143,7 @@ func ConfigPushersHandler(w http.ResponseWriter, r *http.Request) {
 
 	newPusherMax, err := strconv.ParseInt(in, 0, 64)
 	if err != nil {
-		LogError.Error(err)
+		LogError.Error(err.Error())
 		sendResponse(w, "malformed value", http.StatusBadRequest)
 		return
 	}

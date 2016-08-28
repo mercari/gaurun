@@ -2,9 +2,9 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/mercari/gaurun/gaurun"
 )
 
@@ -23,13 +23,6 @@ func main() {
 
 	// set default parameters
 	gaurun.ConfGaurun = gaurun.BuildDefaultConf()
-
-	// init logger
-	gaurun.LogAccess = logrus.New()
-	gaurun.LogError = logrus.New()
-
-	gaurun.LogAccess.Formatter = new(gaurun.GaurunFormatter)
-	gaurun.LogError.Formatter = new(gaurun.GaurunFormatter)
 
 	// load configuration
 	conf, err := gaurun.LoadConf(gaurun.ConfGaurun, *confPath)
@@ -54,22 +47,24 @@ func main() {
 	}
 
 	// set logger
-	err = gaurun.SetLogLevel(gaurun.LogAccess, "info")
+	accessLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.AccessLog)
 	if err != nil {
 		gaurun.LogSetupError(err)
 	}
-	err = gaurun.SetLogLevel(gaurun.LogError, gaurun.ConfGaurun.Log.Level)
+	errorLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.ErrorLog)
 	if err != nil {
 		gaurun.LogSetupError(err)
 	}
-	err = gaurun.SetLogOut(gaurun.LogAccess, gaurun.ConfGaurun.Log.AccessLog)
-	if err != nil {
+
+	if err := gaurun.SetLogLevel(accessLogger, "info"); err != nil {
 		gaurun.LogSetupError(err)
 	}
-	err = gaurun.SetLogOut(gaurun.LogError, gaurun.ConfGaurun.Log.ErrorLog)
-	if err != nil {
+	if err := gaurun.SetLogLevel(errorLogger, gaurun.ConfGaurun.Log.Level); err != nil {
 		gaurun.LogSetupError(err)
 	}
+
+	gaurun.LogAccess = accessLogger
+	gaurun.LogError = errorLogger
 
 	if !gaurun.ConfGaurun.Ios.Enabled && !gaurun.ConfGaurun.Android.Enabled {
 		gaurun.LogSetupError(fmt.Errorf("What do you want to do?"))
