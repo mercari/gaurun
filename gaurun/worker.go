@@ -15,9 +15,9 @@ func init() {
 	PusherCount = 0
 }
 
-func StartPushWorkers(workerNum, queueNum int) {
+func StartPushWorkers(workerNum, queueNum int64) {
 	QueueNotification = make(chan RequestGaurunNotification, queueNum)
-	for i := 0; i < workerNum; i++ {
+	for i := int64(0); i < workerNum; i++ {
 		go pushNotificationWorker()
 	}
 }

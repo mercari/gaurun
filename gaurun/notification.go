@@ -274,7 +274,7 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 		LogError.Error("empty notification")
 		sendResponse(w, "empty notification", http.StatusBadRequest)
 		return
-	} else if len(reqGaurun.Notifications) > ConfGaurun.Core.NotificationMax {
+	} else if int64(len(reqGaurun.Notifications)) > ConfGaurun.Core.NotificationMax {
 		msg := fmt.Sprintf("number of notifications(%d) over limit(%d)", len(reqGaurun.Notifications), ConfGaurun.Core.NotificationMax)
 		LogError.Error(msg)
 		sendResponse(w, msg, http.StatusBadRequest)
