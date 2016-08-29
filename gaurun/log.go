@@ -1,10 +1,9 @@
 package gaurun
 
 import (
-	"fmt"
 	"log"
+	"math"
 	"os"
-	"strconv"
 	"sync/atomic"
 
 	"github.com/uber-go/zap"
@@ -92,8 +91,7 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		plat = "android"
 	}
 
-	ptime3 := fmt.Sprintf("%.3f", ptime)
-	ptime, _ = strconv.ParseFloat(ptime3, 64)
+	ptime = math.Floor(ptime*1000) / 1000 // %.3f conversion
 
 	errMsg := ""
 	if errPush != nil {
