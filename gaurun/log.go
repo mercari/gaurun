@@ -74,7 +74,8 @@ func LogSetupError(err error) {
 }
 
 func LogAcceptedRequest(uri, method, proto string, length int64) {
-	LogAccess.Info("accepted-request",
+	LogAccess.Info("",
+		zap.String("type", "accepted-request"),
 		zap.String("uri", uri),
 		zap.String("method", method),
 		zap.String("proto", proto),
