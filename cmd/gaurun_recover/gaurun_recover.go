@@ -9,7 +9,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"strings"
 	"sync"
 	"time"
 
@@ -112,11 +111,9 @@ func main() {
 	for scanner.Scan() {
 		var logPush gaurun.LogPushEntry
 		line := scanner.Text()
-		idx := strings.Index(line, " ")
-		JSONStr := line[idx+1:]
-		err := json.Unmarshal([]byte(JSONStr), &logPush)
+		err := json.Unmarshal([]byte(line), &logPush)
 		if err != nil {
-			log.Printf("JSON parse error(%s)", JSONStr)
+			log.Printf("JSON parse error(%s)", line)
 			continue
 		}
 		if logPush.Type == "accepted-request" {
