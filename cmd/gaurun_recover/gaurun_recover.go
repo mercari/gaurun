@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mercari/gaurun/gaurun"
-	"github.com/mercari/gcm"
+	"github.com/togetter/gaurun/gaurun"
+	"github.com/togetter/gcm"
 )
 
 var (

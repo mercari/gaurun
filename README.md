@@ -22,7 +22,7 @@ Gaurun sends notifications to these platforms by HTTP/2.
 ## Installation
 
 ```
-go get -u github.com/mercari/gaurun/...
+go get -u github.com/togetter/gaurun/...
 ```
 
 ## Build from source code

@@ -10,7 +10,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/mercari/gcm"
+	"github.com/togetter/gcm"
 )
 
 type RequestGaurun struct {
@@ -163,7 +163,8 @@ func pushNotificationAndroid(req RequestGaurunNotification) error {
 
 	token := req.Tokens[0]
 
-	msg := gcm.NewMessage(data, token)
+	notification := &gcm.Notification{Body: req.Message}
+	msg := gcm.NewMessageWithNotification(data, notification, token)
 	msg.CollapseKey = req.CollapseKey
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive

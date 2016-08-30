@@ -1,5 +1,5 @@
-hash: 8bf57a9cc5db0bc0cca2797499a6a3754733e3841d9ec2bcf72f74f6ce6364fa
-updated: 2016-06-13T11:53:25.375685652+09:00
+hash: abe782ff0df862fc69b62c931c1d93a852d3979f8620e4695e9c969173dfdb09
+updated: 2016-08-16T21:42:34.930598862+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
@@ -17,6 +17,16 @@ imports:
   version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
 - name: github.com/stretchr/testify
   version: f390dcf405f7b83c997eac1b06768bb9f44dec18
+  subpackages:
+  - assert
+  - require
+  - suite
+- name: github.com/togetter/gaurun
+  version: c6921c1a5fe47f50595b815c86862754f832cf3f
+  subpackages:
+  - gaurun
+- name: github.com/togetter/gcm
+  version: 29640c4376a772e3e055893bccdcf9819e82eb37
 - name: golang.org/x/net
   version: b797637b7aeeed133049c7281bfa31dcc9ca42d6
   subpackages:
@@ -26,4 +36,12 @@ imports:
   version: f64b50fbea64174967a8882830d621a18ee1548e
   subpackages:
   - unix
-devImports: []
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 2df174808ee097f90d259e432cc04442cf60be21
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
