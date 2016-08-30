@@ -32,21 +32,16 @@ func (suite *ConfigTestSuite) SetupTest() {
 func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	// Core
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.Port, "1056")
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.WorkerNum, runtime.NumCPU())
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.QueueNum, 8192)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, 100)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.WorkerNum, int64(runtime.NumCPU()))
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.QueueNum, int64(8192))
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, int64(100))
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.PusherMax, int64(0))
-	// API
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.PushUri, "/push")
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.StatGoUri, "/stat/go")
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.StatAppUri, "/stat/app")
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Api.ConfigAppUri, "/config/app")
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.ApiKey, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Timeout, 5)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.KeepAliveTimeout, 30)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.KeepAliveConns, suite.ConfGaurunDefault.Core.WorkerNum)
+	assert.Equal(suite.T(), int64(suite.ConfGaurunDefault.Android.KeepAliveConns), suite.ConfGaurunDefault.Core.WorkerNum)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.RetryMax, 1)
 	// Ios
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Enabled, true)
@@ -56,7 +51,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.RetryMax, 1)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Timeout, 5)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.KeepAliveTimeout, 30)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.KeepAliveConns, suite.ConfGaurunDefault.Core.WorkerNum)
+	assert.Equal(suite.T(), int64(suite.ConfGaurunDefault.Ios.KeepAliveConns), suite.ConfGaurunDefault.Core.WorkerNum)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Topic, "")
 	// Log
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.AccessLog, "stdout")
@@ -67,15 +62,10 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 func (suite *ConfigTestSuite) TestValidateConf() {
 	// Core
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.Port, "1056")
-	assert.Equal(suite.T(), suite.ConfGaurun.Core.WorkerNum, 8)
-	assert.Equal(suite.T(), suite.ConfGaurun.Core.QueueNum, 8192)
-	assert.Equal(suite.T(), suite.ConfGaurun.Core.NotificationMax, 100)
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.WorkerNum, int64(8))
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.QueueNum, int64(8192))
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.NotificationMax, int64(100))
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.PusherMax, int64(0))
-	// API
-	assert.Equal(suite.T(), suite.ConfGaurun.Api.PushUri, "/push")
-	assert.Equal(suite.T(), suite.ConfGaurun.Api.StatGoUri, "/stat/go")
-	assert.Equal(suite.T(), suite.ConfGaurun.Api.StatAppUri, "/stat/app")
-	assert.Equal(suite.T(), suite.ConfGaurun.Api.ConfigAppUri, "/config/app")
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.ApiKey, "apikey for GCM")

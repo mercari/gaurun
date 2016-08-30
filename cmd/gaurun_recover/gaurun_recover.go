@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"strings"
@@ -16,11 +17,16 @@ import (
 	"github.com/togetter/gcm"
 )
 
-func pushNotification(wg *sync.WaitGroup, req gaurun.RequestGaurunNotification, logPush gaurun.LogPushEntry, apnsClient *http.Client) {
+var (
+	APNSClient *http.Client
+	GCMClient  *gcm.Sender
+)
+
+func pushNotification(wg *sync.WaitGroup, req gaurun.RequestGaurunNotification, logPush gaurun.LogPushEntry) {
 	var result bool
 	switch logPush.Platform {
 	case "ios":
-		result = pushNotificationIos(apnsClient, req)
+		result = pushNotificationIos(req)
 	case "android":
 		result = pushNotificationAndroid(req)
 	}
@@ -42,11 +48,7 @@ func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive
 
-	sender := &gcm.Sender{ApiKey: gaurun.ConfGaurun.Android.ApiKey}
-	sender.Http = new(http.Client)
-	sender.Http.Timeout = time.Duration(gaurun.ConfGaurun.Android.Timeout) * time.Second
-
-	resp, err := sender.SendNoRetry(msg)
+	resp, err := GCMClient.SendNoRetry(msg)
 	if err != nil {
 		return false
 	}
@@ -58,9 +60,9 @@ func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 	return true
 }
 
-func pushNotificationIos(client *http.Client, req gaurun.RequestGaurunNotification) bool {
+func pushNotificationIos(req gaurun.RequestGaurunNotification) bool {
 
-	service := gaurun.NewApnsServiceHttp2(client)
+	service := gaurun.NewApnsServiceHttp2(APNSClient)
 
 	for _, token := range req.Tokens {
 
@@ -136,14 +138,29 @@ func main() {
 		}
 	}
 
-	apnsClient, err := gaurun.NewApnsClientHttp2(
+	APNSClient, err = gaurun.NewApnsClientHttp2(
 		gaurun.ConfGaurun.Ios.PemCertPath,
 		gaurun.ConfGaurun.Ios.PemKeyPath,
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
-	apnsClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
+	APNSClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
+
+	TransportGCM := &http.Transport{
+		MaxIdleConnsPerHost: gaurun.ConfGaurun.Android.KeepAliveConns,
+		Dial: (&net.Dialer{
+			Timeout:   time.Duration(gaurun.ConfGaurun.Android.Timeout) * time.Second,
+			KeepAlive: time.Duration(gaurun.ConfGaurun.Android.KeepAliveTimeout) * time.Second,
+		}).Dial,
+	}
+	GCMClient = &gcm.Sender{
+		ApiKey: gaurun.ConfGaurun.Android.ApiKey,
+		Http: &http.Client{
+			Transport: TransportGCM,
+			Timeout:   time.Duration(gaurun.ConfGaurun.Android.Timeout) * time.Second,
+		},
+	}
 
 	wg := new(sync.WaitGroup)
 	for _, logPush := range losts {
@@ -171,7 +188,7 @@ func main() {
 			Expiry:           logPush.Expiry,
 		}
 		wg.Add(1)
-		go pushNotification(wg, req, logPush, apnsClient)
+		go pushNotification(wg, req, logPush)
 	}
 
 	wg.Wait()

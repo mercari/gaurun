@@ -4,14 +4,16 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"net/url"
 	"runtime"
+	"strconv"
+	"sync/atomic"
 
 	"github.com/BurntSushi/toml"
 )
 
 type ConfToml struct {
 	Core    SectionCore    `toml:"core"`
-	Api     SectionApi     `toml:"api"`
 	Android SectionAndroid `toml:"android"`
 	Ios     SectionIos     `toml:"ios"`
 	Log     SectionLog     `toml:"log"`
@@ -19,17 +21,10 @@ type ConfToml struct {
 
 type SectionCore struct {
 	Port            string `toml:"port"`
-	WorkerNum       int    `toml:"workers"`
-	QueueNum        int    `toml:"queues"`
-	NotificationMax int    `toml:"notification_max"`
+	WorkerNum       int64  `toml:"workers"`
+	QueueNum        int64  `toml:"queues"`
+	NotificationMax int64  `toml:"notification_max"`
 	PusherMax       int64  `toml:"pusher_max"`
-}
-
-type SectionApi struct {
-	PushUri      string `toml:"push_uri"`
-	StatGoUri    string `toml:"stat_go_uri"`
-	StatAppUri   string `toml:"stat_app_uri"`
-	ConfigAppUri string `toml:"config_app_uri"`
 }
 
 type SectionAndroid struct {
@@ -65,15 +60,10 @@ func BuildDefaultConf() ConfToml {
 	var conf ConfToml
 	// Core
 	conf.Core.Port = "1056"
-	conf.Core.WorkerNum = numCPU
+	conf.Core.WorkerNum = int64(numCPU)
 	conf.Core.QueueNum = 8192
 	conf.Core.NotificationMax = 100
 	conf.Core.PusherMax = 0
-	// Api
-	conf.Api.PushUri = "/push"
-	conf.Api.StatGoUri = "/stat/go"
-	conf.Api.StatAppUri = "/stat/app"
-	conf.Api.ConfigAppUri = "/config/app"
 	// Android
 	conf.Android.ApiKey = ""
 	conf.Android.Enabled = true
@@ -123,4 +113,47 @@ func ConfigHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	w.Header().Set("Server", serverHeader())
 	fmt.Fprintf(w, b.String())
+}
+
+func ConfigPushersHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "PUT" {
+		sendResponse(w, "method must be PUT", http.StatusBadRequest)
+		return
+	}
+
+	values, err := url.ParseQuery(r.URL.RawQuery)
+	if err != nil {
+		LogError.Error(err)
+		sendResponse(w, "url parameters could not be parsed", http.StatusBadRequest)
+		return
+	}
+
+	in := ""
+	for k, v := range values {
+		if k == "max" {
+			in = v[0]
+			break
+		}
+	}
+
+	if in == "" {
+		sendResponse(w, "malformed value", http.StatusBadRequest)
+		return
+	}
+
+	newPusherMax, err := strconv.ParseInt(in, 0, 64)
+	if err != nil {
+		LogError.Error(err)
+		sendResponse(w, "malformed value", http.StatusBadRequest)
+		return
+	}
+
+	if newPusherMax < 0 {
+		sendResponse(w, "malformed value", http.StatusBadRequest)
+		return
+	}
+
+	atomic.StoreInt64(&ConfGaurun.Core.PusherMax, newPusherMax)
+
+	sendResponse(w, "ok", http.StatusOK)
 }

@@ -13,8 +13,8 @@ func main() {
 	versionPrinted := flag.Bool("v", false, "gaurun version")
 	confPath := flag.String("c", "", "configuration file path for gaurun")
 	listenPort := flag.String("p", "", "port number or unix socket path")
-	workerNum := flag.Int("w", 0, "number of workers for push notification")
-	queueNum := flag.Int("q", 0, "size of internal queue for push notification")
+	workerNum := flag.Int64("w", 0, "number of workers for push notification")
+	queueNum := flag.Int64("q", 0, "size of internal queue for push notification")
 	flag.Parse()
 
 	if *versionPrinted {

@@ -5,12 +5,6 @@ workers = 8
 queues = 8192
 notification_max = 100
 
-[api]
-push_uri = "/push"
-stat_go_uri = "/stat/go"
-stat_app_uri = "/stat/app"
-config_app_uri = "/config/app"
-
 [android]
 apikey = "apikey for GCM"
 enabled = true

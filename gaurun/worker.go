@@ -15,9 +15,9 @@ func init() {
 	PusherCount = 0
 }
 
-func StartPushWorkers(workerNum, queueNum int) {
+func StartPushWorkers(workerNum, queueNum int64) {
 	QueueNotification = make(chan RequestGaurunNotification, queueNum)
-	for i := 0; i < workerNum; i++ {
+	for i := int64(0); i < workerNum; i++ {
 		go pushNotificationWorker()
 	}
 }
@@ -60,12 +60,9 @@ Retry:
 
 func pushNotificationWorker() {
 	var (
-		retryMax  int
-		pusher    func(req RequestGaurunNotification) error
-		pusherMax int64
+		retryMax int
+		pusher   func(req RequestGaurunNotification) error
 	)
-
-	pusherMax = ConfGaurun.Core.PusherMax
 
 	for {
 		notification := <-QueueNotification
@@ -82,12 +79,12 @@ func pushNotificationWorker() {
 			continue
 		}
 
-		if pusherMax <= 0 {
+		if atomic.LoadInt64(&ConfGaurun.Core.PusherMax) <= 0 {
 			pushSync(pusher, notification, retryMax)
 			continue
 		}
 
-		if atomic.LoadInt64(&PusherCount) < pusherMax {
+		if atomic.LoadInt64(&PusherCount) < atomic.LoadInt64(&ConfGaurun.Core.PusherMax) {
 			// Do not increment PusherCount in pushAsync().
 			// Because PusherCount is sometimes over pusherMax
 			// as the increment in goroutine runs asynchronously.
