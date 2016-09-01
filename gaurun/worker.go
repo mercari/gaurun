@@ -8,11 +8,12 @@ import (
 )
 
 var (
-	PusherCount int64
+	// pusherCountAll is the shared value between workers
+	PusherCountAll int64
 )
 
 func init() {
-	PusherCount = 0
+	PusherCountAll = 0
 }
 
 func StartPushWorkers(workerNum, queueNum int64) {
@@ -47,7 +48,7 @@ Retry:
 	}
 }
 
-func pushAsync(pusher func(req RequestGaurunNotification) error, req RequestGaurunNotification, retryMax int) {
+func pushAsync(pusher func(req RequestGaurunNotification) error, req RequestGaurunNotification, retryMax int, pusherCount *int64) {
 Retry:
 	err := pusher(req)
 	if err != nil && req.Retry < retryMax && isExternalServerError(err, req.Platform) {
@@ -55,14 +56,19 @@ Retry:
 		goto Retry
 	}
 
-	atomic.AddInt64(&PusherCount, -1)
+	*pusherCount = *pusherCount - 1
+	atomic.AddInt64(&PusherCountAll, -1)
 }
 
 func pushNotificationWorker() {
 	var (
-		retryMax int
-		pusher   func(req RequestGaurunNotification) error
+		retryMax    int
+		pusher      func(req RequestGaurunNotification) error
+		pusherCount int64
 	)
+
+	// pusherCount is the independent value between workers
+	pusherCount = 0
 
 	for {
 		notification := <-QueueNotification
@@ -84,13 +90,14 @@ func pushNotificationWorker() {
 			continue
 		}
 
-		if atomic.LoadInt64(&PusherCount) < atomic.LoadInt64(&ConfGaurun.Core.PusherMax) {
-			// Do not increment PusherCount in pushAsync().
-			// Because PusherCount is sometimes over pusherMax
+		if pusherCount < atomic.LoadInt64(&ConfGaurun.Core.PusherMax) {
+			// Do not increment pusherCount and PusherCountAll in pushAsync().
+			// Because pusherCount and PusherCountAll are sometimes over pusherMax
 			// as the increment in goroutine runs asynchronously.
-			atomic.AddInt64(&PusherCount, 1)
+			pusherCount++
+			atomic.AddInt64(&PusherCountAll, 1)
 
-			go pushAsync(pusher, notification, retryMax)
+			go pushAsync(pusher, notification, retryMax, &pusherCount)
 			continue
 		} else {
 			pushSync(pusher, notification, retryMax)
