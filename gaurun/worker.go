@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	// pusherCountAll is the shared value between workers
+	// PusherCountAll is the shared value between workers
 	PusherCountAll int64
 )
 
