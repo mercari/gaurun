@@ -56,7 +56,7 @@ Retry:
 		goto Retry
 	}
 
-	*pusherCount = *pusherCount - 1
+	atomic.AddInt64(pusherCount, -1)
 	atomic.AddInt64(&PusherCountAll, -1)
 }
 
@@ -90,11 +90,11 @@ func pushNotificationWorker() {
 			continue
 		}
 
-		if pusherCount < atomic.LoadInt64(&ConfGaurun.Core.PusherMax) {
+		if atomic.LoadInt64(&pusherCount) < atomic.LoadInt64(&ConfGaurun.Core.PusherMax) {
 			// Do not increment pusherCount and PusherCountAll in pushAsync().
 			// Because pusherCount and PusherCountAll are sometimes over pusherMax
 			// as the increment in goroutine runs asynchronously.
-			pusherCount++
+			atomic.AddInt64(&pusherCount, 1)
 			atomic.AddInt64(&PusherCountAll, 1)
 
 			go pushAsync(pusher, notification, retryMax, &pusherCount)
