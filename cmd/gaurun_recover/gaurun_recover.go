@@ -94,7 +94,7 @@ func main() {
 	// load configuration
 	conf, err := gaurun.LoadConf(gaurun.ConfGaurun, *confPath)
 	if err != nil {
-		gaurun.LogSetupError(err)
+		gaurun.LogSetupFatal(err)
 	}
 	gaurun.ConfGaurun = conf
 
@@ -140,7 +140,7 @@ func main() {
 		gaurun.ConfGaurun.Ios.PemKeyPath,
 	)
 	if err != nil {
-		gaurun.LogSetupError(err)
+		gaurun.LogSetupFatal(err)
 	}
 	APNSClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
 

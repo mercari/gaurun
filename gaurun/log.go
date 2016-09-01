@@ -68,8 +68,8 @@ func SetLogLevel(log zap.Logger, levelString string) error {
 	return nil
 }
 
-// LogSetupError output error log with log package and exit immediately.
-func LogSetupError(err error) {
+// LogSetupFatal output error log with log package and exit immediately.
+func LogSetupFatal(err error) {
 	log.Fatal(err)
 }
 

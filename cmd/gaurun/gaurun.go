@@ -27,7 +27,7 @@ func main() {
 	// load configuration
 	conf, err := gaurun.LoadConf(gaurun.ConfGaurun, *confPath)
 	if err != nil {
-		gaurun.LogSetupError(err)
+		gaurun.LogSetupFatal(err)
 	}
 	gaurun.ConfGaurun = conf
 
@@ -49,48 +49,48 @@ func main() {
 	// set logger
 	accessLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.AccessLog)
 	if err != nil {
-		gaurun.LogSetupError(err)
+		gaurun.LogSetupFatal(err)
 	}
 	errorLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.ErrorLog)
 	if err != nil {
-		gaurun.LogSetupError(err)
+		gaurun.LogSetupFatal(err)
 	}
 
 	if err := gaurun.SetLogLevel(accessLogger, "info"); err != nil {
-		gaurun.LogSetupError(err)
+		gaurun.LogSetupFatal(err)
 	}
 	if err := gaurun.SetLogLevel(errorLogger, gaurun.ConfGaurun.Log.Level); err != nil {
-		gaurun.LogSetupError(err)
+		gaurun.LogSetupFatal(err)
 	}
 
 	gaurun.LogAccess = accessLogger
 	gaurun.LogError = errorLogger
 
 	if !gaurun.ConfGaurun.Ios.Enabled && !gaurun.ConfGaurun.Android.Enabled {
-		gaurun.LogSetupError(fmt.Errorf("What do you want to do?"))
+		gaurun.LogSetupFatal(fmt.Errorf("What do you want to do?"))
 	}
 
 	if gaurun.ConfGaurun.Ios.Enabled {
 		gaurun.CertificatePemIos.Cert, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
 		if err != nil {
-			gaurun.LogSetupError(fmt.Errorf("A certification file for iOS is not found."))
+			gaurun.LogSetupFatal(fmt.Errorf("A certification file for iOS is not found."))
 		}
 
 		gaurun.CertificatePemIos.Key, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
 		if err != nil {
-			gaurun.LogSetupError(fmt.Errorf("A key file for iOS is not found."))
+			gaurun.LogSetupFatal(fmt.Errorf("A key file for iOS is not found."))
 		}
 
 	}
 
 	if gaurun.ConfGaurun.Android.Enabled {
 		if gaurun.ConfGaurun.Android.ApiKey == "" {
-			gaurun.LogSetupError(fmt.Errorf("APIKey for Android is empty."))
+			gaurun.LogSetupFatal(fmt.Errorf("APIKey for Android is empty."))
 		}
 	}
 
 	if err := gaurun.InitHttpClient(); err != nil {
-		gaurun.LogSetupError(fmt.Errorf("failed to init http client"))
+		gaurun.LogSetupFatal(fmt.Errorf("failed to init http client"))
 	}
 	gaurun.InitStat()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
