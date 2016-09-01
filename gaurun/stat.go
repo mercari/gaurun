@@ -39,8 +39,8 @@ func StatsHandler(w http.ResponseWriter, r *http.Request) {
 	var result StatApp
 	result.QueueMax = cap(QueueNotification)
 	result.QueueUsage = len(QueueNotification)
-	result.PusherMax = ConfGaurun.Core.PusherMax
-	result.PusherCount = atomic.LoadInt64(&PusherCount)
+	result.PusherMax = ConfGaurun.Core.PusherMax * ConfGaurun.Core.WorkerNum
+	result.PusherCount = atomic.LoadInt64(&PusherCountAll)
 	result.Ios.PushSuccess = atomic.LoadInt64(&StatGaurun.Ios.PushSuccess)
 	result.Ios.PushError = atomic.LoadInt64(&StatGaurun.Ios.PushError)
 	result.Android.PushSuccess = atomic.LoadInt64(&StatGaurun.Android.PushSuccess)
