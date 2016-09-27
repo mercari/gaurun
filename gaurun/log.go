@@ -5,6 +5,7 @@ import (
 	"math"
 	"os"
 	"sync/atomic"
+	"time"
 
 	"github.com/uber-go/zap"
 )
@@ -54,7 +55,9 @@ func InitLog(outString string) (zap.Logger, error) {
 	}
 
 	encoder := zap.NewJSONEncoder(
-		zap.RFC3339Formatter("time"),
+		zap.TimeFormatter(func(t time.Time) zap.Field {
+			return zap.String("time", t.Local().Format("2006/01/02 15:04:05 MST"))
+		}),
 	)
 	return zap.New(encoder, zap.Output(writer), zap.ErrorOutput(writer)), nil
 }
