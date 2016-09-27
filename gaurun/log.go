@@ -55,6 +55,7 @@ func InitLog(outString string) (zap.Logger, error) {
 	}
 
 	encoder := zap.NewJSONEncoder(
+		zap.MessageKey("message"),
 		zap.TimeFormatter(func(t time.Time) zap.Field {
 			return zap.String("time", t.Local().Format("2006/01/02 15:04:05 MST"))
 		}),
