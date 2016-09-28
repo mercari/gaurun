@@ -3,13 +3,20 @@ package gaurun
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/uber-go/zap"
 )
 
 func init() {
-	LogAccess = zap.New(zap.NewJSONEncoder(zap.RFC3339Formatter("time")), zap.DiscardOutput)
-	LogError = zap.New(zap.NewJSONEncoder(zap.RFC3339Formatter("time")), zap.DiscardOutput)
+	encoder := zap.NewJSONEncoder(
+		zap.MessageKey("message"),
+		zap.TimeFormatter(func(t time.Time) zap.Field {
+			return zap.String("time", t.Local().Format("2006/01/02 15:04:05 MST"))
+		}),
+	)
+	LogAccess = zap.New(encoder, zap.DiscardOutput)
+	LogError = zap.New(encoder, zap.DiscardOutput)
 }
 
 func BenchmarkLogPushIOSOmitempty(b *testing.B) {
