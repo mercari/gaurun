@@ -1,5 +1,5 @@
-hash: 149b93bd592f0c639ddd4777f3f496feff57278c5e5d6722e8bcd5207cb7fbfe
-updated: 2016-09-28T17:45:43.557952286+09:00
+hash: 0bc9e45bdaab3068d78c415262597fba2a81b615ebb5d05b9c2fa9fffa12dca1
+updated: 2016-09-28T19:21:05.604054298+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
@@ -8,7 +8,7 @@ imports:
 - name: github.com/mercari/gcm
   version: 987b1dc4ce9034b698395d35de1aadf999388b8f
 - name: github.com/RobotsAndPencils/buford
-  version: 9ff2361e1e943d8287af5a140b1fb17810340daa
+  version: 1589c179b764ddceb204a439d9bf366f04c55f9b
   subpackages:
   - payload
   - payload/badge
