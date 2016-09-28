@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/mercari/gcm"
+	"github.com/uber-go/zap"
 )
 
 type RequestGaurun struct {
@@ -82,7 +83,7 @@ func enqueueNotifications(notifications []RequestGaurunNotification) {
 	for _, notification := range notifications {
 		err := validateNotification(&notification)
 		if err != nil {
-			LogError.Error(err)
+			LogError.Error(err.Error())
 			continue
 		}
 		var enabledPush bool
@@ -257,7 +258,9 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 			sendResponse(w, "failed to read request-body", http.StatusInternalServerError)
 			return
 		}
-		LogError.Debugf("parse request body: %s", reqBody)
+		if m := LogError.Check(zap.DebugLevel, "parse request body"); m.OK() {
+			m.Write(zap.String("body", string(reqBody)))
+		}
 		err = json.Unmarshal(reqBody, &reqGaurun)
 	} else {
 		LogError.Debug("parse request body")
@@ -265,7 +268,7 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		LogError.Error(err)
+		LogError.Error(err.Error())
 		sendResponse(w, "Request-body is malformed", http.StatusBadRequest)
 		return
 	}

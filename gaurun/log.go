@@ -1,15 +1,13 @@
 package gaurun
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
+	"log"
+	"math"
 	"os"
-	"strconv"
 	"sync/atomic"
 	"time"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/uber-go/zap"
 )
 
 type LogReq struct {
@@ -41,61 +39,52 @@ type LogPushEntry struct {
 	Expiry           int    `json:"expiry,omitempty"`
 }
 
-type GaurunFormatter struct {
-}
-
-func (f *GaurunFormatter) Format(entry *logrus.Entry) ([]byte, error) {
-	b := &bytes.Buffer{}
-	fmt.Fprintf(b, "[%s] ", entry.Level.String())
-	fmt.Fprintf(b, "%s", entry.Message)
-	b.WriteByte('\n')
-	return b.Bytes(), nil
-}
-
-func InitLog() *logrus.Logger {
-	return logrus.New()
-}
-
-func SetLogOut(log *logrus.Logger, outString string) error {
+func InitLog(outString string) (zap.Logger, error) {
+	var writer zap.WriteSyncer
 	switch outString {
 	case "stdout":
-		log.Out = os.Stdout
+		writer = os.Stdout
 	case "stderr":
-		log.Out = os.Stderr
+		writer = os.Stderr
 	default:
 		f, err := os.OpenFile(outString, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		log.Out = f
+		writer = f
 	}
+
+	encoder := zap.NewJSONEncoder(
+		zap.MessageKey("message"),
+		zap.TimeFormatter(func(t time.Time) zap.Field {
+			return zap.String("time", t.Local().Format("2006/01/02 15:04:05 MST"))
+		}),
+	)
+	return zap.New(encoder, zap.Output(writer), zap.ErrorOutput(writer)), nil
+}
+
+func SetLogLevel(log zap.Logger, levelString string) error {
+	var level zap.Level
+	if err := level.UnmarshalText([]byte(levelString)); err != nil {
+		return err
+	}
+	log.SetLevel(level)
 	return nil
 }
 
-func SetLogLevel(log *logrus.Logger, levelString string) error {
-	level, err := logrus.ParseLevel(levelString)
-	if err != nil {
-		return err
-	}
-	log.Level = level
-	return nil
+// LogSetupFatal output error log with log package and exit immediately.
+func LogSetupFatal(err error) {
+	log.Fatal(err)
 }
 
 func LogAcceptedRequest(uri, method, proto string, length int64) {
-	log := &LogReq{
-		Type:          "accepted-request",
-		Time:          time.Now().Format("2006/01/02 15:04:05 MST"),
-		URI:           uri,
-		Method:        method,
-		Proto:         proto,
-		ContentLength: length,
-	}
-	logJSON, err := json.Marshal(log)
-	if err != nil {
-		LogError.Error("Marshaling JSON error")
-		return
-	}
-	LogAccess.Info(string(logJSON))
+	LogAccess.Info("",
+		zap.String("type", "accepted-request"),
+		zap.String("uri", uri),
+		zap.String("method", method),
+		zap.String("proto", proto),
+		zap.Int64("content_length", length),
+	)
 }
 
 func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNotification, errPush error) {
@@ -107,45 +96,68 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		plat = "android"
 	}
 
-	ptime3 := fmt.Sprintf("%.3f", ptime)
-	ptime, _ = strconv.ParseFloat(ptime3, 64)
+	ptime = math.Floor(ptime*1000) / 1000 // %.3f conversion
 
 	errMsg := ""
 	if errPush != nil {
 		errMsg = errPush.Error()
 	}
 
-	log := &LogPushEntry{
-		Type:             status,
-		Time:             time.Now().Format("2006/01/02 15:04:05 MST"),
-		ID:               id,
-		Platform:         plat,
-		Token:            token,
-		Message:          req.Message,
-		Ptime:            ptime,
-		Error:            errMsg,
-		CollapseKey:      req.CollapseKey,
-		DelayWhileIdle:   req.DelayWhileIdle,
-		TimeToLive:       req.TimeToLive,
-		Badge:            req.Badge,
-		Sound:            req.Sound,
-		ContentAvailable: req.ContentAvailable,
-		Expiry:           req.Expiry,
-	}
-	logJSON, err := json.Marshal(log)
-	if err != nil {
-		LogError.Error("Marshaling JSON error")
-		return
-	}
-
+	var logger func(string, ...zap.Field)
 	switch status {
 	case StatusAcceptedPush:
 		fallthrough
 	case StatusSucceededPush:
-		LogAccess.Info(string(logJSON))
+		logger = LogAccess.Info
 	case StatusFailedPush:
-		LogError.Error(string(logJSON))
+		logger = LogError.Error
 	}
+
+	// omitempty handling for device dependent values
+	collapseKey := zap.Skip()
+	if req.CollapseKey != "" {
+		collapseKey = zap.String("collapse_key", req.CollapseKey)
+	}
+	delayWhileIdle := zap.Skip()
+	if req.DelayWhileIdle {
+		delayWhileIdle = zap.Bool("delay_while_idle", req.DelayWhileIdle)
+	}
+	timeToLive := zap.Skip()
+	if req.TimeToLive != 0 {
+		timeToLive = zap.Int("time_to_live", req.TimeToLive)
+	}
+	badge := zap.Skip()
+	if req.Badge != 0 {
+		badge = zap.Int("badge", req.Badge)
+	}
+	sound := zap.Skip()
+	if req.Sound != "" {
+		sound = zap.String("sound", req.Sound)
+	}
+	contentAvailable := zap.Skip()
+	if req.ContentAvailable {
+		contentAvailable = zap.Bool("content_available", req.ContentAvailable)
+	}
+	expiry := zap.Skip()
+	if req.Expiry != 0 {
+		expiry = zap.Int("expiry", req.Expiry)
+	}
+
+	logger(req.Message,
+		zap.Uint64("id", id),
+		zap.String("platform", plat),
+		zap.String("token", token),
+		zap.String("type", status),
+		zap.Float64("ptime", ptime),
+		zap.String("error", errMsg),
+		collapseKey,
+		delayWhileIdle,
+		timeToLive,
+		badge,
+		sound,
+		contentAvailable,
+		expiry,
+	)
 }
 
 func numberingPush() uint64 {

@@ -1,5 +1,5 @@
-hash: 8bf57a9cc5db0bc0cca2797499a6a3754733e3841d9ec2bcf72f74f6ce6364fa
-updated: 2016-06-13T11:53:25.375685652+09:00
+hash: 149b93bd592f0c639ddd4777f3f496feff57278c5e5d6722e8bcd5207cb7fbfe
+updated: 2016-09-28T17:45:43.557952286+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
@@ -13,17 +13,29 @@ imports:
   - payload
   - payload/badge
   - push
-- name: github.com/Sirupsen/logrus
-  version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
 - name: github.com/stretchr/testify
   version: f390dcf405f7b83c997eac1b06768bb9f44dec18
+  subpackages:
+  - assert
+  - require
+  - suite
+- name: github.com/uber-go/atomic
+  version: 0c9e689d64f004564b79d9a663634756df322902
+- name: github.com/uber-go/zap
+  version: f1942381637c11a802c356e70ab5b0a953540bb5
 - name: golang.org/x/net
-  version: b797637b7aeeed133049c7281bfa31dcc9ca42d6
+  version: f09c4662a0bd6bd8943ac7b4931e185df9471da4
   subpackages:
   - http2
   - http2/hpack
-- name: golang.org/x/sys
-  version: f64b50fbea64174967a8882830d621a18ee1548e
+  - idna
+  - lex/httplex
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 2df174808ee097f90d259e432cc04442cf60be21
   subpackages:
-  - unix
-devImports: []
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
