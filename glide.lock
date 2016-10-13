@@ -1,10 +1,12 @@
-hash: d685d43e5d3938884847e821db45422711b567d2bf6204498eb8a45adf804d3e
-updated: 2016-11-22T18:52:44.36663394+09:00
+hash: 75e4d22bceb424fb5a3f2357f1dce75d9dd9634604ec4a88e3e40c6bd656c11d
+updated: 2016-11-24T19:59:46.47680243+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
+- name: github.com/client9/reopen
+  version: 4b86f9c0ead51cc410d05655596e30f281ed9071
 - name: github.com/fukata/golang-stats-api-handler
-  version: e7ee1630fdb679c86ec8e3d0755e3576675fdb10
+  version: ab9f90f16caab828afda479fd34bfbbbba2efcee
 - name: github.com/mercari/gcm
   version: 987b1dc4ce9034b698395d35de1aadf999388b8f
 - name: github.com/RobotsAndPencils/buford
@@ -14,7 +16,7 @@ imports:
   - payload/badge
   - push
 - name: github.com/stretchr/testify
-  version: f390dcf405f7b83c997eac1b06768bb9f44dec18
+  version: 18a02ba4a312f95da08ff4cfc0055750ce50ae9e
   subpackages:
   - assert
   - require
@@ -22,7 +24,7 @@ imports:
 - name: github.com/uber-go/atomic
   version: 9e99152552a6ce13fa3b2ce4a9c4fb117cca4506
 - name: github.com/uber-go/zap
-  version: dd147206a25aad11c300c661617a2fe26b4a81a7
+  version: 11e8d8f6b3c9c574462f8278f3f2b7eb56b12e27
 - name: golang.org/x/net
   version: 4971afdc2f162e82d185353533d3cf16188a9f4e
   subpackages:
@@ -32,7 +34,7 @@ imports:
   - lex/httplex
 testImports:
 - name: github.com/davecgh/go-spew
-  version: 2df174808ee097f90d259e432cc04442cf60be21
+  version: 04cdfd42973bb9c8589fd6a731800cf222fde1a9
   subpackages:
   - spew
 - name: github.com/pmezard/go-difflib
