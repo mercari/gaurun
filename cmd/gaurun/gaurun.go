@@ -4,6 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/mercari/gaurun/gaurun"
 )
@@ -47,11 +50,11 @@ func main() {
 	}
 
 	// set logger
-	accessLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.AccessLog, "info")
+	accessLogger, accessLogReopener, err := gaurun.InitLog(gaurun.ConfGaurun.Log.AccessLog, "info")
 	if err != nil {
 		gaurun.LogSetupFatal(err)
 	}
-	errorLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.ErrorLog, gaurun.ConfGaurun.Log.Level)
+	errorLogger, errorLogReopener, err := gaurun.InitLog(gaurun.ConfGaurun.Log.ErrorLog, gaurun.ConfGaurun.Log.Level)
 	if err != nil {
 		gaurun.LogSetupFatal(err)
 	}
@@ -81,6 +84,26 @@ func main() {
 			gaurun.LogSetupFatal(fmt.Errorf("APIKey for Android is empty."))
 		}
 	}
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGHUP)
+
+	go func() {
+		for {
+			select {
+			case sig := <-sigChan:
+				switch sig {
+				case syscall.SIGHUP:
+					if err := accessLogReopener.Reopen(); err != nil {
+						gaurun.LogError.Warn(fmt.Sprintf("failed to reopen access log: %v", err))
+					}
+					if err := errorLogReopener.Reopen(); err != nil {
+						gaurun.LogError.Warn(fmt.Sprintf("failed to reopen error log: %v", err))
+					}
+				}
+			}
+		}
+	}()
 
 	if err := gaurun.InitHttpClient(); err != nil {
 		gaurun.LogSetupFatal(fmt.Errorf("failed to init http client"))
