@@ -10,7 +10,7 @@ Gaurun is production ready.
 
 ## Requirements
 
-Gaurun requires Go1.6.3 or later.
+Gaurun requires Go1.7.3 or later.
 
 ## Supported Platforms
 
