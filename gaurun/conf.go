@@ -68,7 +68,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Android.ApiKey = ""
 	conf.Android.Enabled = true
 	conf.Android.Timeout = 5
-	conf.Android.KeepAliveTimeout = 30
+	conf.Android.KeepAliveTimeout = 90
 	conf.Android.KeepAliveConns = numCPU
 	conf.Android.RetryMax = 1
 	// iOS
@@ -78,7 +78,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Ios.Sandbox = true
 	conf.Ios.RetryMax = 1
 	conf.Ios.Timeout = 5
-	conf.Ios.KeepAliveTimeout = 30
+	conf.Ios.KeepAliveTimeout = 90
 	conf.Ios.KeepAliveConns = numCPU
 	conf.Ios.Topic = ""
 	// log
