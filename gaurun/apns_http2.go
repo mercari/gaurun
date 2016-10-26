@@ -25,7 +25,7 @@ func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {
 		MaxIdleConnsPerHost: ConfGaurun.Ios.KeepAliveConns,
 		Dial: (&net.Dialer{
 			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
-			KeepAlive: keepAliveInterval(ConfGaurun.Ios.KeepAliveTimeout),
+			KeepAlive: time.Duration(keepAliveInterval(ConfGaurun.Ios.KeepAliveTimeout)) * time.Second,
 		}).Dial,
 		IdleConnTimeout: time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
 	}
