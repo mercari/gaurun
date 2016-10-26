@@ -59,6 +59,7 @@ func InitHttpClient() error {
 			Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
 			KeepAlive: time.Duration(ConfGaurun.Android.KeepAliveTimeout) * time.Second,
 		}).Dial,
+		IdleConnTimeout: time.Duration(ConfGaurun.Android.KeepAliveTimeout) * time.Second,
 	}
 	GCMClient = &gcm.Sender{
 		ApiKey: ConfGaurun.Android.ApiKey,

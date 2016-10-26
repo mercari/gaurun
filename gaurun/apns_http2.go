@@ -27,6 +27,7 @@ func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {
 			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
 			KeepAlive: time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
 		}).Dial,
+		IdleConnTimeout: time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
 	}
 
 	if err := http2.ConfigureTransport(transport); err != nil {
