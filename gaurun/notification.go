@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"net"
 	"net/http"
 	"sync/atomic"
 	"time"
@@ -50,33 +49,6 @@ type ResponseGaurun struct {
 type CertificatePem struct {
 	Cert []byte
 	Key  []byte
-}
-
-func InitHttpClient() error {
-	TransportGCM := &http.Transport{
-		MaxIdleConnsPerHost: ConfGaurun.Android.KeepAliveConns,
-		Dial: (&net.Dialer{
-			Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
-			KeepAlive: time.Duration(ConfGaurun.Android.KeepAliveTimeout) * time.Second,
-		}).Dial,
-	}
-	GCMClient = &gcm.Sender{
-		ApiKey: ConfGaurun.Android.ApiKey,
-		Http: &http.Client{
-			Transport: TransportGCM,
-			Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
-		},
-	}
-
-	var err error
-	APNSClient, err = NewApnsClientHttp2(
-		ConfGaurun.Ios.PemCertPath,
-		ConfGaurun.Ios.PemKeyPath,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func enqueueNotifications(notifications []RequestGaurunNotification) {

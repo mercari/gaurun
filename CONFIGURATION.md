@@ -29,7 +29,7 @@ The configuration for Gaurun has some sections. The example is [here](conf/gauru
 |sandbox               |bool  |On/Off for sandbox environment                        |true      |                               |
 |retry_max             |int   |maximum retry count for push notication to APNs       |1         |                               |
 |timeout               |int   |timeout for push notification to APNs                 |5         |                               |
-|keepalive_timeout     |int   |time for continuing keep-alive connection to APNs     |30        |                               |
+|keepalive_timeout     |int   |time for continuing keep-alive connection to APNs     |90        |                               |
 |keepalive_conns       |int   |number of keep-alive connection to APNs               |runtime.NumCPU()|                         |
 |topic                 |string|the assigned value of `apns-topic` for Request headers|          |                               |
 
@@ -42,7 +42,7 @@ The configuration for Gaurun has some sections. The example is [here](conf/gauru
 |enabled          |bool  |On/Off for push notication to GCM               |true   |    |
 |apikey           |string|API key string for GCM                          |       |    |
 |timeout          |int   |timeout for push notication to GCM              |5(sec) |    |
-|keepalive_timeout|int   |time for continuing keep-alive connection to GCM|30     |    |
+|keepalive_timeout|int   |time for continuing keep-alive connection to GCM|90     |    |
 |keepalive_conns  |int   |number of keep-alive connection to GCM          |runtime.NumCPU()||
 |retry_max        |int   |maximum retry count for push notication to GCM  |1      |    |
 

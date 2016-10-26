@@ -40,7 +40,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.ApiKey, "")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Timeout, 5)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.KeepAliveTimeout, 30)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.KeepAliveTimeout, 90)
 	assert.Equal(suite.T(), int64(suite.ConfGaurunDefault.Android.KeepAliveConns), suite.ConfGaurunDefault.Core.WorkerNum)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.RetryMax, 1)
 	// Ios
@@ -50,7 +50,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Sandbox, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.RetryMax, 1)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Timeout, 5)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.KeepAliveTimeout, 30)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.KeepAliveTimeout, 90)
 	assert.Equal(suite.T(), int64(suite.ConfGaurunDefault.Ios.KeepAliveConns), suite.ConfGaurunDefault.Core.WorkerNum)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Topic, "")
 	// Log
