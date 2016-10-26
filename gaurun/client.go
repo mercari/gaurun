@@ -10,12 +10,16 @@ import (
 
 func keepAliveInterval(keepAliveTimeout int) int {
 	const minInterval = 30
+	const maxInterval = 90
 	if keepAliveTimeout <= minInterval {
 		return keepAliveTimeout
 	}
 	result := keepAliveTimeout / 3
 	if result < minInterval {
 		return minInterval
+	}
+	if result > maxInterval {
+		return maxInterval
 	}
 	return result
 }
