@@ -25,7 +25,7 @@ func InitHttpClient() error {
 		MaxIdleConnsPerHost: ConfGaurun.Android.KeepAliveConns,
 		Dial: (&net.Dialer{
 			Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
-			KeepAlive: keepAliveInterval(ConfGaurun.Android.Timeout),
+			KeepAlive: keepAliveInterval(ConfGaurun.Android.KeepAliveTimeout),
 		}).Dial,
 		IdleConnTimeout: time.Duration(ConfGaurun.Android.KeepAliveTimeout) * time.Second,
 	}
