@@ -88,22 +88,16 @@ func main() {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGHUP)
 
-	go func() {
-		for {
-			select {
-			case sig := <-sigChan:
-				switch sig {
-				case syscall.SIGHUP:
-					if err := accessLogReopener.Reopen(); err != nil {
-						gaurun.LogError.Warn(fmt.Sprintf("failed to reopen access log: %v", err))
-					}
-					if err := errorLogReopener.Reopen(); err != nil {
-						gaurun.LogError.Warn(fmt.Sprintf("failed to reopen error log: %v", err))
-					}
-				}
-			}
+	sighupHandler := func() {
+		if err := accessLogReopener.Reopen(); err != nil {
+			gaurun.LogError.Warn(fmt.Sprintf("failed to reopen access log: %v", err))
 		}
-	}()
+		if err := errorLogReopener.Reopen(); err != nil {
+			gaurun.LogError.Warn(fmt.Sprintf("failed to reopen error log: %v", err))
+		}
+	}
+
+	go signalHandler(sigChan, sighupHandler)
 
 	if err := gaurun.InitHttpClient(); err != nil {
 		gaurun.LogSetupFatal(fmt.Errorf("failed to init http client"))
@@ -113,4 +107,16 @@ func main() {
 
 	gaurun.RegisterHTTPHandlers()
 	gaurun.RunHTTPServer()
+}
+
+func signalHandler(ch <-chan os.Signal, sighupFn func()) {
+	for {
+		select {
+		case sig := <-ch:
+			switch sig {
+			case syscall.SIGHUP:
+				sighupFn()
+			}
+		}
+	}
 }
