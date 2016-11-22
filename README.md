@@ -22,6 +22,8 @@ Gaurun sends notifications to these platforms by HTTP/2.
 ## Installation
 
 You can download the built binary from [here](https://github.com/mercari/gaurun/releases).
+
+
 Using `go get` to install Gaurun is not recommended very well. Because `go get` bypasses vendoring dependency.
 
 ## Build from source code
