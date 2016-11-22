@@ -21,21 +21,12 @@ Gaurun sends notifications to these platforms by HTTP/2.
 
 ## Installation
 
-```
-go get -u github.com/mercari/gaurun/...
-```
-
-If you don't have go-runtime, you can download the built binary from [here](https://github.com/mercari/gaurun/releases).
+You can download the built binary from [here](https://github.com/mercari/gaurun/releases).
+Using `go get` to install Gaurun is not recommended very well. Because `go get` bypasses vendoring dependency.
 
 ## Build from source code
 
-[glide](https://github.com/Masterminds/glide) is required for building Gaurun.
-
-```
-go get -u github.com/Masterminds/glide
-```
-
-Run the commands below.
+Run the commands below. And [glide](https://github.com/Masterminds/glide) is required for building Gaurun.
 
 ```
 make bundle
