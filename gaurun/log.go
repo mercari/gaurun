@@ -39,7 +39,7 @@ type LogPushEntry struct {
 	Expiry           int    `json:"expiry,omitempty"`
 }
 
-func InitLog(outString string) (zap.Logger, error) {
+func InitLog(outString string, levelString string) (zap.Logger, error) {
 	var writer zap.WriteSyncer
 	switch outString {
 	case "stdout":
@@ -60,16 +60,13 @@ func InitLog(outString string) (zap.Logger, error) {
 			return zap.String("time", t.Local().Format("2006/01/02 15:04:05 MST"))
 		}),
 	)
-	return zap.New(encoder, zap.Output(writer), zap.ErrorOutput(writer)), nil
-}
 
-func SetLogLevel(log zap.Logger, levelString string) error {
 	var level zap.Level
 	if err := level.UnmarshalText([]byte(levelString)); err != nil {
-		return err
+		return nil, err
 	}
-	log.SetLevel(level)
-	return nil
+
+	return zap.New(encoder, level, zap.Output(writer), zap.ErrorOutput(writer)), nil
 }
 
 // LogSetupFatal output error log with log package and exit immediately.

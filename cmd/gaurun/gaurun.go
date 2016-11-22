@@ -47,19 +47,12 @@ func main() {
 	}
 
 	// set logger
-	accessLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.AccessLog)
+	accessLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.AccessLog, "info")
 	if err != nil {
 		gaurun.LogSetupFatal(err)
 	}
-	errorLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.ErrorLog)
+	errorLogger, err := gaurun.InitLog(gaurun.ConfGaurun.Log.ErrorLog, gaurun.ConfGaurun.Log.Level)
 	if err != nil {
-		gaurun.LogSetupFatal(err)
-	}
-
-	if err := gaurun.SetLogLevel(accessLogger, "info"); err != nil {
-		gaurun.LogSetupFatal(err)
-	}
-	if err := gaurun.SetLogLevel(errorLogger, gaurun.ConfGaurun.Log.Level); err != nil {
 		gaurun.LogSetupFatal(err)
 	}
 

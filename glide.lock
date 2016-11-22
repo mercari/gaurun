@@ -1,5 +1,5 @@
-hash: 0bc9e45bdaab3068d78c415262597fba2a81b615ebb5d05b9c2fa9fffa12dca1
-updated: 2016-09-28T19:21:05.604054298+09:00
+hash: d685d43e5d3938884847e821db45422711b567d2bf6204498eb8a45adf804d3e
+updated: 2016-11-22T18:52:44.36663394+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
@@ -20,11 +20,11 @@ imports:
   - require
   - suite
 - name: github.com/uber-go/atomic
-  version: 0c9e689d64f004564b79d9a663634756df322902
+  version: 9e99152552a6ce13fa3b2ce4a9c4fb117cca4506
 - name: github.com/uber-go/zap
-  version: f1942381637c11a802c356e70ab5b0a953540bb5
+  version: dd147206a25aad11c300c661617a2fe26b4a81a7
 - name: golang.org/x/net
-  version: f09c4662a0bd6bd8943ac7b4931e185df9471da4
+  version: 4971afdc2f162e82d185353533d3cf16188a9f4e
   subpackages:
   - http2
   - http2/hpack
