@@ -29,7 +29,7 @@ fmt:
 	@echo $(TARGETS_NOVENDOR) | xargs go fmt
 
 check:
-	go test $(TARGETS_NOVENDOR)
+	go test -v $(TARGETS_NOVENDOR)
 
 clean:
 	rm -rf bin/*

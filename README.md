@@ -2,6 +2,9 @@
 
 ![logo](https://raw.githubusercontent.com/mercari/gaurun/master/img/logo.png)
 
+[![Travis](https://img.shields.io/travis/mercari/gaurun.svg?style=flat-square)](https://travis-ci.org/mercari/gaurun)
+  
+
 Gaurun is the general push notification server in Go.
 
 ## Status
