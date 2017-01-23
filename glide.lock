@@ -1,5 +1,5 @@
-hash: 75e4d22bceb424fb5a3f2357f1dce75d9dd9634604ec4a88e3e40c6bd656c11d
-updated: 2016-11-24T19:59:46.47680243+09:00
+hash: d3eeb4e68bd90fea7711484b9032c3ae0249bda1305dc5f501e872e2e767a303
+updated: 2017-01-24T12:49:27.499393495+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
@@ -7,6 +7,10 @@ imports:
   version: 4b86f9c0ead51cc410d05655596e30f281ed9071
 - name: github.com/fukata/golang-stats-api-handler
   version: ab9f90f16caab828afda479fd34bfbbbba2efcee
+- name: github.com/lestrrat/go-server-starter
+  version: 901cec093d58ca36652e8d7906e4bd3e32793801
+  subpackages:
+  - listener
 - name: github.com/mercari/gcm
   version: 987b1dc4ce9034b698395d35de1aadf999388b8f
 - name: github.com/RobotsAndPencils/buford

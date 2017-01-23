@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/mercari/gaurun/gaurun"
 )
@@ -85,8 +88,8 @@ func main() {
 		}
 	}
 
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGHUP)
+	sigHUPChan := make(chan os.Signal, 1)
+	signal.Notify(sigHUPChan, syscall.SIGHUP)
 
 	sighupHandler := func() {
 		if err := accessLogReopener.Reopen(); err != nil {
@@ -97,7 +100,7 @@ func main() {
 		}
 	}
 
-	go signalHandler(sigChan, sighupHandler)
+	go signalHandler(sigHUPChan, sighupHandler)
 
 	if err := gaurun.InitHttpClient(); err != nil {
 		gaurun.LogSetupFatal(fmt.Errorf("failed to init http client"))
@@ -105,8 +108,42 @@ func main() {
 	gaurun.InitStat()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
 
-	gaurun.RegisterHTTPHandlers()
-	gaurun.RunHTTPServer()
+	mux := http.NewServeMux()
+	gaurun.RegisterHandlers(mux)
+
+	server := &http.Server{
+		Handler: mux,
+	}
+	go func() {
+		gaurun.LogError.Info("start server")
+		if err := gaurun.RunServer(server, &gaurun.ConfGaurun); err != nil {
+			gaurun.LogError.Info(fmt.Sprintf("failed to serve: %s", err))
+		}
+	}()
+
+	// Graceful shutdown (kicked by TERM ).
+	//
+	// First, it shutdowns server and stops accepting new requests.
+	// Then wait until all remaining queues in buffer are flushed.
+	sigTERMChan := make(chan os.Signal, 1)
+	signal.Notify(sigTERMChan, syscall.SIGTERM)
+
+	<-sigTERMChan
+	gaurun.LogError.Info("shutdown server")
+	timeout := time.Duration(conf.Core.ShutdownTimeout) * time.Second
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		gaurun.LogError.Error(fmt.Sprintf("failed to shutdown server: %v", err))
+	}
+
+	gaurun.LogError.Info("wait until queue is empty")
+	flushWaitInterval := 1 * time.Second
+	for len(gaurun.QueueNotification) > 0 {
+		time.Sleep(flushWaitInterval)
+	}
+
+	gaurun.LogError.Info("successfully shutdown")
 }
 
 func signalHandler(ch <-chan os.Signal, sighupFn func()) {
