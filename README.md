@@ -1,12 +1,10 @@
-# Gaurun 
-
-![logo](https://raw.githubusercontent.com/mercari/gaurun/master/img/logo.png)
-
-[![GitHub release](http://img.shields.io/github/release/mercari/gaurun.svg?style=flat-square)][release]
-[![Travis](https://img.shields.io/travis/mercari/gaurun.svg?style=flat-square)][travis]
+# Gaurun [![GitHub release](http://img.shields.io/github/release/mercari/gaurun.svg?style=flat-square)][release] [![Travis](https://img.shields.io/travis/mercari/gaurun.svg?style=flat-square)][travis]
 
 [release]: https://github.com/mercari/gaurun/releases
 [travis]: https://travis-ci.org/mercari/gaurun
+
+<img src="https://raw.githubusercontent.com/mercari/gaurun/master/img/logo.png" alt="logo" align="right"/>
+
 
 Gaurun is a general push notification server written in Golang. It proxies push requests to APNs and GCM and asynchronously executes them via HTTP/2. It helps you when you need to bulkly sends push notification to your users (e.g., when you need to exec 10 million push at once!) or when some other API server which must response quickly needs to push. Since it leverages Golang's powerful concurrent feature, it gives high performance. 
 
