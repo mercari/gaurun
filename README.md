@@ -1,4 +1,4 @@
-# Gaurun [![GitHub release](http://img.shields.io/github/release/mercari/gaurun.svg?style=flat-square)][release] [![Travis](https://img.shields.io/travis/mercari/gaurun.svg?style=flat-square)][travis]
+# Gaurun [![GitHub release](https://img.shields.io/github/release/mercari/gaurun.svg?style=flat-square)][release] [![Travis](https://img.shields.io/travis/mercari/gaurun.svg?style=flat-square)][travis]
 
 [release]: https://github.com/mercari/gaurun/releases
 [travis]: https://travis-ci.org/mercari/gaurun
