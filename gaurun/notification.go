@@ -30,6 +30,7 @@ type RequestGaurunNotification struct {
 	Badge            int          `json:"badge,omitempty"`
 	Sound            string       `json:"sound,omitempty"`
 	ContentAvailable bool         `json:"content_available,omitempty"`
+	MutableContent   bool         `json:"mutable_content,omitempty"`
 	Expiry           int          `json:"expiry,omitempty"`
 	Retry            int          `json:"retry,omitempty"`
 	Extend           []ExtendJSON `json:"extend,omitempty"`
