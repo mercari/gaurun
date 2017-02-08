@@ -36,6 +36,7 @@ type LogPushEntry struct {
 	Badge            int    `json:"badge,omitempty"`
 	Sound            string `json:"sound,omitempty"`
 	ContentAvailable bool   `json:"content_available,omitempty"`
+	MutableContent   bool   `json:"mutable_content,omitempty"`
 	Expiry           int    `json:"expiry,omitempty"`
 }
 
@@ -140,6 +141,10 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 	if req.ContentAvailable {
 		contentAvailable = zap.Bool("content_available", req.ContentAvailable)
 	}
+	mutableContent := zap.Skip()
+	if req.MutableContent {
+		mutableContent = zap.Bool("mutable_content", req.MutableContent)
+	}
 	expiry := zap.Skip()
 	if req.Expiry != 0 {
 		expiry = zap.Int("expiry", req.Expiry)
@@ -158,6 +163,7 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		badge,
 		sound,
 		contentAvailable,
+		mutableContent,
 		expiry,
 	)
 }
