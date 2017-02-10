@@ -3,6 +3,7 @@ package gaurun
 import (
 	"log"
 	"math"
+	"net/http"
 	"sync/atomic"
 	"time"
 
@@ -80,13 +81,13 @@ func LogSetupFatal(err error) {
 	log.Fatal(err)
 }
 
-func LogAcceptedRequest(uri, method, proto string, length int64) {
+func LogAcceptedRequest(r *http.Request) {
 	LogAccess.Info("",
 		zap.String("type", "accepted-request"),
-		zap.String("uri", uri),
-		zap.String("method", method),
-		zap.String("proto", proto),
-		zap.Int64("content_length", length),
+		zap.String("uri", r.URL.String()),
+		zap.String("method", r.Method),
+		zap.String("proto", r.Proto),
+		zap.Int64("content_length", r.ContentLength),
 	)
 }
 
