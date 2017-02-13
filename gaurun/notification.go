@@ -1,6 +1,7 @@
 package gaurun
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -187,13 +188,13 @@ func validateNotification(notification *RequestGaurunNotification) error {
 }
 
 func sendResponse(w http.ResponseWriter, msg string, code int) {
-	var respGaurun ResponseGaurun
+	respGaurun := ResponseGaurun{
+		Message: msg,
+	}
+	buf := &bytes.Buffer{}
 
-	msgJson := "{\"message\":\"" + msg + "\"}"
-
-	err := json.Unmarshal([]byte(msgJson), &respGaurun)
-	if err != nil {
-		msgJson = "{\"message\":\"Response-body could not be created\"}"
+	if err := json.NewEncoder(buf).Encode(respGaurun); err != nil {
+		buf = bytes.NewBufferString("{\"message\":\"Response-body could not be created\"}")
 	}
 
 	w.WriteHeader(code)
@@ -201,7 +202,7 @@ func sendResponse(w http.ResponseWriter, msg string, code int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Server", serverHeader())
 
-	fmt.Fprint(w, msgJson)
+	w.Write(buf.Bytes())
 }
 
 func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
