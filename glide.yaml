@@ -11,5 +11,6 @@ import:
 - package: github.com/mercari/gcm
 - package: github.com/fukata/golang-stats-api-handler
 - package: github.com/stretchr/testify
-- package: github.com/uber-go/zap
 - package: github.com/client9/reopen
+- package: go.uber.org/atomic
+- package: go.uber.org/zap

@@ -2,21 +2,35 @@ package gaurun
 
 import (
 	"fmt"
+	"io/ioutil"
 	"testing"
-	"time"
 
-	"github.com/uber-go/zap"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 func init() {
-	encoder := zap.NewJSONEncoder(
-		zap.MessageKey("message"),
-		zap.TimeFormatter(func(t time.Time) zap.Field {
-			return zap.String("time", t.Local().Format("2006/01/02 15:04:05 MST"))
-		}),
+	cfg := zap.NewProductionConfig().EncoderConfig
+	cfg.TimeKey = "time"
+	cfg.MessageKey = "message"
+	cfg.EncodeTime = LocalTimeEncoder
+
+	encoder := zapcore.NewJSONEncoder(cfg)
+
+	LogAccess = zap.New(
+		zapcore.NewCore(
+			encoder,
+			zapcore.AddSync(ioutil.Discard),
+			zapcore.ErrorLevel,
+		),
 	)
-	LogAccess = zap.New(encoder, zap.DiscardOutput)
-	LogError = zap.New(encoder, zap.DiscardOutput)
+	LogError = zap.New(
+		zapcore.NewCore(
+			encoder,
+			zapcore.AddSync(ioutil.Discard),
+			zapcore.ErrorLevel,
+		),
+	)
 }
 
 func BenchmarkLogPushIOSOmitempty(b *testing.B) {

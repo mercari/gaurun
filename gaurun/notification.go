@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/mercari/gcm"
-	"github.com/uber-go/zap"
+	"go.uber.org/zap"
 )
 
 type RequestGaurun struct {
@@ -232,7 +232,7 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 			sendResponse(w, "failed to read request-body", http.StatusInternalServerError)
 			return
 		}
-		if m := LogError.Check(zap.DebugLevel, "parse request body"); m.OK() {
+		if m := LogError.Check(zap.DebugLevel, "parse request body"); m != nil {
 			m.Write(zap.String("body", string(reqBody)))
 		}
 		err = json.Unmarshal(reqBody, &reqGaurun)

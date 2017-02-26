@@ -5,15 +5,15 @@ import (
 	"sync"
 
 	"github.com/mercari/gcm"
-	"github.com/uber-go/zap"
+	"go.uber.org/zap"
 )
 
 var (
 	ConfGaurun        ConfToml
 	QueueNotification chan RequestGaurunNotification
 	CertificatePemIos CertificatePem
-	LogAccess         zap.Logger
-	LogError          zap.Logger
+	LogAccess         *zap.Logger
+	LogError          *zap.Logger
 	StatGaurun        StatApp
 	// for numbering push
 	OnceNumbering sync.Once
