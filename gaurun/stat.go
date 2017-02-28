@@ -2,7 +2,6 @@ package gaurun
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"sync/atomic"
 )
@@ -56,5 +55,5 @@ func StatsHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Server", serverHeader())
-	fmt.Fprintf(w, string(respBody))
+	w.Write(respBody)
 }
