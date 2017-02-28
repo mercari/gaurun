@@ -57,6 +57,8 @@ func InitLog(outString, levelString string) (*zap.Logger, Reopener, error) {
 		writer = reopen.Stdout
 	case "stderr":
 		writer = reopen.Stderr
+	case "discard":
+		writer = reopen.Discard
 	default:
 		f, err := reopen.NewFileWriterMode(outString, 0644)
 		if err != nil {

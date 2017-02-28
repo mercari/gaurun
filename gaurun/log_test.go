@@ -2,35 +2,19 @@ package gaurun
 
 import (
 	"fmt"
-	"io/ioutil"
 	"testing"
-
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
 
 func init() {
-	cfg := zap.NewProductionConfig().EncoderConfig
-	cfg.TimeKey = "time"
-	cfg.MessageKey = "message"
-	cfg.EncodeTime = LocalTimeEncoder
-
-	encoder := zapcore.NewJSONEncoder(cfg)
-
-	LogAccess = zap.New(
-		zapcore.NewCore(
-			encoder,
-			zapcore.AddSync(ioutil.Discard),
-			zapcore.ErrorLevel,
-		),
-	)
-	LogError = zap.New(
-		zapcore.NewCore(
-			encoder,
-			zapcore.AddSync(ioutil.Discard),
-			zapcore.ErrorLevel,
-		),
-	)
+	var err error
+	LogAccess, _, err = InitLog("discard", "info")
+	if err != nil {
+		LogSetupFatal(err)
+	}
+	LogError, _, err = InitLog("discard", "error")
+	if err != nil {
+		LogSetupFatal(err)
+	}
 }
 
 func BenchmarkLogPushIOSOmitempty(b *testing.B) {
