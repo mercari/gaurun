@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 )
 
@@ -49,7 +48,7 @@ func main() {
 
 	if c == 0 {
 		flag.PrintDefaults()
-		os.Exit(0)
+		return
 	}
 
 	// build request body
