@@ -13,4 +13,5 @@ const (
 	StatusAcceptedPush  = "accepted-push"
 	StatusSucceededPush = "succeeded-push"
 	StatusFailedPush    = "failed-push"
+	StatusDisabledPush  = "disabled-push"
 )

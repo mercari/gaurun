@@ -24,7 +24,7 @@ func keepAliveInterval(keepAliveTimeout int) int {
 	return result
 }
 
-func InitHttpClient() error {
+func InitGCMClient() {
 	TransportGCM := &http.Transport{
 		MaxIdleConnsPerHost: ConfGaurun.Android.KeepAliveConns,
 		Dial: (&net.Dialer{
@@ -40,7 +40,9 @@ func InitHttpClient() error {
 			Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
 		},
 	}
+}
 
+func InitAPNSClient() error {
 	var err error
 	APNSClient, err = NewApnsClientHttp2(
 		ConfGaurun.Ios.PemCertPath,

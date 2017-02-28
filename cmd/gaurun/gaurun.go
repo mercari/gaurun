@@ -99,8 +99,13 @@ func main() {
 
 	go signalHandler(sigChan, sighupHandler)
 
-	if err := gaurun.InitHttpClient(); err != nil {
-		gaurun.LogSetupFatal(fmt.Errorf("failed to init http client"))
+	if gaurun.ConfGaurun.Android.Enabled {
+		gaurun.InitGCMClient()
+	}
+	if gaurun.ConfGaurun.Ios.Enabled {
+		if err := gaurun.InitAPNSClient(); err != nil {
+			gaurun.LogSetupFatal(fmt.Errorf("failed to init http client"))
+		}
 	}
 	gaurun.InitStat()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)

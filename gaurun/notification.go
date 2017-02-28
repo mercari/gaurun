@@ -67,14 +67,16 @@ func enqueueNotifications(notifications []RequestGaurunNotification) {
 		case PlatFormAndroid:
 			enabledPush = ConfGaurun.Android.Enabled
 		}
-		if enabledPush {
-			// Enqueue notification per token
-			for _, token := range notification.Tokens {
-				notification2 := notification
-				notification2.Tokens = []string{token}
-				notification2.ID = numberingPush()
+		// Enqueue notification per token
+		for _, token := range notification.Tokens {
+			notification2 := notification
+			notification2.Tokens = []string{token}
+			notification2.ID = numberingPush()
+			if enabledPush {
 				LogPush(notification2.ID, StatusAcceptedPush, token, 0, notification2, nil)
 				QueueNotification <- notification2
+			} else {
+				LogPush(notification2.ID, StatusDisabledPush, token, 0, notification2, nil)
 			}
 		}
 	}

@@ -114,6 +114,8 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 	case StatusSucceededPush:
 		logger = LogAccess.Info
 	case StatusFailedPush:
+		fallthrough
+	case StatusDisabledPush:
 		logger = LogError.Error
 	}
 
