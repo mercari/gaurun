@@ -121,7 +121,7 @@ func main() {
 		}
 	}()
 
-	// Graceful shutdown (kicked by TERM ).
+	// Graceful shutdown (kicked by SIGTERM).
 	//
 	// First, it shutdowns server and stops accepting new requests.
 	// Then wait until all remaining queues in buffer are flushed.
@@ -137,11 +137,21 @@ func main() {
 		gaurun.LogError.Error(fmt.Sprintf("failed to shutdown server: %v", err))
 	}
 
-	gaurun.LogError.Info("wait until queue is empty")
-	flushWaitInterval := 1 * time.Second
-	for len(gaurun.QueueNotification) > 0 {
-		time.Sleep(flushWaitInterval)
-	}
+	// Start a goroutine to log number of job queue.
+	go func() {
+		for {
+			queue := len(gaurun.QueueNotification)
+			if queue == 0 {
+				break
+			}
+
+			gaurun.LogError.Info(fmt.Sprintf("wait until queue is empty. Current queue len: %d", queue))
+			time.Sleep(3 * time.Second)
+		}
+	}()
+
+	// Block until all pusher worker job is done.
+	gaurun.PusherWg.Wait()
 
 	gaurun.LogError.Info("successfully shutdown")
 }

@@ -3,6 +3,7 @@ package gaurun
 import (
 	"fmt"
 	"strings"
+	"sync"
 	"sync/atomic"
 
 	"github.com/RobotsAndPencils/buford/push"
@@ -11,6 +12,12 @@ import (
 var (
 	// PusherCountAll is the shared value between workers
 	PusherCountAll int64
+
+	// PusherWg is global wait group for pusher worker.
+	// It increments when new pusher is swapned and decrements when job is done.
+	//
+	// This is used to block main process to shutdown while pusher is still working.
+	PusherWg sync.WaitGroup
 )
 
 func init() {
@@ -41,6 +48,8 @@ func isExternalServerError(err error, platform int) bool {
 }
 
 func pushSync(pusher func(req RequestGaurunNotification) error, req RequestGaurunNotification, retryMax int) {
+	PusherWg.Add(1)
+	defer PusherWg.Done()
 Retry:
 	err := pusher(req)
 	if err != nil && req.Retry < retryMax && isExternalServerError(err, req.Platform) {
@@ -51,6 +60,9 @@ Retry:
 
 func pushAsync(pusher func(req RequestGaurunNotification) error, req RequestGaurunNotification, retryMax int, pusherCount *int64) {
 Retry:
+	PusherWg.Add(1)
+	defer PusherWg.Done()
+
 	err := pusher(req)
 	if err != nil && req.Retry < retryMax && isExternalServerError(err, req.Platform) {
 		req.Retry++
