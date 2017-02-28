@@ -54,4 +54,4 @@ The configuration for Gaurun has some sections. The example is [here](conf/gauru
 |error_log |string|error log path |stderr |                                 |
 |level     |string|log level      |error  |panic,fatal,error,warn,info,debug|
 
-`access_log` and `error_log` are allowed to give not only file-path but `stdout` and `stderr`.
+`access_log` and `error_log` are allowed to give not only file-path but `stdout` and `stderr` and `discard`.
