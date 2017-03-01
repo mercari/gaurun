@@ -59,10 +59,8 @@ Retry:
 }
 
 func pushAsync(pusher func(req RequestGaurunNotification) error, req RequestGaurunNotification, retryMax int, pusherCount *int64) {
-Retry:
-	PusherWg.Add(1)
 	defer PusherWg.Done()
-
+Retry:
 	err := pusher(req)
 	if err != nil && req.Retry < retryMax && isExternalServerError(err, req.Platform) {
 		req.Retry++
@@ -109,7 +107,7 @@ func pushNotificationWorker() {
 			// as the increment in goroutine runs asynchronously.
 			atomic.AddInt64(&pusherCount, 1)
 			atomic.AddInt64(&PusherCountAll, 1)
-
+			PusherWg.Add(1)
 			go pushAsync(pusher, notification, retryMax, &pusherCount)
 			continue
 		} else {
