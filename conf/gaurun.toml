@@ -4,6 +4,7 @@ port = "1056"
 workers = 8
 queues = 8192
 notification_max = 100
+shutdown_timeout = 30
 
 [android]
 apikey = "apikey for GCM"

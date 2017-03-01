@@ -1,12 +1,16 @@
-hash: 1d8ce5f39cdc9b08cdb37a41b79806844e7824bf455fd92d6537c663e8b1833c
-updated: 2017-02-26T19:47:56.005040148+09:00
+hash: 079a45997e1687b1af2ffa25fcf4fd0377f5b2b0a42886079c63a89bb2401d78
+updated: 2017-03-01T14:02:52.14659913+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
 - name: github.com/client9/reopen
-  version: 5b538a6a4495a82ff9144319c4f00e1c5fe07694
+  version: 4b86f9c0ead51cc410d05655596e30f281ed9071
 - name: github.com/fukata/golang-stats-api-handler
   version: ab9f90f16caab828afda479fd34bfbbbba2efcee
+- name: github.com/lestrrat/go-server-starter
+  version: 901cec093d58ca36652e8d7906e4bd3e32793801
+  subpackages:
+  - listener
 - name: github.com/mercari/gcm
   version: 987b1dc4ce9034b698395d35de1aadf999388b8f
 - name: github.com/RobotsAndPencils/buford
@@ -16,7 +20,7 @@ imports:
   - payload/badge
   - push
 - name: github.com/stretchr/testify
-  version: 4d4bfba8f1d1027c4fdbe371823030df51419987
+  version: 18a02ba4a312f95da08ff4cfc0055750ce50ae9e
   subpackages:
   - assert
   - require
@@ -32,7 +36,7 @@ imports:
   - internal/multierror
   - zapcore
 - name: golang.org/x/net
-  version: 10c134ea0df15f7e34d789338c7a2d76cc7a3ab9
+  version: 4971afdc2f162e82d185353533d3cf16188a9f4e
   subpackages:
   - http2
   - http2/hpack
