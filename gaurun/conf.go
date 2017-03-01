@@ -25,6 +25,7 @@ type SectionCore struct {
 	QueueNum        int64  `toml:"queues"`
 	NotificationMax int64  `toml:"notification_max"`
 	PusherMax       int64  `toml:"pusher_max"`
+	ShutdownTimeout int64  `toml:"shutdown_timeout"`
 }
 
 type SectionAndroid struct {
@@ -64,6 +65,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Core.QueueNum = 8192
 	conf.Core.NotificationMax = 100
 	conf.Core.PusherMax = 0
+	conf.Core.ShutdownTimeout = 10
 	// Android
 	conf.Android.ApiKey = ""
 	conf.Android.Enabled = true

@@ -13,3 +13,4 @@ import:
 - package: github.com/stretchr/testify
 - package: github.com/uber-go/zap
 - package: github.com/client9/reopen
+- package: github.com/lestrrat/go-server-starter

@@ -25,7 +25,7 @@ There are two way to install Gaurun; using a precompiled binary or install from 
 
 To install a precompiled binary, download the appropriate zip package for your OS and architecture from [here](https://github.com/mercari/gaurun/releases). Once the zip is downloaded, unzip it and place the binary where you want to use (if you want to access it from the command-line, make sure to put it on `$PATH`).
 
-To compile from source, you need Go1.7.3 or later (including `$GOPATH` setup) and [glide](https://github.com/Masterminds/glide) for dependency management. After setup, then clone the source code by running the following command,
+To compile from source, you need Go1.8 or later (including `$GOPATH` setup) and [glide](https://github.com/Masterminds/glide) for dependency management. After setup, then clone the source code by running the following command,
 
 ```bash
 $ mkdir -p $GOPATH/src/github.com/mercari
