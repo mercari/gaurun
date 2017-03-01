@@ -146,7 +146,7 @@ func main() {
 			}
 
 			gaurun.LogError.Info(fmt.Sprintf("wait until queue is empty. Current queue len: %d", queue))
-			time.Sleep(3 * time.Second)
+			time.Sleep(1 * time.Second)
 		}
 	}()
 
