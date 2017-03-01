@@ -1,5 +1,5 @@
-hash: d3eeb4e68bd90fea7711484b9032c3ae0249bda1305dc5f501e872e2e767a303
-updated: 2017-01-24T12:49:27.499393495+09:00
+hash: 079a45997e1687b1af2ffa25fcf4fd0377f5b2b0a42886079c63a89bb2401d78
+updated: 2017-03-01T14:02:52.14659913+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
@@ -25,10 +25,16 @@ imports:
   - assert
   - require
   - suite
-- name: github.com/uber-go/atomic
-  version: 9e99152552a6ce13fa3b2ce4a9c4fb117cca4506
-- name: github.com/uber-go/zap
-  version: 11e8d8f6b3c9c574462f8278f3f2b7eb56b12e27
+- name: go.uber.org/atomic
+  version: 3b8db5e93c4c02efbc313e17b2e796b0914a01fb
+- name: go.uber.org/zap
+  version: 12592ca48efc73057c0edcdddc2a279b37c2b27b
+  subpackages:
+  - buffer
+  - internal/bufferpool
+  - internal/exit
+  - internal/multierror
+  - zapcore
 - name: golang.org/x/net
   version: 4971afdc2f162e82d185353533d3cf16188a9f4e
   subpackages:

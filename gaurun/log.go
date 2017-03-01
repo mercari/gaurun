@@ -8,7 +8,8 @@ import (
 	"time"
 
 	"github.com/client9/reopen"
-	"github.com/uber-go/zap"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 type LogReq struct {
@@ -45,13 +46,19 @@ type Reopener interface {
 	Reopen() error
 }
 
-func InitLog(outString, levelString string) (zap.Logger, Reopener, error) {
+func LocalTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+	enc.AppendString(t.Format("2006/01/02 15:04:05 MST"))
+}
+
+func InitLog(outString, levelString string) (*zap.Logger, Reopener, error) {
 	var writer reopen.Writer
 	switch outString {
 	case "stdout":
 		writer = reopen.Stdout
 	case "stderr":
 		writer = reopen.Stderr
+	case "discard":
+		writer = reopen.Discard
 	default:
 		f, err := reopen.NewFileWriterMode(outString, 0644)
 		if err != nil {
@@ -60,20 +67,28 @@ func InitLog(outString, levelString string) (zap.Logger, Reopener, error) {
 		writer = f
 	}
 
-	encoder := zap.NewJSONEncoder(
-		zap.MessageKey("message"),
-		zap.TimeFormatter(func(t time.Time) zap.Field {
-			return zap.String("time", t.Local().Format("2006/01/02 15:04:05 MST"))
-		}),
-	)
-
-	var level zap.Level
+	var level zapcore.Level
 	if err := level.UnmarshalText([]byte(levelString)); err != nil {
 		return nil, nil, err
 	}
 
-	writeSyncer := zap.AddSync(writer)
-	return zap.New(encoder, level, zap.Output(writeSyncer), zap.ErrorOutput(writeSyncer)), writer, nil
+	cfg := zap.NewProductionConfig().EncoderConfig
+	cfg.TimeKey = "time"
+	cfg.MessageKey = "message"
+	cfg.EncodeTime = LocalTimeEncoder
+
+	encoder := zapcore.NewJSONEncoder(cfg)
+	writeSyncer := zapcore.AddSync(writer)
+	logger := zap.New(
+		zapcore.NewCore(
+			encoder,
+			zapcore.Lock(writeSyncer),
+			level,
+		),
+		zap.ErrorOutput(writeSyncer),
+	)
+
+	return logger, writer, nil
 }
 
 // LogSetupFatal output error log with log package and exit immediately.
@@ -107,7 +122,7 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		errMsg = errPush.Error()
 	}
 
-	var logger func(string, ...zap.Field)
+	var logger func(string, ...zapcore.Field)
 	switch status {
 	case StatusAcceptedPush:
 		fallthrough
