@@ -107,7 +107,7 @@ func main() {
 	}
 	if gaurun.ConfGaurun.Ios.Enabled {
 		if err := gaurun.InitAPNSClient(); err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("failed to init http client: %v", err))
+			gaurun.LogSetupFatal(fmt.Errorf("failed to init http client for APNs: %v", err))
 		}
 	}
 	gaurun.InitStat()
