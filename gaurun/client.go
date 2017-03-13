@@ -25,6 +25,13 @@ func keepAliveInterval(keepAliveTimeout int) int {
 }
 
 func InitGCMClient() {
+	// By default, use GCM endpoint. If UseFCM is explicitly enabled via configuration,
+	// use FCM endpoint.
+	GCMClient, _ := gcm.NewClient(gcm.GcmSendEndpoint, ConfGaurun.Android.ApiKey)
+	if ConfGaurun.Android.UseFCM {
+		GCMClient, _ = gcm.NewClient(gcm.FCMSendEndpoint, ConfGaurun.Android.ApiKey)
+	}
+
 	TransportGCM := &http.Transport{
 		MaxIdleConnsPerHost: ConfGaurun.Android.KeepAliveConns,
 		Dial: (&net.Dialer{
@@ -33,12 +40,10 @@ func InitGCMClient() {
 		}).Dial,
 		IdleConnTimeout: time.Duration(ConfGaurun.Android.KeepAliveTimeout) * time.Second,
 	}
-	GCMClient = &gcm.Sender{
-		ApiKey: ConfGaurun.Android.ApiKey,
-		Http: &http.Client{
-			Transport: TransportGCM,
-			Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
-		},
+
+	GCMClient.Http = &http.Client{
+		Transport: TransportGCM,
+		Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
 	}
 }
 
