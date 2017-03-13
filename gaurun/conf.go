@@ -35,6 +35,7 @@ type SectionAndroid struct {
 	KeepAliveTimeout int    `toml:"keepalive_timeout"`
 	KeepAliveConns   int    `toml:"keepalive_conns"`
 	RetryMax         int    `toml:"retry_max"`
+	UseFCM           bool   `toml:"use_fcm"`
 }
 
 type SectionIos struct {

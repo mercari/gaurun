@@ -6,14 +6,14 @@
 <img src="https://raw.githubusercontent.com/mercari/gaurun/master/img/logo.png" alt="logo" align="right"/>
 
 
-Gaurun is a general push notification server written in Golang. It proxies push requests to APNs and GCM and asynchronously executes them via HTTP/2. It helps you when you need to bulkly sends push notification to your users (e.g., when you need to exec 10 million push at once!) or when some other API server which must response quickly needs to push. Since it leverages Golang's powerful concurrent feature, it gives high performance. 
+Gaurun is a general push notification server written in Golang. It proxies push requests to APNs and GCM/FCM and asynchronously executes them via HTTP/2. It helps you when you need to bulkly sends push notification to your users (e.g., when you need to exec 10 million push at once!) or when some other API server which must response quickly needs to push. Since it leverages Golang's powerful concurrent feature, it gives high performance. 
 
 In addition to performance, it's important not to lost pushes over sever crashes or hardware failures. Gaurun can use its access log for kind of transaction journal and can re-push only failed notification later (We provide a special command for this. See [Usage](#usage)). 
 
 Currently we support the following platforms:
 
 - [Apple APNs](https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/APNSOverview.html)
-- [Google GCM](https://developers.google.com/cloud-messaging/)
+- [Google GCM](https://developers.google.com/cloud-messaging/) / [Google FCM](https://firebase.google.com/docs/cloud-messaging/)
 
 ## Status
 
