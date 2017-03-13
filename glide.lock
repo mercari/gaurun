@@ -1,5 +1,5 @@
-hash: 079a45997e1687b1af2ffa25fcf4fd0377f5b2b0a42886079c63a89bb2401d78
-updated: 2017-03-01T14:02:52.14659913+09:00
+hash: f22182a703fd05f48705c5845183424b6dd98a7d8931a91fc1ef6b8853bee355
+updated: 2017-03-15T15:00:23.26316214+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
@@ -12,7 +12,7 @@ imports:
   subpackages:
   - listener
 - name: github.com/mercari/gcm
-  version: 987b1dc4ce9034b698395d35de1aadf999388b8f
+  version: a30cd8c437aa08cd620f8fec0cbdc8928097014b
 - name: github.com/RobotsAndPencils/buford
   version: 1589c179b764ddceb204a439d9bf366f04c55f9b
   subpackages:

@@ -8,7 +8,6 @@ import:
   - payload
   - payload/badge
   - push
-- package: github.com/mercari/gcm
 - package: github.com/fukata/golang-stats-api-handler
 - package: github.com/stretchr/testify
 - package: github.com/client9/reopen

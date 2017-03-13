@@ -46,6 +46,7 @@ The configuration for Gaurun has some sections. The example is [here](conf/gauru
 |keepalive_timeout|int   |time for continuing keep-alive connection to GCM|90     |    |
 |keepalive_conns  |int   |number of keep-alive connection to GCM          |runtime.NumCPU()||
 |retry_max        |int   |maximum retry count for push notication to GCM  |1      |    |
+|use_fcm          |bool  |Use FCM endpoint instead of GCM (by default, `gaurun` uses GCM endpoint)  |false      |    |
 
 ## Log Section
 

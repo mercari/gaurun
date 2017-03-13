@@ -10,7 +10,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/mercari/gcm"
+	"github.com/mercari/gaurun/service/google"
+
 	"go.uber.org/zap"
 )
 
@@ -140,7 +141,7 @@ func pushNotificationAndroid(req RequestGaurunNotification) error {
 
 	token := req.Tokens[0]
 
-	msg := gcm.NewMessage(data, token)
+	msg := google.NewMessage(data, token)
 	msg.CollapseKey = req.CollapseKey
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive
