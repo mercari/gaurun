@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/mercari/gaurun/service/google"
+	"github.com/mercari/gaurun/gcm"
 )
 
 func keepAliveInterval(keepAliveTimeout int) int {
@@ -28,13 +28,13 @@ func keepAliveInterval(keepAliveTimeout int) int {
 func InitGCMClient() error {
 	// By default, use GCM endpoint. If UseFCM is explicitly enabled via configuration,
 	// use FCM endpoint.
-	url := google.GCMSendEndpoint
+	url := gcm.GCMSendEndpoint
 	if ConfGaurun.Android.UseFCM {
-		url = google.FCMSendEndpoint
+		url = gcm.FCMSendEndpoint
 	}
 
 	var err error
-	GCMClient, err = google.NewClient(url, ConfGaurun.Android.ApiKey)
+	GCMClient, err = gcm.NewClient(url, ConfGaurun.Android.ApiKey)
 	if err != nil {
 		return err
 	}

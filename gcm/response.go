@@ -1,4 +1,4 @@
-package google
+package gcm
 
 // Response represents the GCM server's response to the application
 // server's sent message. See the documentation for GCM Architectural

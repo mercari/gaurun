@@ -13,12 +13,12 @@ import (
 	"time"
 
 	"github.com/mercari/gaurun/gaurun"
-	"github.com/mercari/gaurun/service/google"
+	"github.com/mercari/gaurun/gcm"
 )
 
 var (
 	APNSClient *http.Client
-	GCMClient  *google.Client
+	GCMClient  *gcm.Client
 )
 
 func pushNotification(wg *sync.WaitGroup, req gaurun.RequestGaurunNotification, logPush gaurun.LogPushEntry) {
@@ -42,7 +42,7 @@ func pushNotification(wg *sync.WaitGroup, req gaurun.RequestGaurunNotification, 
 
 func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 	data := map[string]interface{}{"message": req.Message}
-	msg := google.NewMessage(data, req.Tokens...)
+	msg := gcm.NewMessage(data, req.Tokens...)
 	msg.CollapseKey = req.CollapseKey
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive
@@ -144,12 +144,12 @@ func main() {
 	}
 	APNSClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
 
-	targetURL := google.GCMSendEndpoint
+	targetURL := gcm.GCMSendEndpoint
 	if gaurun.ConfGaurun.Android.UseFCM {
-		targetURL = google.FCMSendEndpoint
+		targetURL = gcm.FCMSendEndpoint
 	}
 
-	GCMClient, err := google.NewClient(targetURL, gaurun.ConfGaurun.Android.ApiKey)
+	GCMClient, err := gcm.NewClient(targetURL, gaurun.ConfGaurun.Android.ApiKey)
 	if err != nil {
 		gaurun.LogSetupFatal(err)
 	}
