@@ -11,8 +11,6 @@ imports:
   version: 901cec093d58ca36652e8d7906e4bd3e32793801
   subpackages:
   - listener
-- name: github.com/mercari/gcm
-  version: a30cd8c437aa08cd620f8fec0cbdc8928097014b
 - name: github.com/RobotsAndPencils/buford
   version: 1589c179b764ddceb204a439d9bf366f04c55f9b
   subpackages:
