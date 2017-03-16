@@ -13,12 +13,12 @@ import (
 	"time"
 
 	"github.com/mercari/gaurun/gaurun"
-	"github.com/mercari/gcm"
+	"github.com/mercari/gaurun/gcm"
 )
 
 var (
 	APNSClient *http.Client
-	GCMClient  *gcm.Sender
+	GCMClient  *gcm.Client
 )
 
 func pushNotification(wg *sync.WaitGroup, req gaurun.RequestGaurunNotification, logPush gaurun.LogPushEntry) {
@@ -144,6 +144,16 @@ func main() {
 	}
 	APNSClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
 
+	targetURL := gcm.GCMSendEndpoint
+	if gaurun.ConfGaurun.Android.UseFCM {
+		targetURL = gcm.FCMSendEndpoint
+	}
+
+	GCMClient, err := gcm.NewClient(targetURL, gaurun.ConfGaurun.Android.ApiKey)
+	if err != nil {
+		gaurun.LogSetupFatal(err)
+	}
+
 	TransportGCM := &http.Transport{
 		MaxIdleConnsPerHost: gaurun.ConfGaurun.Android.KeepAliveConns,
 		Dial: (&net.Dialer{
@@ -151,12 +161,10 @@ func main() {
 			KeepAlive: time.Duration(gaurun.ConfGaurun.Android.KeepAliveTimeout) * time.Second,
 		}).Dial,
 	}
-	GCMClient = &gcm.Sender{
-		ApiKey: gaurun.ConfGaurun.Android.ApiKey,
-		Http: &http.Client{
-			Transport: TransportGCM,
-			Timeout:   time.Duration(gaurun.ConfGaurun.Android.Timeout) * time.Second,
-		},
+
+	GCMClient.Http = &http.Client{
+		Transport: TransportGCM,
+		Timeout:   time.Duration(gaurun.ConfGaurun.Android.Timeout) * time.Second,
 	}
 
 	wg := new(sync.WaitGroup)

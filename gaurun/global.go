@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/mercari/gcm"
+	"github.com/mercari/gaurun/gcm"
+
 	"go.uber.org/zap"
 )
 
@@ -19,6 +20,6 @@ var (
 	OnceNumbering sync.Once
 	WgNumbering   *sync.WaitGroup
 	SeqID         uint64
-	GCMClient     *gcm.Sender
+	GCMClient     *gcm.Client
 	APNSClient    *http.Client
 )

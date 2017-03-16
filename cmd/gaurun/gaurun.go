@@ -103,8 +103,11 @@ func main() {
 	go signalHandler(sigHUPChan, sighupHandler)
 
 	if gaurun.ConfGaurun.Android.Enabled {
-		gaurun.InitGCMClient()
+		if err := gaurun.InitGCMClient(); err != nil {
+			gaurun.LogSetupFatal(fmt.Errorf("failed to init gcm/fcm client: %v", err))
+		}
 	}
+
 	if gaurun.ConfGaurun.Ios.Enabled {
 		if err := gaurun.InitAPNSClient(); err != nil {
 			gaurun.LogSetupFatal(fmt.Errorf("failed to init http client for APNs: %v", err))
