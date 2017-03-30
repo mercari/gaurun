@@ -72,6 +72,7 @@ API specification is defined on [SPEC.md](/SPEC.md).
 
  * Tatsuhiko Kubo([@cubicdaiya](https://github.com/cubicdaiya))
  * Masahiro Sano([@kazegusuri](https://github.com/kazegusuri))
+ * Taichi Nakashima([@tcnksm](https://github.com/tcnksm))
 
 ## Contribution
 
