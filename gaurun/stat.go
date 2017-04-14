@@ -13,6 +13,7 @@ type StatApp struct {
 	PusherCount int64       `json:"pusher_count"`
 	Ios         StatIos     `json:"ios"`
 	Android     StatAndroid `json:"android"`
+	Fake        StatFake    `json:"fake"`
 }
 
 type StatAndroid struct {
@@ -21,6 +22,12 @@ type StatAndroid struct {
 }
 
 type StatIos struct {
+	PushSuccess int64 `json:"push_success"`
+	PushError   int64 `json:"push_error"`
+}
+
+// StatFake is stat for fake pusher.
+type StatFake struct {
 	PushSuccess int64 `json:"push_success"`
 	PushError   int64 `json:"push_error"`
 }

@@ -7,6 +7,9 @@ const (
 const (
 	PlatFormIos = iota + 1
 	PlatFormAndroid
+
+	// This is used for performance tuning or test.
+	PlatformFake = 100
 )
 
 const (

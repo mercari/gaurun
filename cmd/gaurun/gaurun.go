@@ -20,6 +20,7 @@ func main() {
 	listenPort := flag.String("p", "", "port number or unix socket path")
 	workerNum := flag.Int64("w", 0, "number of workers for push notification")
 	queueNum := flag.Int64("q", 0, "size of internal queue for push notification")
+	faker := flag.Bool("faker", false, "Run as faker mode (push nothing) for performance tuning")
 	flag.Parse()
 
 	if *versionPrinted {
@@ -65,27 +66,42 @@ func main() {
 	gaurun.LogAccess = accessLogger
 	gaurun.LogError = errorLogger
 
-	if !gaurun.ConfGaurun.Ios.Enabled && !gaurun.ConfGaurun.Android.Enabled {
-		gaurun.LogSetupFatal(fmt.Errorf("What do you want to do?"))
-	}
-
-	if gaurun.ConfGaurun.Ios.Enabled {
-		gaurun.CertificatePemIos.Cert, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
-		if err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("A certification file for iOS is not found."))
+	if !*faker {
+		if !gaurun.ConfGaurun.Ios.Enabled && !gaurun.ConfGaurun.Android.Enabled {
+			gaurun.LogSetupFatal(fmt.Errorf("What do you want to do?"))
 		}
 
-		gaurun.CertificatePemIos.Key, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
-		if err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("A key file for iOS is not found."))
+		if gaurun.ConfGaurun.Ios.Enabled {
+			gaurun.CertificatePemIos.Cert, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
+			if err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("A certification file for iOS is not found."))
+			}
+
+			gaurun.CertificatePemIos.Key, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
+			if err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("A key file for iOS is not found."))
+			}
+
 		}
 
-	}
-
-	if gaurun.ConfGaurun.Android.Enabled {
-		if gaurun.ConfGaurun.Android.ApiKey == "" {
-			gaurun.LogSetupFatal(fmt.Errorf("APIKey for Android is empty."))
+		if gaurun.ConfGaurun.Android.Enabled {
+			if gaurun.ConfGaurun.Android.ApiKey == "" {
+				gaurun.LogSetupFatal(fmt.Errorf("APIKey for Android is empty."))
+			}
 		}
+
+		if gaurun.ConfGaurun.Android.Enabled {
+			if err := gaurun.InitGCMClient(); err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("failed to init gcm/fcm client: %v", err))
+			}
+		}
+
+		if gaurun.ConfGaurun.Ios.Enabled {
+			if err := gaurun.InitAPNSClient(); err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("failed to init http client for APNs: %v", err))
+			}
+		}
+
 	}
 
 	sigHUPChan := make(chan os.Signal, 1)
@@ -102,17 +118,6 @@ func main() {
 
 	go signalHandler(sigHUPChan, sighupHandler)
 
-	if gaurun.ConfGaurun.Android.Enabled {
-		if err := gaurun.InitGCMClient(); err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("failed to init gcm/fcm client: %v", err))
-		}
-	}
-
-	if gaurun.ConfGaurun.Ios.Enabled {
-		if err := gaurun.InitAPNSClient(); err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("failed to init http client for APNs: %v", err))
-		}
-	}
 	gaurun.InitStat()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
 

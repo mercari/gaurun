@@ -61,12 +61,15 @@ func enqueueNotifications(notifications []RequestGaurunNotification) {
 			LogError.Error(err.Error())
 			continue
 		}
+
 		var enabledPush bool
 		switch notification.Platform {
 		case PlatFormIos:
 			enabledPush = ConfGaurun.Ios.Enabled
 		case PlatFormAndroid:
 			enabledPush = ConfGaurun.Android.Enabled
+		case PlatformFake:
+			enabledPush = true
 		}
 		// Enqueue notification per token
 		for _, token := range notification.Tokens {
@@ -179,10 +182,6 @@ func validateNotification(notification *RequestGaurunNotification) error {
 		}
 	}
 
-	if notification.Platform < 1 || notification.Platform > 2 {
-		return errors.New("invalid platform")
-	}
-
 	if len(notification.Message) == 0 {
 		return errors.New("empty message")
 	}
@@ -266,4 +265,20 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 
 	LogError.Debug("response to client")
 	sendResponse(w, "ok", http.StatusOK)
+}
+
+// fakePush implements pusher interface but does nothing.
+// This is used for performance tuning.
+func fakePush(req RequestGaurunNotification) error {
+	LogError.Info("Start fake push: " + req.Message)
+	defer LogError.Info("End fake push")
+
+	stime := time.Now()
+	time.Sleep(100 * time.Millisecond) // does nothing
+	ptime := time.Now().Sub(stime).Seconds()
+
+	atomic.AddInt64(&StatGaurun.Fake.PushSuccess, 1)
+	LogPush(req.ID, StatusSucceededPush, req.Tokens[0], ptime, req, nil)
+
+	return nil
 }

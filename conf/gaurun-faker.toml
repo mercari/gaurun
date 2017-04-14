@@ -1,0 +1,11 @@
+[core]
+port = "1056"
+workers = 3
+queues = 8192
+notification_max = 100
+shutdown_timeout = 30
+
+[log]
+access_log = "stdout"
+error_log = "stderr"
+level = "debug"
