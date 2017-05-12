@@ -74,12 +74,12 @@ func NewClient(urlString, apiKey string) (*Client, error) {
 // SendNoRetry sends a message to the GCM server without retrying in case of
 // service unavailability. A non-nil error is returned if a non-recoverable
 // error occurs (i.e. if the response status is not "200 OK").
-func (s *Client) SendNoRetry(msg *Message) (*Response, error) {
+func (c *Client) SendNoRetry(msg *Message) (*Response, error) {
 	if err := msg.validate(); err != nil {
 		return nil, err
 	}
 
-	return s.send(msg)
+	return c.send(msg)
 }
 
 // Send sends a message to the GCM server, retrying in case of service
@@ -88,7 +88,7 @@ func (s *Client) SendNoRetry(msg *Message) (*Response, error) {
 //
 // Note that messages are retried using exponential backoff, and as a
 // result, this method may block for several seconds.
-func (s *Client) Send(msg *Message, retries int) (*Response, error) {
+func (c *Client) Send(msg *Message, retries int) (*Response, error) {
 	if err := msg.validate(); err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (s *Client) Send(msg *Message, retries int) (*Response, error) {
 	}
 
 	// Send the message for the first time.
-	resp, err := s.send(msg)
+	resp, err := c.send(msg)
 	if err != nil {
 		return nil, err
 	} else if resp.Failure == 0 || retries == 0 {
@@ -113,7 +113,7 @@ func (s *Client) Send(msg *Message, retries int) (*Response, error) {
 		sleepTime := backoff/2 + rand.Intn(backoff)
 		time.Sleep(time.Duration(sleepTime) * time.Millisecond)
 		backoff = min(2*backoff, maxBackoffDelay)
-		if resp, err = s.send(msg); err != nil {
+		if resp, err = c.send(msg); err != nil {
 			msg.RegistrationIDs = regIDs
 			return nil, err
 		}
@@ -148,21 +148,21 @@ func (s *Client) Send(msg *Message, retries int) (*Response, error) {
 	}, nil
 }
 
-func (s *Client) send(msg *Message) (*Response, error) {
+func (c *Client) send(msg *Message) (*Response, error) {
 	var buf bytes.Buffer
 	encoder := json.NewEncoder(&buf)
 	if err := encoder.Encode(msg); err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", s.URL, &buf)
+	req, err := http.NewRequest("POST", c.URL, &buf)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Authorization", fmt.Sprintf("key=%s", s.ApiKey))
+	req.Header.Add("Authorization", fmt.Sprintf("key=%s", c.ApiKey))
 	req.Header.Add("Content-Type", "application/json")
 
-	resp, err := s.Http.Do(req)
+	resp, err := c.Http.Do(req)
 	if err != nil {
 		return nil, err
 	}
