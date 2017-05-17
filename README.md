@@ -82,7 +82,7 @@ https://www.mercari.com/cla/
 
 ## License
 
-Copyright 2014-2016 Mercari, Inc.
+Copyright 2014-2017 Mercari, Inc.
 
 
 Licensed under the MIT License.
