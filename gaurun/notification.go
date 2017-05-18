@@ -135,7 +135,7 @@ func pushNotificationAndroid(req RequestGaurunNotification) error {
 	msg.TimeToLive = req.TimeToLive
 
 	stime := time.Now()
-	resp, err := GCMClient.SendNoRetry(msg)
+	resp, err := GCMClient.Send(msg)
 	etime := time.Now()
 	ptime := etime.Sub(stime).Seconds()
 	if err != nil {

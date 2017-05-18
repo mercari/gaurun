@@ -47,7 +47,6 @@ func TestNewClient(t *testing.T) {
 func TestSend(t *testing.T) {
 	cases := []struct {
 		serverResponses []*testResponse
-		retry           int
 		failure         int
 		success         bool
 	}{
@@ -56,7 +55,6 @@ func TestSend(t *testing.T) {
 				{Response: &Response{}},
 			},
 			0,
-			0,
 			true,
 		},
 
@@ -64,40 +62,6 @@ func TestSend(t *testing.T) {
 			[]*testResponse{
 				{StatusCode: http.StatusBadRequest},
 			},
-			0,
-			0,
-			false,
-		},
-
-		// Should succeed after one retry.
-		{
-			[]*testResponse{
-				{Response: &Response{Failure: 1, Results: []Result{{Error: "Unavailable"}}}},
-				{Response: &Response{Success: 1, Results: []Result{{MessageID: "id"}}}},
-			},
-			1,
-			0,
-			true,
-		},
-
-		// Should return response with one failure.
-		{
-			[]*testResponse{
-				{Response: &Response{Failure: 1, Results: []Result{{Error: "Unavailable"}}}},
-				{Response: &Response{Failure: 1, Results: []Result{{Error: "Unavailable"}}}},
-			},
-			1,
-			1,
-			true,
-		},
-
-		// Should send should fail after one retry.
-		{
-			[]*testResponse{
-				{Response: &Response{Failure: 1, Results: []Result{{Error: "Unavailable"}}}},
-				{StatusCode: http.StatusBadRequest},
-			},
-			1,
 			0,
 			false,
 		},
@@ -110,13 +74,8 @@ func TestSend(t *testing.T) {
 			t.Fatalf("Failed to setup sender client: %s", err)
 		}
 
-		var resp *Response
 		msg := NewMessage(map[string]interface{}{"key": "value"}, "1")
-		if tc.retry == 0 {
-			resp, err = sender.SendNoRetry(msg)
-		} else {
-			resp, err = sender.Send(msg, tc.retry)
-		}
+		resp, err := sender.Send(msg)
 
 		if err != nil {
 			if tc.success {
