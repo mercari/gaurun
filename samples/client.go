@@ -24,6 +24,8 @@ type RequestGaurunNotification struct {
 	DelayWhileIdle bool   `json:"data_while_idle"`
 	TimeToLive     int    `json:"time_to_live"`
 	// iOS
+	Title            string `json:"title"`
+	Subtitle         string `json:"subtitle"`
 	Badge            int    `json:"badge"`
 	Sound            string `json:"sound"`
 	ContentAvailable bool   `json:"content_available"`
@@ -57,7 +59,9 @@ func main() {
 	if *iOSToken != "" {
 		req.Notifications[i].Tokens = append(req.Notifications[i].Tokens, *iOSToken)
 		req.Notifications[i].Platform = 1
+		req.Notifications[i].Title = "Greeting"
 		req.Notifications[i].Message = "Hello, iOS!"
+		req.Notifications[i].Subtitle = "greeting"
 		req.Notifications[i].Badge = 1
 		req.Notifications[i].Sound = "default"
 		req.Notifications[i].ContentAvailable = true

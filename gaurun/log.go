@@ -35,6 +35,8 @@ type LogPushEntry struct {
 	DelayWhileIdle bool   `json:"delay_while_idle,omitempty"`
 	TimeToLive     int    `json:"time_to_live,omitempty"`
 	// iOS
+	Title            string `json:"title,omitempty"`
+	Subtitle         string `json:"subtitle,omitempty"`
 	Badge            int    `json:"badge,omitempty"`
 	Sound            string `json:"sound,omitempty"`
 	ContentAvailable bool   `json:"content_available,omitempty"`
@@ -147,6 +149,14 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 	if req.TimeToLive != 0 {
 		timeToLive = zap.Int("time_to_live", req.TimeToLive)
 	}
+	title := zap.Skip()
+	if req.Title != "" {
+		title = zap.String("title", req.Title)
+	}
+	subtitle := zap.Skip()
+	if req.Subtitle != "" {
+		subtitle = zap.String("subtitle", req.Subtitle)
+	}
 	badge := zap.Skip()
 	if req.Badge != 0 {
 		badge = zap.Int("badge", req.Badge)
@@ -178,6 +188,8 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		collapseKey,
 		delayWhileIdle,
 		timeToLive,
+		title,
+		subtitle,
 		badge,
 		sound,
 		contentAvailable,
