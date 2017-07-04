@@ -59,8 +59,8 @@ func main() {
 	if *iOSToken != "" {
 		req.Notifications[i].Tokens = append(req.Notifications[i].Tokens, *iOSToken)
 		req.Notifications[i].Platform = 1
-		req.Notifications[i].Title = "Greeting"
 		req.Notifications[i].Message = "Hello, iOS!"
+		req.Notifications[i].Title = "Greeting"
 		req.Notifications[i].Subtitle = "greeting"
 		req.Notifications[i].Badge = 1
 		req.Notifications[i].Sound = "default"
