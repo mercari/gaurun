@@ -83,22 +83,6 @@ func enqueueNotifications(notifications []RequestGaurunNotification) {
 	}
 }
 
-func classifyByDevice(reqGaurun *RequestGaurun) ([]RequestGaurunNotification, []RequestGaurunNotification) {
-	var (
-		reqGaurunNotificationIos     []RequestGaurunNotification
-		reqGaurunNotificationAndroid []RequestGaurunNotification
-	)
-	for _, notification := range reqGaurun.Notifications {
-		switch notification.Platform {
-		case PlatFormIos:
-			reqGaurunNotificationIos = append(reqGaurunNotificationIos, notification)
-		case PlatFormAndroid:
-			reqGaurunNotificationAndroid = append(reqGaurunNotificationAndroid, notification)
-		}
-	}
-	return reqGaurunNotificationIos, reqGaurunNotificationAndroid
-}
-
 func pushNotificationIos(req RequestGaurunNotification) error {
 	LogError.Debug("START push notification for iOS")
 
