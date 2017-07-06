@@ -2,7 +2,6 @@ package gaurun
 
 import (
 	"net/http"
-	"sync"
 
 	"github.com/mercari/gaurun/gcm"
 
