@@ -187,6 +187,8 @@ func main() {
 			CollapseKey:      logPush.CollapseKey,
 			DelayWhileIdle:   logPush.DelayWhileIdle,
 			TimeToLive:       logPush.TimeToLive,
+			Title:            logPush.Title,
+			Subtitle:         logPush.Subtitle,
 			Badge:            logPush.Badge,
 			Sound:            logPush.Sound,
 			ContentAvailable: logPush.ContentAvailable,

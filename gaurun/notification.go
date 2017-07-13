@@ -29,6 +29,8 @@ type RequestGaurunNotification struct {
 	DelayWhileIdle bool   `json:"delay_while_idle,omitempty"`
 	TimeToLive     int    `json:"time_to_live,omitempty"`
 	// iOS
+	Title            string       `json:"title,omitempty"`
+	Subtitle         string       `json:"subtitle,omitempty"`
 	Badge            int          `json:"badge,omitempty"`
 	Sound            string       `json:"sound,omitempty"`
 	ContentAvailable bool         `json:"content_available,omitempty"`

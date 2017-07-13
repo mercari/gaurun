@@ -27,6 +27,8 @@ The JSON below is the request-body example.
             "token" : ["xxx"],
             "platform" : 1,
             "message" : "Hello, iOS!",
+            "title": "Greeting",
+            "subtitle": "greeting",
             "badge" : 1,
             "sound" : "default",
             "content_available" : false,
@@ -53,6 +55,8 @@ The request-body must has the `notifications` array. There is the parameter tabl
 |token            |string array|device tokens                            |o       |       |                |
 |platform         |int         |platform(iOS,Android)                    |o       |       |1=iOS, 2=Android|
 |message          |string      |message for notification                 |o       |       |                |
+|title            |string      |title for notification                   |-       |       |only iOS        |
+|subtitle         |string      |subtitle for notification                |-       |       |only iOS        |
 |badge            |int         |badge count                              |-       |0      |only iOS        |
 |sound            |string      |sound type                               |-       |       |only iOS        |
 |expiry           |int         |expiration for notification              |-       |0      |only iOS.       |
