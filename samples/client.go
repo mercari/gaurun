@@ -27,6 +27,7 @@ type RequestGaurunNotification struct {
 	Title            string `json:"title"`
 	Subtitle         string `json:"subtitle"`
 	Badge            int    `json:"badge"`
+	Category         string `json:"category"`
 	Sound            string `json:"sound"`
 	ContentAvailable bool   `json:"content_available"`
 	Expiry           int    `json:"expiry"`
@@ -63,6 +64,7 @@ func main() {
 		req.Notifications[i].Title = "Greeting"
 		req.Notifications[i].Subtitle = "greeting"
 		req.Notifications[i].Badge = 1
+		req.Notifications[i].Category = "category1"
 		req.Notifications[i].Sound = "default"
 		req.Notifications[i].ContentAvailable = true
 		i++

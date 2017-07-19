@@ -190,6 +190,7 @@ func main() {
 			Title:            logPush.Title,
 			Subtitle:         logPush.Subtitle,
 			Badge:            logPush.Badge,
+			Category:         logPush.Category,
 			Sound:            logPush.Sound,
 			ContentAvailable: logPush.ContentAvailable,
 			Expiry:           logPush.Expiry,
