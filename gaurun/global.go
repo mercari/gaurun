@@ -9,14 +9,20 @@ import (
 )
 
 var (
-	ConfGaurun        ConfToml
+	// Toml configuration for Gaurun
+	ConfGaurun ConfToml
+	// push notification Queue
 	QueueNotification chan RequestGaurunNotification
+	// TLS certificate and key for APNs
 	CertificatePemIos CertificatePem
-	LogAccess         *zap.Logger
-	LogError          *zap.Logger
-	StatGaurun        StatApp
-	// for numbering push
-	SeqID         uint64
-	GCMClient     *gcm.Client
-	APNSClient    *http.Client
+	// Stat for Gaurun
+	StatGaurun StatApp
+	// http client for APNs and GCM/FCM
+	APNSClient *http.Client
+	GCMClient  *gcm.Client
+	// access and error logger
+	LogAccess *zap.Logger
+	LogError  *zap.Logger
+	// sequence ID for numbering push
+	SeqID uint64
 )
