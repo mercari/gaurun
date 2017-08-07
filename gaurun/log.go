@@ -38,6 +38,7 @@ type LogPushEntry struct {
 	Title            string `json:"title,omitempty"`
 	Subtitle         string `json:"subtitle,omitempty"`
 	Badge            int    `json:"badge,omitempty"`
+	Category         string `json:"category,omitempty"`
 	Sound            string `json:"sound,omitempty"`
 	ContentAvailable bool   `json:"content_available,omitempty"`
 	MutableContent   bool   `json:"mutable_content,omitempty"`
@@ -161,6 +162,10 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 	if req.Badge != 0 {
 		badge = zap.Int("badge", req.Badge)
 	}
+	category := zap.Skip()
+	if req.Category != "" {
+		category = zap.String("category", req.Category)
+	}
 	sound := zap.Skip()
 	if req.Sound != "" {
 		sound = zap.String("sound", req.Sound)
@@ -191,6 +196,7 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		title,
 		subtitle,
 		badge,
+		category,
 		sound,
 		contentAvailable,
 		mutableContent,

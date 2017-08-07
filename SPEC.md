@@ -30,6 +30,7 @@ The JSON below is the request-body example.
             "title": "Greeting",
             "subtitle": "greeting",
             "badge" : 1,
+            "category": "category1",
             "sound" : "default",
             "content_available" : false,
             "mutable_content" : false,
@@ -58,6 +59,7 @@ The request-body must has the `notifications` array. There is the parameter tabl
 |title            |string      |title for notification                   |-       |       |only iOS        |
 |subtitle         |string      |subtitle for notification                |-       |       |only iOS        |
 |badge            |int         |badge count                              |-       |0      |only iOS        |
+|category         |string      |unnotification category                  |-       |       |only iOS        |
 |sound            |string      |sound type                               |-       |       |only iOS        |
 |expiry           |int         |expiration for notification              |-       |0      |only iOS.       |
 |content_available|bool        |indicate that new content is available   |-       |false  |only iOS.       |

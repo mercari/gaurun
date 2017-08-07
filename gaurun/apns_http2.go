@@ -71,6 +71,7 @@ func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} 
 	p := payload.APS{
 		Alert:            payload.Alert{Title: req.Title, Body: req.Message, Subtitle: req.Subtitle},
 		Badge:            badge.New(uint(req.Badge)),
+		Category:         req.Category,
 		Sound:            req.Sound,
 		ContentAvailable: req.ContentAvailable,
 		MutableContent:   req.MutableContent,
