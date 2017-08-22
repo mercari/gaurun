@@ -42,7 +42,8 @@ func pushNotification(wg *sync.WaitGroup, req gaurun.RequestGaurunNotification, 
 
 func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 	data := map[string]interface{}{"message": req.Message}
-	msg := gcm.NewMessage(data, req.Tokens...)
+	notification := map[string]interface{}{}
+	msg := gcm.NewMessage(data, notification, req.Tokens...)
 	msg.CollapseKey = req.CollapseKey
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive

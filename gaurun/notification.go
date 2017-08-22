@@ -124,10 +124,11 @@ func pushNotificationAndroid(req RequestGaurunNotification) error {
 			data[extend.Key] = extend.Value
 		}
 	}
+	notification := map[string]interface{}{}
 
 	token := req.Tokens[0]
 
-	msg := gcm.NewMessage(data, token)
+	msg := gcm.NewMessage(data, notification, token)
 	msg.CollapseKey = req.CollapseKey
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive
