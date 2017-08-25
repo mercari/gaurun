@@ -19,6 +19,7 @@ The configuration for Gaurun has some sections. The example is [here](conf/gauru
 |notification_max|int64 |limit of push notifications once            |100             |                                    |
 |pusher_max      |int64 |maximum goroutines for asynchronous pushing |0               |If the value is less than or equal to zero, each worker pushes synchronously|
 |shutdown_timeout|int64 |timeout to wait for connections to return to idle when server shutdown (second) | 10 | |
+|pid             |string|path to pid file                            |/tmp/gaurun.pid |                                    |
 
 ## iOS Section
 

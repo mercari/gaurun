@@ -26,6 +26,7 @@ type SectionCore struct {
 	NotificationMax int64  `toml:"notification_max"`
 	PusherMax       int64  `toml:"pusher_max"`
 	ShutdownTimeout int64  `toml:"shutdown_timeout"`
+	Pid             string `toml:"pid"`
 }
 
 type SectionAndroid struct {
@@ -67,6 +68,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Core.NotificationMax = 100
 	conf.Core.PusherMax = 0
 	conf.Core.ShutdownTimeout = 10
+	conf.Core.Pid = "/tmp/gaurun.pid"
 	// Android
 	conf.Android.ApiKey = ""
 	conf.Android.Enabled = true

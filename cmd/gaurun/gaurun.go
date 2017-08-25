@@ -8,10 +8,15 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
 	"github.com/mercari/gaurun/gaurun"
+)
+
+const (
+	PidPermission = 0644
 )
 
 func main() {
@@ -101,6 +106,11 @@ func main() {
 	}
 
 	go signalHandler(sigHUPChan, sighupHandler)
+
+	pidStr := strconv.Itoa(os.Getpid())
+	if err := ioutil.WriteFile(conf.Core.Pid, []byte(pidStr), PidPermission); err != nil {
+		gaurun.LogSetupFatal(fmt.Errorf("failed to create a pid file: %v", err))
+	}
 
 	if gaurun.ConfGaurun.Android.Enabled {
 		if err := gaurun.InitGCMClient(); err != nil {
