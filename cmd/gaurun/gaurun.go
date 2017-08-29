@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	PidPermission = 0644
+	DefaultPidPermission = 0644
 )
 
 func main() {
@@ -107,8 +107,7 @@ func main() {
 
 	go signalHandler(sigHUPChan, sighupHandler)
 
-	pidStr := strconv.Itoa(os.Getpid())
-	if err := ioutil.WriteFile(conf.Core.Pid, []byte(pidStr), PidPermission); err != nil {
+	if err := ioutil.WriteFile(conf.Core.Pid, []byte(strconv.Itoa(os.Getpid())), DefaultPidPermission); err != nil {
 		gaurun.LogSetupFatal(fmt.Errorf("failed to create a pid file: %v", err))
 	}
 
