@@ -36,7 +36,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.QueueNum, int64(8192))
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, int64(100))
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.PusherMax, int64(0))
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.Pid, "/tmp/gaurun.pid")
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.Pid, "/tmp/core.pid")
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.ApiKey, "")
@@ -68,7 +68,7 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.QueueNum, int64(8192))
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.NotificationMax, int64(100))
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.PusherMax, int64(0))
-	assert.Equal(suite.T(), suite.ConfGaurun.Core.Pid, "/tmp/gaurun.pid")
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.Pid, "/tmp/core.pid")
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.ApiKey, "apikey for GCM")
