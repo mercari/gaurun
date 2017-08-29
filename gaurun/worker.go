@@ -18,6 +18,10 @@ var (
 	//
 	// This is used to block main process to shutdown while pusher is still working.
 	PusherWg sync.WaitGroup
+
+	// Pushers supports Dependency Injection
+	PushNotificationIosFunc     = pushNotificationIos
+	PushNotificationAndroidFunc = pushNotificationAndroid
 )
 
 func init() {
@@ -86,10 +90,10 @@ func pushNotificationWorker() {
 
 		switch notification.Platform {
 		case PlatFormIos:
-			pusher = pushNotificationIos
+			pusher = PushNotificationIosFunc
 			retryMax = ConfGaurun.Ios.RetryMax
 		case PlatFormAndroid:
-			pusher = pushNotificationAndroid
+			pusher = PushNotificationAndroidFunc
 			retryMax = ConfGaurun.Android.RetryMax
 		default:
 			LogError.Warn(fmt.Sprintf("invalid platform: %d", notification.Platform))
