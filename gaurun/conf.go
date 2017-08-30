@@ -68,7 +68,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Core.NotificationMax = 100
 	conf.Core.PusherMax = 0
 	conf.Core.ShutdownTimeout = 10
-	conf.Core.Pid = "/tmp/core.pid"
+	conf.Core.Pid = ""
 	// Android
 	conf.Android.ApiKey = ""
 	conf.Android.Enabled = true

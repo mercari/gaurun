@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"syscall"
 	"time"
@@ -107,8 +108,12 @@ func main() {
 
 	go signalHandler(sigHUPChan, sighupHandler)
 
-	if err := ioutil.WriteFile(conf.Core.Pid, []byte(strconv.Itoa(os.Getpid())), DefaultPidPermission); err != nil {
-		gaurun.LogSetupFatal(fmt.Errorf("failed to create a pid file: %v", err))
+	if len(conf.Core.Pid) > 0 {
+		if _, err := os.Stat(filepath.Dir(conf.Core.Pid)); os.IsNotExist(err) {
+			gaurun.LogSetupFatal(fmt.Errorf("directory for pid file is not exist: %v", err))
+		} else if err := ioutil.WriteFile(conf.Core.Pid, []byte(strconv.Itoa(os.Getpid())), DefaultPidPermission); err != nil {
+			gaurun.LogSetupFatal(fmt.Errorf("failed to create a pid file: %v", err))
+		}
 	}
 
 	if gaurun.ConfGaurun.Android.Enabled {
