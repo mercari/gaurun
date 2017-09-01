@@ -187,10 +187,10 @@ func sendResponse(w http.ResponseWriter, msg string, code int) {
 		buf = bytes.NewBufferString("{\"message\":\"Response-body could not be created\"}")
 	}
 
-	w.WriteHeader(code)
-
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Server", serverHeader())
+
+	w.WriteHeader(code)
 
 	w.Write(buf.Bytes())
 }
