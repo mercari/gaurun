@@ -15,7 +15,6 @@ import (
 func RegisterHandlers(mux *http.ServeMux) {
 	mux.HandleFunc("/push", PushNotificationHandler)
 	mux.HandleFunc("/stat/app", StatsHandler)
-	mux.HandleFunc("/config/app", ConfigHandler)
 	mux.HandleFunc("/config/pushers", ConfigPushersHandler)
 
 	statsGo.PrettyPrintEnabled()
