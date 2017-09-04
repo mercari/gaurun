@@ -9,7 +9,6 @@ Gaurun has some APIs.
  * [POST /push](#post-push)
  * [GET /stat/go](#get-statgo)
  * [GET /stat/app](#get-statapp)
- * [GET /config/app](#get-configapp)
  * [PUT /config/pushers](#put-configpushers)
 
 URI and method of each API is fixed.
@@ -115,10 +114,6 @@ There is the parameter table below.
 |pusher_count|current number of goroutines for asynchronous pushing|           |
 |push_success|number of succeeded push notification                |           |
 |push_error  |number of failed push notification                   |           |
-
-### GET /config/app
-
-Returns the current configuration string for Gaurun.
 
 ### PUT /config/pushers
 

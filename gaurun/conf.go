@@ -1,8 +1,6 @@
 package gaurun
 
 import (
-	"bytes"
-	"fmt"
 	"net/http"
 	"net/url"
 	"runtime"
@@ -100,25 +98,6 @@ func LoadConf(confGaurun ConfToml, confPath string) (ConfToml, error) {
 		return confGaurun, err
 	}
 	return confGaurun, nil
-}
-
-func ConfigHandler(w http.ResponseWriter, r *http.Request) {
-	var b bytes.Buffer
-	e := toml.NewEncoder(&b)
-	result := ConfGaurun
-	// hide Apikey
-	result.Android.ApiKey = "..."
-	err := e.Encode(result)
-	if err != nil {
-		msg := "Response-body could not be created"
-		LogError.Error(msg)
-		http.Error(w, msg, http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "text/plain")
-	w.Header().Set("Server", serverHeader())
-	fmt.Fprintf(w, b.String())
 }
 
 func ConfigPushersHandler(w http.ResponseWriter, r *http.Request) {
