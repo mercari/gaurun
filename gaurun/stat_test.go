@@ -88,7 +88,7 @@ func TestStatsHandler(t *testing.T) {
 	res, err := http.Get(s.URL)
 
 	assert.Nil(t, err)
-	assert.Equal(t, res.Header.Get("Content-Type"), "application/json")
+	assert.Equal(t, res.Header.Get("Content-Type"), "application/json; charset=utf-8")
 	assert.Equal(t, res.Header.Get("Server"), serverHeader())
 
 	body, err := ioutil.ReadAll(res.Body)
