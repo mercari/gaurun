@@ -29,35 +29,26 @@ func TestRegisterHandlers(t *testing.T) {
 }
 
 func TestGetListener(t *testing.T) {
-	validConfig := ConfToml{
-		Core: SectionCore{Port: "8080"},
+	validConfigs := []ConfToml{
+		{Core: SectionCore{Port: "8080"}},
+		{Core: SectionCore{Port: "unix:/tmp/gaurun.sock"}},
 	}
 	invalidConfigs := []ConfToml{
 		// port is empty
 		{},
 		// port is not listenable
 		{Core: SectionCore{Port: "100000"}},
-		// port is invalid UNIX socket
-		{Core: SectionCore{Port: "unix:/invalid"}},
 		// port specified neither TCP port nor UNIX socket
 		{Core: SectionCore{Port: "invalid:/invalid"}},
 	}
 
-	_, err := getListener(&validConfig)
-	assert.Nil(t, err)
+	for _, c := range validConfigs {
+		_, err := getListener(&c)
+		assert.Nil(t, err)
+	}
 
 	for _, c := range invalidConfigs {
 		_, err := getListener(&c)
 		assert.NotNil(t, err)
 	}
-}
-
-func TestRunServer(t *testing.T) {
-	server := &http.Server{}
-
-	invalidConfig := &ConfToml{
-		Core: SectionCore{Port: "invalid:/invalid"},
-	}
-
-	assert.NotNil(t, RunServer(server, invalidConfig))
 }
