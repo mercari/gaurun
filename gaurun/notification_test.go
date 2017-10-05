@@ -78,4 +78,3 @@ func TestSendResponse(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, string(body), "{\"message\":\"valid message\"}\n")
 }
-
