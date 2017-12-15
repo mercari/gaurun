@@ -111,7 +111,7 @@ func TestSend(t *testing.T) {
 		}
 
 		var resp *Response
-		msg := NewMessage(map[string]interface{}{"key": "value"}, "1")
+		msg := NewMessage(map[string]interface{}{"key": "value"}, map[string]interface{}{}, "1")
 		if tc.retry == 0 {
 			resp, err = sender.SendNoRetry(msg)
 		} else {

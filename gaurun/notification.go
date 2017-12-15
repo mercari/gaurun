@@ -25,9 +25,10 @@ type RequestGaurunNotification struct {
 	Platform int      `json:"platform"`
 	Message  string   `json:"message"`
 	// Android
-	CollapseKey    string `json:"collapse_key,omitempty"`
-	DelayWhileIdle bool   `json:"delay_while_idle,omitempty"`
-	TimeToLive     int    `json:"time_to_live,omitempty"`
+	CollapseKey    string       `json:"collapse_key,omitempty"`
+	DelayWhileIdle bool         `json:"delay_while_idle,omitempty"`
+	TimeToLive     int          `json:"time_to_live,omitempty"`
+	Notification   []ExtendJSON `json:"notification,omitempty"`
 	// iOS
 	Title            string       `json:"title,omitempty"`
 	Subtitle         string       `json:"subtitle,omitempty"`
@@ -126,9 +127,14 @@ func pushNotificationAndroid(req RequestGaurunNotification) error {
 		}
 	}
 
+	notification := map[string]interface{}{}
+	if len(req.Notification) > 0 {
+		for _, n := range req.Notification {
+			notification[n.Key] = n.Value
+		}
+	}
 	token := req.Tokens[0]
-
-	msg := gcm.NewMessage(data, token)
+	msg := gcm.NewMessage(data, notification, token)
 	msg.CollapseKey = req.CollapseKey
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive

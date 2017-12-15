@@ -10,6 +10,7 @@ func TestValidateMessage(t *testing.T) {
 		{
 			&Message{
 				Data:            map[string]interface{}{"score": "5x1", "time": "15:10"},
+				Notification:    map[string]interface{}{"body": "test", "badge": "1"},
 				RegistrationIDs: []string{"4", "8", "15", "16", "23", "42"},
 				TimeToLive:      600,
 			},
