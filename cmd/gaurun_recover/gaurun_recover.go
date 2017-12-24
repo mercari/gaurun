@@ -44,6 +44,7 @@ func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 	data := map[string]interface{}{"message": req.Message}
 	msg := gcm.NewMessage(data, req.Tokens...)
 	msg.CollapseKey = req.CollapseKey
+	msg.Priority = req.Priority
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive
 

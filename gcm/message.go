@@ -11,6 +11,7 @@ import (
 type Message struct {
 	RegistrationIDs       []string               `json:"registration_ids"`
 	CollapseKey           string                 `json:"collapse_key,omitempty"`
+	Priority              string                 `json:"priority,omitempty"`
 	Data                  map[string]interface{} `json:"data,omitempty"`
 	DelayWhileIdle        bool                   `json:"delay_while_idle,omitempty"`
 	TimeToLive            int                    `json:"time_to_live,omitempty"`
@@ -32,6 +33,10 @@ func (m *Message) validate() error {
 
 	if m.RegistrationIDs == nil {
 		return fmt.Errorf("the message's RegistrationIDs field must not be nil")
+	}
+
+	if string(m.Priority) != "" && m.Priority != "normal" && m.Priority != "high" {
+		return fmt.Errorf("the message's Priority field is invalid")
 	}
 
 	if len(m.RegistrationIDs) == 0 {
