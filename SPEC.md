@@ -41,6 +41,7 @@ The JSON below is the request-body example.
             "platform" : 2,
             "message" : "Hello, Android!",
             "collapse_key" : "update",
+            "priority" : "normal",
             "delay_while_idle" : true,
             "time_to_live" : 10
         }
@@ -50,23 +51,24 @@ The JSON below is the request-body example.
 
 The request-body must has the `notifications` array. There is the parameter table for each notification below.
 
-|name             |type        |description                              |required|default|note            |
-|-----------------|------------|-----------------------------------------|--------|-------|----------------|
-|token            |string array|device tokens                            |o       |       |                |
-|platform         |int         |platform(iOS,Android)                    |o       |       |1=iOS, 2=Android|
-|message          |string      |message for notification                 |o       |       |                |
-|title            |string      |title for notification                   |-       |       |only iOS        |
-|subtitle         |string      |subtitle for notification                |-       |       |only iOS        |
-|badge            |int         |badge count                              |-       |0      |only iOS        |
-|category         |string      |unnotification category                  |-       |       |only iOS        |
-|sound            |string      |sound type                               |-       |       |only iOS        |
-|expiry           |int         |expiration for notification              |-       |0      |only iOS.       |
-|content_available|bool        |indicate that new content is available   |-       |false  |only iOS.       |
-|mutable_content  |bool        |enable Notification Service app extension|-       |false  |only iOS(10.0+).|
-|collapse_key     |string      |the key for collapsing notifications     |-       |       |only Android    |
-|delay_while_idle |bool        |the flag for device idling               |-       |false  |only Android    |
-|time_to_live     |int         |expiration of message kept on GCM storage|-       |0      |only Android    |
-|extend           |string array|extensible partition                     |-       |       |                |
+|name             |type        |description                                         |required|default|note            |
+|-----------------|------------|----------------------------------------------------|--------|-------|----------------|
+|token            |string array|device tokens                                       |o       |       |                |
+|platform         |int         |platform(iOS,Android)                               |o       |       |1=iOS, 2=Android|
+|message          |string      |message for notification                            |o       |       |                |
+|title            |string      |title for notification                              |-       |       |only iOS        |
+|subtitle         |string      |subtitle for notification                           |-       |       |only iOS        |
+|badge            |int         |badge count                                         |-       |0      |only iOS        |
+|category         |string      |unnotification category                             |-       |       |only iOS        |
+|sound            |string      |sound type                                          |-       |       |only iOS        |
+|expiry           |int         |expiration for notification                         |-       |0      |only iOS.       |
+|content_available|bool        |indicate that new content is available              |-       |false  |only iOS.       |
+|mutable_content  |bool        |enable Notification Service app extension           |-       |false  |only iOS(10.0+).|
+|collapse_key     |string      |the key for collapsing notifications                |-       |       |only Android    |
+|delay_while_idle |bool        |the flag for device idling                          |-       |false  |only Android    |
+|time_to_live     |int         |expiration of message kept on GCM storage           |-       |0      |only Android    |
+|priority         |string      |[high|normal] to deliver immediately or save battery|-       |high   |only Android    |
+|extend           |string array|extensible partition                                |-       |       |                |
 
 The JSON below is the response-body example from Gaurun. In this case, the status is 200(OK).
 
