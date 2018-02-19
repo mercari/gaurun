@@ -1,5 +1,5 @@
 VERSION=0.9.0
-TARGETS_NOVENDOR=$(shell glide novendor)
+TARGETS_NOVENDOR=$(shell go list ./... | grep -v /vendor/)
 
 all: bin/gaurun bin/gaurun_recover
 
@@ -23,7 +23,7 @@ bin/gaurun_client: samples/client.go
 	go build -o bin/gaurun_client samples/client.go
 
 bundle:
-	glide install
+	dep ensure
 
 fmt:
 	@echo $(TARGETS_NOVENDOR) | xargs go fmt

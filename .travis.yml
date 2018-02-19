@@ -9,7 +9,7 @@ os:
 sudo: false
 
 install:
-  - go get -v github.com/Masterminds/glide
+  - go get -v github.com/golang/dep/cmd/dep
 
 script:
   - make bundle
