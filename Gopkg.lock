@@ -9,7 +9,11 @@
 
 [[projects]]
   name = "github.com/RobotsAndPencils/buford"
-  packages = ["payload","payload/badge","push"]
+  packages = [
+    "payload",
+    "payload/badge",
+    "push"
+  ]
   revision = "1589c179b764ddceb204a439d9bf366f04c55f9b"
   version = "v0.12.0"
 
@@ -24,7 +28,6 @@
   revision = "04cdfd42973bb9c8589fd6a731800cf222fde1a9"
 
 [[projects]]
-  branch = "master"
   name = "github.com/fukata/golang-stats-api-handler"
   packages = ["."]
   revision = "ab9f90f16caab828afda479fd34bfbbbba2efcee"
@@ -41,7 +44,11 @@
 
 [[projects]]
   name = "github.com/stretchr/testify"
-  packages = ["assert","require","suite"]
+  packages = [
+    "assert",
+    "require",
+    "suite"
+  ]
   revision = "18a02ba4a312f95da08ff4cfc0055750ce50ae9e"
 
 [[projects]]
@@ -52,17 +59,29 @@
 
 [[projects]]
   name = "go.uber.org/zap"
-  packages = [".","buffer","internal/bufferpool","internal/exit","internal/multierror","zapcore"]
+  packages = [
+    ".",
+    "buffer",
+    "internal/bufferpool",
+    "internal/exit",
+    "internal/multierror",
+    "zapcore"
+  ]
   revision = "12592ca48efc73057c0edcdddc2a279b37c2b27b"
 
 [[projects]]
   name = "golang.org/x/net"
-  packages = ["http2","http2/hpack","idna","lex/httplex"]
+  packages = [
+    "http2",
+    "http2/hpack",
+    "idna",
+    "lex/httplex"
+  ]
   revision = "4971afdc2f162e82d185353533d3cf16188a9f4e"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f20ef8acfe88de12445ea10b36f95f0ec5fa459616387e007f255f649091bcc9"
+  inputs-digest = "a89a2b58a0da210003ad50719b5797ddd7de9f57cf5c04ed998b78559e935258"
   solver-name = "gps-cdcl"
   solver-version = 1
