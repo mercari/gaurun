@@ -21,9 +21,10 @@ type RequestGaurun struct {
 
 type RequestGaurunNotification struct {
 	// Common
-	Tokens   []string `json:"token"`
-	Platform int      `json:"platform"`
-	Message  string   `json:"message"`
+	Tokens     []string `json:"token"`
+	Platform   int      `json:"platform"`
+	Message    string   `json:"message"`
+	Identifier string   `json:"identifier,omitempty"`
 	// Android
 	CollapseKey    string `json:"collapse_key,omitempty"`
 	DelayWhileIdle bool   `json:"delay_while_idle,omitempty"`

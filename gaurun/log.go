@@ -137,7 +137,7 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		logger = LogError.Error
 	}
 
-	// omitempty handling for device dependent values
+	// omitempty request parameters handling.
 	collapseKey := zap.Skip()
 	if req.CollapseKey != "" {
 		collapseKey = zap.String("collapse_key", req.CollapseKey)
@@ -182,6 +182,10 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 	if req.Expiry != 0 {
 		expiry = zap.Int("expiry", req.Expiry)
 	}
+	identifier := zap.Skip()
+	if req.Identifier != "" {
+		identifier = zap.String("identifier", req.Identifier)
+	}
 
 	logger(req.Message,
 		zap.Uint64("id", id),
@@ -201,6 +205,7 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		contentAvailable,
 		mutableContent,
 		expiry,
+		identifier,
 	)
 }
 
