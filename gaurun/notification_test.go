@@ -32,6 +32,15 @@ func TestValidateNotification(t *testing.T) {
 			},
 			nil,
 		},
+		{
+			RequestGaurunNotification{
+				Tokens:     []string{"test token"},
+				Platform:   1,
+				Message:    "test message with identifier",
+				Identifier: "identifier",
+			},
+			nil,
+		},
 
 		// negative cases
 		{
