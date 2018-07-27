@@ -61,6 +61,7 @@ func InitAPNSClient() error {
 	APNSClient, err = NewApnsClientHttp2(
 		ConfGaurun.Ios.PemCertPath,
 		ConfGaurun.Ios.PemKeyPath,
+		ConfGaurun.Ios.PemKeyPassphrase,
 	)
 	if err != nil {
 		return err

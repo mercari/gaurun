@@ -138,6 +138,7 @@ func main() {
 	APNSClient, err = gaurun.NewApnsClientHttp2(
 		gaurun.ConfGaurun.Ios.PemCertPath,
 		gaurun.ConfGaurun.Ios.PemKeyPath,
+		gaurun.ConfGaurun.Ios.PemKeyPassphrase,
 	)
 	if err != nil {
 		gaurun.LogSetupFatal(err)

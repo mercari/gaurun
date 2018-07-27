@@ -41,6 +41,7 @@ type SectionIos struct {
 	Enabled          bool   `toml:"enabled"`
 	PemCertPath      string `toml:"pem_cert_path"`
 	PemKeyPath       string `toml:"pem_key_path"`
+	PemKeyPassphrase string `toml:"pem_key_passphrase"`
 	Sandbox          bool   `toml:"sandbox"`
 	RetryMax         int    `toml:"retry_max"`
 	Timeout          int    `toml:"timeout"`
