@@ -46,7 +46,7 @@ func NewApnsClientHttp2(certPath, keyPath, keyPassphrase string) (*http.Client, 
 		return nil, err
 	}
 
-	transport, err := NewTransportHttp2(*cert)
+	transport, err := NewTransportHttp2(cert)
 	if err != nil {
 		return nil, err
 	}
@@ -57,27 +57,27 @@ func NewApnsClientHttp2(certPath, keyPath, keyPassphrase string) (*http.Client, 
 	}, nil
 }
 
-func loadX509KeyPairWithPassword(certPath, keyPath, keyPassphrase string) (*tls.Certificate, error) {
+func loadX509KeyPairWithPassword(certPath, keyPath, keyPassphrase string) (tls.Certificate, error) {
 	keyPEMBlock, err := ioutil.ReadFile(keyPath)
 	if err != nil {
-		return nil, err
+		return tls.Certificate{}, err
 	}
 	if keyPassphrase != "" {
 		pemBlock, _ := pem.Decode(keyPEMBlock)
 		keyPEMBlock, err = x509.DecryptPEMBlock(pemBlock, []byte(keyPassphrase))
 		if err != nil {
-			return nil, err
+			return tls.Certificate{}, err
 		}
 	}
 	certPEMBlock, err := ioutil.ReadFile(certPath)
 	if err != nil {
-		return nil, err
+		return tls.Certificate{}, err
 	}
 	cert, err := tls.X509KeyPair(certPEMBlock, keyPEMBlock)
 	if err != nil {
-		return nil, err
+		return tls.Certificate{}, err
 	}
-	return &cert, nil
+	return cert, nil
 }
 
 func NewApnsServiceHttp2(client *http.Client) *push.Service {
