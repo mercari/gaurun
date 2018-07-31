@@ -68,6 +68,7 @@ func loadX509KeyPairWithPassword(certPath, keyPath, keyPassphrase string) (tls.C
 		if err != nil {
 			return tls.Certificate{}, err
 		}
+		keyPEMBlock = pem.EncodeToMemory(&pem.Block{Type: pemBlock.Type, Bytes: keyPEMBlock})
 	}
 	certPEMBlock, err := ioutil.ReadFile(certPath)
 	if err != nil {
