@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"encoding/pem"
+	"errors"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -64,6 +65,10 @@ func loadX509KeyPairWithPassword(certPath, keyPath, keyPassphrase string) (tls.C
 	}
 	if keyPassphrase != "" {
 		pemBlock, _ := pem.Decode(keyPEMBlock)
+		if !x509.IsEncryptedPEMBlock(pemBlock) {
+			err = errors.New(keyPath + "is not encrypted. passphrase is not required")
+			return tls.Certificate{}, err
+		}
 		keyPEMBlock, err = x509.DecryptPEMBlock(pemBlock, []byte(keyPassphrase))
 		if err != nil {
 			return tls.Certificate{}, err
