@@ -2,7 +2,11 @@ package gaurun
 
 import (
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
+	"encoding/pem"
+	"fmt"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"time"
@@ -37,8 +41,8 @@ func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {
 	return transport, nil
 }
 
-func NewApnsClientHttp2(certPath, keyPath string) (*http.Client, error) {
-	cert, err := tls.LoadX509KeyPair(certPath, keyPath)
+func NewApnsClientHttp2(certPath, keyPath, keyPassphrase string) (*http.Client, error) {
+	cert, err := loadX509KeyPairWithPassword(certPath, keyPath, keyPassphrase)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +56,34 @@ func NewApnsClientHttp2(certPath, keyPath string) (*http.Client, error) {
 		Transport: transport,
 		Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
 	}, nil
+}
+
+func loadX509KeyPairWithPassword(certPath, keyPath, keyPassphrase string) (tls.Certificate, error) {
+	keyPEMBlock, err := ioutil.ReadFile(keyPath)
+	if err != nil {
+		return tls.Certificate{}, err
+	}
+	if keyPassphrase != "" {
+		pemBlock, _ := pem.Decode(keyPEMBlock)
+		if !x509.IsEncryptedPEMBlock(pemBlock) {
+			err = fmt.Errorf("%s is not encrypted. passphrase is not required", keyPath)
+			return tls.Certificate{}, err
+		}
+		keyPEMBlock, err = x509.DecryptPEMBlock(pemBlock, []byte(keyPassphrase))
+		if err != nil {
+			return tls.Certificate{}, err
+		}
+		keyPEMBlock = pem.EncodeToMemory(&pem.Block{Type: pemBlock.Type, Bytes: keyPEMBlock})
+	}
+	certPEMBlock, err := ioutil.ReadFile(certPath)
+	if err != nil {
+		return tls.Certificate{}, err
+	}
+	cert, err := tls.X509KeyPair(certPEMBlock, keyPEMBlock)
+	if err != nil {
+		return tls.Certificate{}, err
+	}
+	return cert, nil
 }
 
 func NewApnsServiceHttp2(client *http.Client) *push.Service {
