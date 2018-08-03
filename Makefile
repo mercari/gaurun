@@ -1,4 +1,4 @@
-VERSION=0.9.0
+VERSION=0.9.1
 TARGETS_NOVENDOR=$(shell glide novendor)
 
 all: bin/gaurun bin/gaurun_recover
