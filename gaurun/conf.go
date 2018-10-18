@@ -34,7 +34,6 @@ type SectionAndroid struct {
 	KeepAliveTimeout int    `toml:"keepalive_timeout"`
 	KeepAliveConns   int    `toml:"keepalive_conns"`
 	RetryMax         int    `toml:"retry_max"`
-	UseFCM           bool   `toml:"use_fcm"`
 }
 
 type SectionIos struct {
@@ -75,7 +74,6 @@ func BuildDefaultConf() ConfToml {
 	conf.Android.KeepAliveTimeout = 90
 	conf.Android.KeepAliveConns = numCPU
 	conf.Android.RetryMax = 1
-	conf.Android.UseFCM = true
 	// iOS
 	conf.Ios.Enabled = true
 	conf.Ios.PemCertPath = ""

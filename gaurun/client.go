@@ -26,15 +26,8 @@ func keepAliveInterval(keepAliveTimeout int) int {
 
 // InitGCMClient initializes GCMClient which is globally declared.
 func InitGCMClient() error {
-	// By default, use FCM endpoint. If UseFCM is explicitly disabled via configuration,
-	// use GCM endpoint.
-	url := gcm.FCMSendEndpoint
-	if !ConfGaurun.Android.UseFCM {
-		url = gcm.GCMSendEndpoint
-	}
-
 	var err error
-	GCMClient, err = gcm.NewClient(url, ConfGaurun.Android.ApiKey)
+	GCMClient, err = gcm.NewClient(gcm.FCMSendEndpoint, ConfGaurun.Android.ApiKey)
 	if err != nil {
 		return err
 	}

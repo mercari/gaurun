@@ -15,11 +15,6 @@ const (
 	// FCMSendEndpoint is the endpoint for sending message to the Firebase Cloud Messaging (FCM) server.
 	// See more on https://firebase.google.com/docs/cloud-messaging/server
 	FCMSendEndpoint = "https://fcm.googleapis.com/fcm/send"
-
-	// GCMSendEndpoint is the endpoint for sending messages to the Google Cloud Messaging (GCM) server.
-	// Firebase Cloud Messaging (FCM) is the new version of GCM. Should use new endpoint.
-	// See more on https://firebase.google.com/support/faq/#gcm-fcm
-	GCMSendEndpoint = "https://gcm-http.googleapis.com/gcm/send"
 )
 
 const (
