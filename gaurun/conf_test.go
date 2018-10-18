@@ -44,7 +44,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.KeepAliveTimeout, 90)
 	assert.Equal(suite.T(), int64(suite.ConfGaurunDefault.Android.KeepAliveConns), suite.ConfGaurunDefault.Core.WorkerNum)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.RetryMax, 1)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.UseFCM, false)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.UseFCM, true)
 	// Ios
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.PemCertPath, "")
