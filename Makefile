@@ -1,5 +1,6 @@
 VERSION=0.9.1
 TARGETS_NOVENDOR=$(shell glide novendor)
+BUILD_FLAG=
 
 all: bin/gaurun bin/gaurun_recover
 
@@ -14,16 +15,19 @@ dist: build-cross
 	cd bin/darwin/amd64 && tar zcvf gaurun-darwin-amd64-${VERSION}.tar.gz gaurun-${VERSION}
 
 bin/gaurun: cmd/gaurun/gaurun.go gaurun/*.go
-	go build -o bin/gaurun cmd/gaurun/gaurun.go
+	${BUILD_FLAG} go build -o bin/gaurun cmd/gaurun/gaurun.go
 
 bin/gaurun_recover: cmd/gaurun_recover/gaurun_recover.go gaurun/*.go
-	go build -o bin/gaurun_recover cmd/gaurun_recover/gaurun_recover.go
+	${BUILD_FLAG} go build -o bin/gaurun_recover cmd/gaurun_recover/gaurun_recover.go
 
 bin/gaurun_client: samples/client.go
-	go build -o bin/gaurun_client samples/client.go
+	${BUILD_FLAG} go build -o bin/gaurun_client samples/client.go
 
 bundle:
 	glide install
+
+docker:
+	docker build -t mercari/gaurun .
 
 fmt:
 	@echo $(TARGETS_NOVENDOR) | xargs go fmt
