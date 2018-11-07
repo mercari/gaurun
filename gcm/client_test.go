@@ -13,13 +13,8 @@ type testResponse struct {
 	Response   *Response
 }
 
-func startTestServer(t *testing.T, responses []*testResponse) *httptest.Server {
-	i := 0
+func startTestServer(t *testing.T, resp *testResponse) *httptest.Server {
 	handler := func(w http.ResponseWriter, r *http.Request) {
-		if i >= len(responses) {
-			t.Fatalf("server received %d requests, expected %d", i+1, len(responses))
-		}
-		resp := responses[i]
 		status := resp.StatusCode
 		if status == 0 || status == http.StatusOK {
 			w.Header().Set("Content-Type", "application/json")
@@ -28,7 +23,6 @@ func startTestServer(t *testing.T, responses []*testResponse) *httptest.Server {
 		} else {
 			w.WriteHeader(status)
 		}
-		i++
 	}
 	server := httptest.NewServer(http.HandlerFunc(handler))
 	return server
@@ -46,81 +40,63 @@ func TestNewClient(t *testing.T) {
 
 func TestSend(t *testing.T) {
 	cases := []struct {
-		serverResponses []*testResponse
-		retry           int
-		failure         int
-		success         bool
+		serverResponse *testResponse
+		success        bool
 	}{
 		{
-			[]*testResponse{
-				{Response: &Response{}},
+			&testResponse{
+				Response: &Response{},
 			},
-			0,
-			0,
 			true,
 		},
 
 		{
-			[]*testResponse{
-				{StatusCode: http.StatusBadRequest},
+			&testResponse{
+				StatusCode: http.StatusBadRequest,
 			},
-			0,
-			0,
 			false,
 		},
 
-		// Should succeed after one retry.
 		{
-			[]*testResponse{
-				{Response: &Response{Failure: 1, Results: []Result{{Error: "Unavailable"}}}},
-				{Response: &Response{Success: 1, Results: []Result{{MessageID: "id"}}}},
+			&testResponse{
+				Response: &Response{
+					Results: []Result{
+						{
+							Error: "Unavailable",
+						},
+					},
+				},
 			},
-			1,
-			0,
 			true,
 		},
 
-		// Should return response with one failure.
 		{
-			[]*testResponse{
-				{Response: &Response{Failure: 1, Results: []Result{{Error: "Unavailable"}}}},
-				{Response: &Response{Failure: 1, Results: []Result{{Error: "Unavailable"}}}},
+			&testResponse{
+				Response: &Response{
+					Results: []Result{
+						{
+							MessageID: "id",
+						},
+					},
+				},
 			},
-			1,
-			1,
 			true,
-		},
-
-		// Should send should fail after one retry.
-		{
-			[]*testResponse{
-				{Response: &Response{Failure: 1, Results: []Result{{Error: "Unavailable"}}}},
-				{StatusCode: http.StatusBadRequest},
-			},
-			1,
-			0,
-			false,
 		},
 	}
 
 	for i, tc := range cases {
-		server := startTestServer(t, tc.serverResponses)
+		server := startTestServer(t, tc.serverResponse)
 		sender, err := NewClient(server.URL, "testAPIKey")
 		if err != nil {
 			t.Fatalf("Failed to setup sender client: %s", err)
 		}
 
-		var resp *Response
 		msg := NewMessage(map[string]interface{}{"key": "value"}, "1")
-		if tc.retry == 0 {
-			resp, err = sender.SendNoRetry(msg)
-		} else {
-			resp, err = sender.Send(msg, tc.retry)
-		}
+		_, err = sender.SendNoRetry(msg)
 
 		if err != nil {
 			if tc.success {
-				t.Fatalf("#%d expect to be success: %s", i, err)
+				t.Fatalf("#%d expect to be success: %v", i, err)
 			}
 
 			server.Close()
@@ -129,10 +105,6 @@ func TestSend(t *testing.T) {
 
 		if !tc.success {
 			t.Fatalf("#%d expect to be failed", i)
-		}
-
-		if resp.Failure != tc.failure {
-			t.Fatalf("#%d number of failure %d, want %d", i, resp.Failure, tc.failure)
 		}
 
 		server.Close()
