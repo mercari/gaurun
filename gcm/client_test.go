@@ -92,7 +92,7 @@ func TestSend(t *testing.T) {
 		}
 
 		msg := NewMessage(map[string]interface{}{"key": "value"}, "1")
-		_, err = sender.SendNoRetry(msg)
+		_, err = sender.Send(msg)
 
 		if err != nil {
 			if tc.success {

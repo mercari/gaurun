@@ -31,7 +31,7 @@ const (
 // GCM server. The developer must obtain an API key from the Google APIs
 // Console page and pass it to the Client so that it can perform authorized
 // requests on the application server's behalf. To send a message to one or
-// more devices use the Client's Send or SendNoRetry methods.
+// more devices use the Client's Send methods.
 type Client struct {
 	ApiKey string
 	URL    string
@@ -62,10 +62,10 @@ func NewClient(urlString, apiKey string) (*Client, error) {
 	}, nil
 }
 
-// SendNoRetry sends a message to the GCM server without retrying in case of
+// Send sends a message to the GCM server without retrying in case of
 // service unavailability. A non-nil error is returned if a non-recoverable
 // error occurs (i.e. if the response status is not "200 OK").
-func (c *Client) SendNoRetry(msg *Message) (*Response, error) {
+func (c *Client) Send(msg *Message) (*Response, error) {
 	if err := msg.validate(); err != nil {
 		return nil, err
 	}
