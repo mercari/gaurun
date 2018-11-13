@@ -2,6 +2,7 @@ package gaurun
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,6 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/mercari/gaurun/fcm"
 	"github.com/mercari/gaurun/gcm"
 
 	"go.uber.org/zap"
@@ -155,6 +157,38 @@ func pushNotificationAndroid(req RequestGaurunNotification) error {
 
 	atomic.AddInt64(&StatGaurun.Android.PushSuccess, int64(len(req.Tokens)))
 	LogError.Debug("END push notification for Android")
+
+	return nil
+}
+
+func pushNotificationFCMV1(req RequestGaurunNotification) error {
+	LogError.Debug("START push notification for FCMv1")
+
+	data := map[string]interface{}{"message": req.Message}
+	if len(req.Extend) > 0 {
+		for _, extend := range req.Extend {
+			data[extend.Key] = extend.Value
+		}
+	}
+
+	token := req.Tokens[0]
+
+	msg := fcm.NewMessage(token)
+
+	stime := time.Now()
+	_, err := FCMClient.Send(context.Background(), msg)
+	etime := time.Now()
+	ptime := etime.Sub(stime).Seconds()
+	if err != nil {
+		atomic.AddInt64(&StatGaurun.Android.PushError, 1)
+		LogPush(req.ID, StatusFailedPush, token, ptime, req, err)
+		return err
+	}
+
+	LogPush(req.ID, StatusSucceededPush, token, ptime, req, nil)
+
+	atomic.AddInt64(&StatGaurun.Android.PushSuccess, int64(len(req.Tokens)))
+	LogError.Debug("END push notification for FCMv1")
 
 	return nil
 }

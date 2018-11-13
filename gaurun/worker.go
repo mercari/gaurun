@@ -89,7 +89,11 @@ func pushNotificationWorker() {
 			pusher = pushNotificationIos
 			retryMax = ConfGaurun.Ios.RetryMax
 		case PlatFormAndroid:
-			pusher = pushNotificationAndroid
+			if ConfGaurun.Android.UseV1 {
+				pusher = pushNotificationFCMV1
+			} else {
+				pusher = pushNotificationAndroid
+			}
 			retryMax = ConfGaurun.Android.RetryMax
 		default:
 			LogError.Warn(fmt.Sprintf("invalid platform: %d", notification.Platform))

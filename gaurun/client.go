@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/mercari/gaurun/fcm"
 	"github.com/mercari/gaurun/gcm"
 )
 
@@ -49,6 +50,30 @@ func InitGCMClient() error {
 	}
 
 	GCMClient.Http = &http.Client{
+		Transport: transport,
+		Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
+	}
+
+	return nil
+}
+
+func InitFCMClient() error {
+	var err error
+	FCMClient, err = fcm.NewClient(fcm.SendEndpointV1, ConfGaurun.Android.Project, ConfGaurun.Android.ApiKey)
+	if err != nil {
+		return err
+	}
+
+	transport := &http.Transport{
+		MaxIdleConnsPerHost: ConfGaurun.Android.KeepAliveConns,
+		Dial: (&net.Dialer{
+			Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
+			KeepAlive: time.Duration(keepAliveInterval(ConfGaurun.Android.KeepAliveTimeout)) * time.Second,
+		}).Dial,
+		IdleConnTimeout: time.Duration(ConfGaurun.Android.KeepAliveTimeout) * time.Second,
+	}
+
+	FCMClient.HTTPClient = &http.Client{
 		Transport: transport,
 		Timeout:   time.Duration(ConfGaurun.Android.Timeout) * time.Second,
 	}

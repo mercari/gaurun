@@ -92,6 +92,10 @@ func main() {
 		if gaurun.ConfGaurun.Android.ApiKey == "" {
 			gaurun.LogSetupFatal(fmt.Errorf("APIKey for Android is empty."))
 		}
+
+		if gaurun.ConfGaurun.Android.UseV1 && gaurun.ConfGaurun.Android.Project == "" {
+			gaurun.LogSetupFatal(fmt.Errorf("project for FCM HTTP v1 API is empty"))
+		}
 	}
 
 	sigHUPChan := make(chan os.Signal, 1)
@@ -117,8 +121,14 @@ func main() {
 	}
 
 	if gaurun.ConfGaurun.Android.Enabled {
-		if err := gaurun.InitGCMClient(); err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("failed to init gcm/fcm client: %v", err))
+		if gaurun.ConfGaurun.Android.UseV1 {
+			if err := gaurun.InitFCMClient(); err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("failed to init fcm v1 client: %v", err))
+			}
+		} else {
+			if err := gaurun.InitGCMClient(); err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("failed to init gcm/fcm client: %v", err))
+			}
 		}
 	}
 

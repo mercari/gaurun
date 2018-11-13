@@ -1,0 +1,10 @@
+{
+  "topic": "news",
+  "notification": {
+    "title": "Breaking News",
+    "body": "New news story available."
+  },
+  "data": {
+    "story_id": "story_12345"
+  }
+}

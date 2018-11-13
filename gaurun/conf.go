@@ -30,11 +30,13 @@ type SectionCore struct {
 type SectionAndroid struct {
 	Enabled          bool   `toml:"enabled"`
 	ApiKey           string `toml:"apikey"`
+	Project          string `toml:"project"`
 	Timeout          int    `toml:"timeout"`
 	KeepAliveTimeout int    `toml:"keepalive_timeout"`
 	KeepAliveConns   int    `toml:"keepalive_conns"`
 	RetryMax         int    `toml:"retry_max"`
 	UseFCM           bool   `toml:"use_fcm"`
+	UseV1            bool   `toml:"use_v1"`
 }
 
 type SectionIos struct {
@@ -70,12 +72,14 @@ func BuildDefaultConf() ConfToml {
 	conf.Core.Pid = ""
 	// Android
 	conf.Android.ApiKey = ""
+	conf.Android.Project = ""
 	conf.Android.Enabled = true
 	conf.Android.Timeout = 5
 	conf.Android.KeepAliveTimeout = 90
 	conf.Android.KeepAliveConns = numCPU
 	conf.Android.RetryMax = 1
 	conf.Android.UseFCM = true
+	conf.Android.UseV1 = false
 	// iOS
 	conf.Ios.Enabled = true
 	conf.Ios.PemCertPath = ""

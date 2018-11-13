@@ -3,6 +3,7 @@ package gaurun
 import (
 	"net/http"
 
+	"github.com/mercari/gaurun/fcm"
 	"github.com/mercari/gaurun/gcm"
 
 	"go.uber.org/zap"
@@ -20,6 +21,7 @@ var (
 	// http client for APNs and GCM/FCM
 	APNSClient *http.Client
 	GCMClient  *gcm.Client
+	FCMClient  *fcm.Client
 	// access and error logger
 	LogAccess *zap.Logger
 	LogError  *zap.Logger
