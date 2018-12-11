@@ -41,6 +41,15 @@ func TestValidateNotification(t *testing.T) {
 			},
 			nil,
 		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 3,
+				Title:    "test title",
+				Body:     "test body",
+			},
+			nil,
+		},
 
 		// negative cases
 		{
@@ -63,6 +72,30 @@ func TestValidateNotification(t *testing.T) {
 				Message:  "",
 			},
 			errors.New("empty message"),
+		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 3,
+				Message:  "abcd",
+			},
+			errors.New("empty title or body"),
+		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 3,
+				Title:    "abcd",
+			},
+			errors.New("empty title or body"),
+		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 3,
+				Body:     "abcd",
+			},
+			errors.New("empty title or body"),
 		},
 	}
 

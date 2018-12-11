@@ -14,6 +14,7 @@ type ConfToml struct {
 	Core    SectionCore    `toml:"core"`
 	Android SectionAndroid `toml:"android"`
 	Ios     SectionIos     `toml:"ios"`
+	FCMV1   SectionFCMV1   `toml:"fcm_v1"`
 	Log     SectionLog     `toml:"log"`
 }
 
@@ -35,6 +36,16 @@ type SectionAndroid struct {
 	KeepAliveConns   int    `toml:"keepalive_conns"`
 	RetryMax         int    `toml:"retry_max"`
 	UseFCM           bool   `toml:"use_fcm"`
+}
+
+type SectionFCMV1 struct {
+	Enabled          bool   `toml:"enabled"`
+	CredentialsFile  string `toml:"credentials_file"`
+	Project          string `toml:"project"`
+	Timeout          int    `toml:"timeout"`
+	KeepAliveTimeout int    `toml:"keepalive_timeout"`
+	KeepAliveConns   int    `toml:"keepalive_conns"`
+	RetryMax         int    `toml:"retry_max"`
 }
 
 type SectionIos struct {
@@ -76,6 +87,14 @@ func BuildDefaultConf() ConfToml {
 	conf.Android.KeepAliveConns = numCPU
 	conf.Android.RetryMax = 1
 	conf.Android.UseFCM = true
+	// FCMv1
+	conf.FCMV1.CredentialsFile = ""
+	conf.FCMV1.Project = ""
+	conf.FCMV1.Enabled = false
+	conf.FCMV1.Timeout = 5
+	conf.FCMV1.KeepAliveTimeout = 90
+	conf.FCMV1.KeepAliveConns = numCPU
+	conf.FCMV1.RetryMax = 1
 	// iOS
 	conf.Ios.Enabled = true
 	conf.Ios.PemCertPath = ""

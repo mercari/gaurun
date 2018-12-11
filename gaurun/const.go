@@ -7,6 +7,7 @@ const (
 const (
 	PlatFormIos = iota + 1
 	PlatFormAndroid
+	PlatFormFCMV1
 )
 
 const (

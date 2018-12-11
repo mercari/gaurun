@@ -122,11 +122,18 @@ func main() {
 		}
 	}
 
+	if gaurun.ConfGaurun.FCMV1.Enabled {
+		if err := gaurun.InitFirebaseApp(); err != nil {
+			gaurun.LogSetupFatal(fmt.Errorf("failed to init firebase app client: %v", err))
+		}
+	}
+
 	if gaurun.ConfGaurun.Ios.Enabled {
 		if err := gaurun.InitAPNSClient(); err != nil {
 			gaurun.LogSetupFatal(fmt.Errorf("failed to init http client for APNs: %v", err))
 		}
 	}
+
 	gaurun.InitStat()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
 

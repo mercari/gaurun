@@ -26,6 +26,15 @@ keepalive_timeout = 30
 keepalive_conns = 6
 retry_max = 1
 
+[fcm_v1]
+project = "project for fcm"
+credentials_file = "adminsdk.json"
+enabled = true
+timeout = 5
+keepalive_timeout = 30
+keepalive_conns = 4
+retry_max = 1
+
 [log]
 access_log = "stdout"
 error_log = "stderr"

@@ -2,6 +2,7 @@ package gaurun
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,6 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"firebase.google.com/go/messaging"
 	"github.com/mercari/gaurun/gcm"
 
 	"go.uber.org/zap"
@@ -29,8 +31,11 @@ type RequestGaurunNotification struct {
 	CollapseKey    string `json:"collapse_key,omitempty"`
 	DelayWhileIdle bool   `json:"delay_while_idle,omitempty"`
 	TimeToLive     int    `json:"time_to_live,omitempty"`
+	// FCM v1
+	Body string `json:"body,omitempty"`
+	// iOS and FCM v1
+	Title string `json:"title,omitempty"`
 	// iOS
-	Title            string       `json:"title,omitempty"`
 	Subtitle         string       `json:"subtitle,omitempty"`
 	Badge            int          `json:"badge,omitempty"`
 	Category         string       `json:"category,omitempty"`
@@ -71,6 +76,8 @@ func enqueueNotifications(notifications []RequestGaurunNotification) {
 			enabledPush = ConfGaurun.Ios.Enabled
 		case PlatFormAndroid:
 			enabledPush = ConfGaurun.Android.Enabled
+		case PlatFormFCMV1:
+			enabledPush = ConfGaurun.FCMV1.Enabled
 		}
 		// Enqueue notification per token
 		for _, token := range notification.Tokens {
@@ -152,6 +159,49 @@ func pushNotificationAndroid(req RequestGaurunNotification) error {
 	return nil
 }
 
+func pushNotificationFCMV1(req RequestGaurunNotification) error {
+	LogError.Debug("START push notification for FCMv1")
+
+	data := make(map[string]string)
+	if len(req.Extend) > 0 {
+		for _, extend := range req.Extend {
+			data[extend.Key] = extend.Value
+		}
+	}
+
+	client, err := FirebaseApp.Messaging(context.Background())
+	if err != nil {
+		return err
+	}
+
+	token := req.Tokens[0]
+
+	msg := &messaging.Message{
+		Notification: &messaging.Notification{
+			Title: req.Title,
+			Body:  req.Body,
+		},
+		Token: token,
+	}
+
+	stime := time.Now()
+	_, err = client.Send(context.Background(), msg)
+	etime := time.Now()
+	ptime := etime.Sub(stime).Seconds()
+	if err != nil {
+		atomic.AddInt64(&StatGaurun.Android.PushError, 1)
+		LogPush(req.ID, StatusFailedPush, token, ptime, req, err)
+		return err
+	}
+
+	LogPush(req.ID, StatusSucceededPush, token, ptime, req, nil)
+
+	atomic.AddInt64(&StatGaurun.Android.PushSuccess, int64(len(req.Tokens)))
+	LogError.Debug("END push notification for FCMv1")
+
+	return nil
+}
+
 func validateNotification(notification *RequestGaurunNotification) error {
 
 	for _, token := range notification.Tokens {
@@ -160,12 +210,14 @@ func validateNotification(notification *RequestGaurunNotification) error {
 		}
 	}
 
-	if notification.Platform < 1 || notification.Platform > 2 {
+	if notification.Platform < PlatFormIos || notification.Platform > PlatFormFCMV1 {
 		return errors.New("invalid platform")
 	}
 
-	if len(notification.Message) == 0 {
+	if (notification.Platform == PlatFormIos || notification.Platform == PlatFormAndroid) && len(notification.Message) == 0 {
 		return errors.New("empty message")
+	} else if notification.Platform == PlatFormFCMV1 && (len(notification.Title) == 0 || len(notification.Body) == 0) {
+		return errors.New("empty title or body")
 	}
 
 	return nil

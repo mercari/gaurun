@@ -55,6 +55,14 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.KeepAliveTimeout, 90)
 	assert.Equal(suite.T(), int64(suite.ConfGaurunDefault.Ios.KeepAliveConns), suite.ConfGaurunDefault.Core.WorkerNum)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Topic, "")
+	// FCMv1
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.FCMV1.CredentialsFile, "")
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.FCMV1.Project, "")
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.FCMV1.Enabled, false)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.FCMV1.Timeout, 5)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.FCMV1.KeepAliveTimeout, 90)
+	assert.Equal(suite.T(), int64(suite.ConfGaurunDefault.FCMV1.KeepAliveConns), suite.ConfGaurunDefault.Core.WorkerNum)
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.FCMV1.RetryMax, 1)
 	// Log
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.AccessLog, "stdout")
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Log.ErrorLog, "stderr")
@@ -85,6 +93,14 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.RetryMax, 1)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Timeout, 5)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.KeepAliveTimeout, 30)
+	// FCMv1
+	assert.Equal(suite.T(), suite.ConfGaurun.FCMV1.Enabled, true)
+	assert.Equal(suite.T(), suite.ConfGaurun.FCMV1.CredentialsFile, "adminsdk.json")
+	assert.Equal(suite.T(), suite.ConfGaurun.FCMV1.Project, "project for fcm")
+	assert.Equal(suite.T(), suite.ConfGaurun.FCMV1.Timeout, 5)
+	assert.Equal(suite.T(), suite.ConfGaurun.FCMV1.KeepAliveTimeout, 30)
+	assert.Equal(suite.T(), suite.ConfGaurun.FCMV1.KeepAliveConns, 4)
+	assert.Equal(suite.T(), suite.ConfGaurun.FCMV1.RetryMax, 1)
 	// Log
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.KeepAliveConns, 6)
 	assert.Equal(suite.T(), suite.ConfGaurun.Log.AccessLog, "stdout")

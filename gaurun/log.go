@@ -116,6 +116,8 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		plat = "ios"
 	case PlatFormAndroid:
 		plat = "android"
+	case PlatFormFCMV1:
+		plat = "fcmv1"
 	}
 
 	ptime = math.Floor(ptime*1000) / 1000 // %.3f conversion
