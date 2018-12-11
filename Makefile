@@ -22,7 +22,7 @@ bin/gaurun_client: samples/client.go
 	GO111MODULE=on go build -o bin/gaurun_client samples/client.go
 
 fmt:
-	go list ./... | xargs go fmt
+	go fmt ./...
 
 check:
 	GO111MODULE=on go test -v ./...
