@@ -73,6 +73,7 @@ func InitFirebaseApp() error {
 	cred := option.WithCredentialsFile(ConfGaurun.FCMV1.CredentialsFile)
 	scopes := option.WithScopes("https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/firebase.messaging")
 
+	// if you change HTTPClient, it is necessary to set credentials file
 	transport, err := htransport.NewTransport(context.Background(), tr, cred, scopes)
 	if err != nil {
 		return err
@@ -86,6 +87,7 @@ func InitFirebaseApp() error {
 	// if ConfGaurun.Android.Project is empty string, it is acquired from the contents of ConfGaurun.Android.CredentialsFile
 	config := &firebase.Config{ProjectID: ConfGaurun.FCMV1.Project}
 
+	// firebase.NewApp requires credentials file
 	FirebaseApp, err = firebase.NewApp(context.Background(), config, cred, option.WithHTTPClient(client))
 	if err != nil {
 		return err
