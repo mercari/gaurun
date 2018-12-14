@@ -9,6 +9,7 @@ import (
 	firebase "firebase.google.com/go"
 	"github.com/mercari/gaurun/gcm"
 	"google.golang.org/api/option"
+	htransport "google.golang.org/api/transport/http"
 )
 
 func keepAliveInterval(keepAliveTimeout int) int {
@@ -60,7 +61,7 @@ func InitGCMClient() error {
 }
 
 func InitFirebaseApp() error {
-	transport := &http.Transport{
+	tr := &http.Transport{
 		MaxIdleConnsPerHost: ConfGaurun.FCMV1.KeepAliveConns,
 		Dial: (&net.Dialer{
 			Timeout:   time.Duration(ConfGaurun.FCMV1.Timeout) * time.Second,
@@ -69,21 +70,23 @@ func InitFirebaseApp() error {
 		IdleConnTimeout: time.Duration(ConfGaurun.FCMV1.KeepAliveTimeout) * time.Second,
 	}
 
+	cred := option.WithCredentialsFile(ConfGaurun.FCMV1.CredentialsFile)
+	scopes := option.WithScopes("https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/firebase.messaging")
+
+	transport, err := htransport.NewTransport(context.Background(), tr, cred, scopes)
+	if err != nil {
+		return err
+	}
+
 	client := &http.Client{
 		Transport: transport,
 		Timeout:   time.Duration(ConfGaurun.FCMV1.Timeout) * time.Second,
 	}
 
-	opts := make([]option.ClientOption, 2)
-	opts[0] = option.WithCredentialsFile(ConfGaurun.FCMV1.CredentialsFile)
-	opts[1] = option.WithHTTPClient(client)
-
 	// if ConfGaurun.Android.Project is empty string, it is acquired from the contents of ConfGaurun.Android.CredentialsFile
 	config := &firebase.Config{ProjectID: ConfGaurun.FCMV1.Project}
 
-	var err error
-
-	FirebaseApp, err = firebase.NewApp(context.Background(), config, opts...)
+	FirebaseApp, err = firebase.NewApp(context.Background(), config, cred, option.WithHTTPClient(client))
 	if err != nil {
 		return err
 	}
