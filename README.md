@@ -51,7 +51,7 @@ Use `-help` to see more options.
 
 ### Crash Recovery
 
-Gaurun can recover from sever crashes or hardware failures while pushing. It can use its access log for kind of transaction journal and can re-push only failed notifications later. We provide the special command for this, use it like the following (assuming that access log is generated to `/tmp/gaurun.log`),
+Gaurun can recover from server crashes or hardware failures while pushing. It can use its access log for kind of transaction journal and can re-push only failed notifications later. We provide the special command for this, use it like the following (assuming that access log is generated to `/tmp/gaurun.log`),
 
 ```bash
 $ bin/gaurun_recover -c conf/gaurun.toml -l /tmp/gaurun.log
