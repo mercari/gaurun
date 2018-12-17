@@ -50,6 +50,19 @@ The configuration for Gaurun has some sections. The example is [here](conf/gauru
 |retry_max        |int   |maximum retry count for push notication to GCM  |1      |    |
 |use_fcm          |bool  |Use FCM endpoint instead of GCM (by default, `gaurun` uses FCM endpoint)  |true      |    |
 
+## HTTP v1 API (FCM)
+
+|name             |type  |description                                             |default|note|
+|-----------------|------|--------------------------------------------------------|-------|----|
+|enabled          |bool  |On/Off for push notication to HTTP v1 API               |false  |    |
+|project          |string|project for HTTP v1 API                                 |       |    |
+|credentials_file |string|credentials file for HTTP v1 API                        |       |    |
+|timeout          |int   |timeout for push notication to HTTP v1 API              |5(sec) |    |
+|keepalive_timeout|int   |time for continuing keep-alive connection to HTTP v1 API|90     |    |
+|keepalive_conns  |int   |number of keep-alive connection to HTTP v1 API          |runtime.NumCPU()| |
+|retry_max        |int   |maximum retry count for push notication to HTTP v1 API  |1      |    |
+
+
 ## Log Section
 
 |name      |type  |description    |default|note                             |
