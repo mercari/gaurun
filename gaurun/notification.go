@@ -25,7 +25,7 @@ type RequestGaurunNotification struct {
 	// Common
 	Tokens     []string `json:"token"`
 	Platform   int      `json:"platform"`
-	Message    string   `json:"message"`
+	Message    string   `json:"message,omitempty"`
 	Identifier string   `json:"identifier,omitempty"`
 	// Android
 	CollapseKey    string `json:"collapse_key,omitempty"`
