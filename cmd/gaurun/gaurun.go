@@ -72,25 +72,25 @@ func main() {
 	gaurun.LogError = errorLogger
 
 	if !gaurun.ConfGaurun.Ios.Enabled && !gaurun.ConfGaurun.Android.Enabled {
-		gaurun.LogSetupFatal(fmt.Errorf("What do you want to do?"))
+		gaurun.LogSetupFatal(fmt.Errorf("no platform has been enabled"))
 	}
 
 	if gaurun.ConfGaurun.Ios.Enabled {
 		gaurun.CertificatePemIos.Cert, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
 		if err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("A certification file for iOS is not found."))
+			gaurun.LogSetupFatal(fmt.Errorf("the certification file for iOS was not found"))
 		}
 
 		gaurun.CertificatePemIos.Key, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
 		if err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("A key file for iOS is not found."))
+			gaurun.LogSetupFatal(fmt.Errorf("the key file for iOS was not found"))
 		}
 
 	}
 
 	if gaurun.ConfGaurun.Android.Enabled {
 		if gaurun.ConfGaurun.Android.ApiKey == "" {
-			gaurun.LogSetupFatal(fmt.Errorf("APIKey for Android is empty."))
+			gaurun.LogSetupFatal(fmt.Errorf("the APIKey for Android cannot be empty"))
 		}
 	}
 
