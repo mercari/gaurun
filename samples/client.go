@@ -31,6 +31,7 @@ type RequestGaurunNotification struct {
 	Sound            string `json:"sound"`
 	ContentAvailable bool   `json:"content_available"`
 	Expiry           int    `json:"expiry"`
+	ThreadID         string `json:"thread_id,omitempty"`
 }
 
 func main() {
@@ -67,6 +68,7 @@ func main() {
 		req.Notifications[i].Category = "category1"
 		req.Notifications[i].Sound = "default"
 		req.Notifications[i].ContentAvailable = true
+		req.Notifications[i].ThreadID = "thread_id"
 		i++
 	}
 

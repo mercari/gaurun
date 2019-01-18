@@ -43,6 +43,7 @@ type LogPushEntry struct {
 	ContentAvailable bool   `json:"content_available,omitempty"`
 	MutableContent   bool   `json:"mutable_content,omitempty"`
 	Expiry           int    `json:"expiry,omitempty"`
+	ThreadID         string `json:"thread_id,omitempty"`
 }
 
 type Reopener interface {
@@ -182,6 +183,10 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 	if req.Expiry != 0 {
 		expiry = zap.Int("expiry", req.Expiry)
 	}
+	threadID := zap.Skip()
+	if req.ThreadID != "" {
+		threadID = zap.String("thread_id", req.ThreadID)
+	}
 	identifier := zap.Skip()
 	if req.Identifier != "" {
 		identifier = zap.String("identifier", req.Identifier)
@@ -205,6 +210,7 @@ func LogPush(id uint64, status, token string, ptime float64, req RequestGaurunNo
 		contentAvailable,
 		mutableContent,
 		expiry,
+		threadID,
 		identifier,
 	)
 }
