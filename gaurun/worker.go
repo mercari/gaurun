@@ -6,7 +6,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/RobotsAndPencils/buford/push"
+	"github.com/ken0nek/buford/push"
 )
 
 var (

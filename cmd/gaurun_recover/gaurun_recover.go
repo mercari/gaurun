@@ -191,6 +191,7 @@ func main() {
 			Sound:            logPush.Sound,
 			ContentAvailable: logPush.ContentAvailable,
 			Expiry:           logPush.Expiry,
+			ThreadID:         logPush.ThreadID,
 		}
 		wg.Add(1)
 		go pushNotification(wg, req, logPush)

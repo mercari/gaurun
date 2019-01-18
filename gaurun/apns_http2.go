@@ -11,9 +11,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/RobotsAndPencils/buford/payload"
-	"github.com/RobotsAndPencils/buford/payload/badge"
-	"github.com/RobotsAndPencils/buford/push"
+	"github.com/ken0nek/buford/payload"
+	"github.com/ken0nek/buford/payload/badge"
+	"github.com/ken0nek/buford/push"
 
 	"golang.org/x/net/http2"
 )
@@ -107,6 +107,7 @@ func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} 
 		Sound:            req.Sound,
 		ContentAvailable: req.ContentAvailable,
 		MutableContent:   req.MutableContent,
+		ThreadID:         req.ThreadID,
 	}
 
 	pm := p.Map()
