@@ -40,7 +40,7 @@ type RequestGaurunNotification struct {
 	Expiry           int          `json:"expiry,omitempty"`
 	Retry            int          `json:"retry,omitempty"`
 	Extend           []ExtendJSON `json:"extend,omitempty"`
-	ThreadID         string       `json:"thread_id,omitempty"`
+	ThreadID         string       `json:"thread-id,omitempty"`
 	// meta
 	ID uint64 `json:"seq_id,omitempty"`
 }

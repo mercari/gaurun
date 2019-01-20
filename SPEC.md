@@ -34,7 +34,7 @@ The JSON below is the request-body example.
             "content_available" : false,
             "mutable_content" : false,
             "expiry" : 10,
-            "thread_id" : "thread_id",
+            "thread-id" : "thread-id",
             "extend" : [{ "key": "url", "val": "..." }, { "key": "intent", "val": "..." }]
         },
         {
@@ -62,7 +62,7 @@ The request-body must has the `notifications` array. There is the parameter tabl
 |category         |string      |unnotification category                  |-       |       |only iOS                                  |
 |sound            |string      |sound type                               |-       |       |only iOS                                  |
 |content_available|bool        |indicate that new content is available   |-       |false  |only iOS.                                 |
-|thread_id        |string      |to group your notifications together     |-       |       |only iOS.                                 |
+|thread-id        |string      |to group your notifications together     |-       |       |only iOS.                                 |
 |expiry           |int         |expiration for notification              |-       |0      |only iOS.                                 |
 |mutable_content  |bool        |enable Notification Service app extension|-       |false  |only iOS(10.0+).                          |
 |collapse_key     |string      |the key for collapsing notifications     |-       |       |only Android                              |
