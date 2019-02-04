@@ -12,6 +12,6 @@ require (
 	github.com/stretchr/testify v0.0.0-20161117074351-18a02ba4a312
 	go.uber.org/atomic v1.1.0 // indirect
 	go.uber.org/zap v0.0.0-20170224221842-12592ca48efc
-	golang.org/x/crypto v0.0.0-20190103213133-ff983b9c42bc // indirect
+	golang.org/x/crypto v0.0.0-20190131182504-b8fe1690c613 // indirect
 	golang.org/x/net v0.0.0-20161116075034-4971afdc2f16
 )
