@@ -1,7 +1,7 @@
 github.com/BurntSushi/toml v0.2.0 h1:OthAm9ZSUx4uAmn3WbPwc06nowWrByRwBsYRhbmFjBs=
 github.com/BurntSushi/toml v0.2.0/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/RobotsAndPencils/buford v0.12.1-0.20190121232938-75d85f30d5ff h1:A2fNCj9bZXAlAJWewqeGD9nxKp6s8WdFD2lfkHSUeNE=
-github.com/RobotsAndPencils/buford v0.12.1-0.20190121232938-75d85f30d5ff/go.mod h1:27KhJZ/wLQHRnsZF+mTWKvF5w8U4dVl4Nh+BfQem4Lo=
+github.com/RobotsAndPencils/buford v0.13.0 h1:hFgGnYmZNrSOMsJPEOwdhrYVR3GTOpOilvLW0/d1aTg=
+github.com/RobotsAndPencils/buford v0.13.0/go.mod h1:27KhJZ/wLQHRnsZF+mTWKvF5w8U4dVl4Nh+BfQem4Lo=
 github.com/client9/reopen v0.0.0-20160619053521-4b86f9c0ead5 h1:46QA9E5dIKm6lNygBd+eSiLF32HsgjJwbA1IELhs5Vo=
 github.com/client9/reopen v0.0.0-20160619053521-4b86f9c0ead5/go.mod h1:caXVCEr+lUtoN1FlsRiOWdfQtdRHIYfcb0ai8qKWtkQ=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
