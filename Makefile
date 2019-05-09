@@ -7,10 +7,13 @@ build-cross: cmd/gaurun/gaurun.go cmd/gaurun_recover/gaurun_recover.go gaurun/*.
 	GO111MODULE=on GOOS=linux GOARCH=amd64 go build -o bin/linux/amd64/gaurun-${VERSION}/gaurun_recover  cmd/gaurun_recover/gaurun_recover.go
 	GO111MODULE=on GOOS=darwin GOARCH=amd64 go build -o bin/darwin/amd64/gaurun-${VERSION}/gaurun cmd/gaurun/gaurun.go
 	GO111MODULE=on GOOS=darwin GOARCH=amd64 go build -o bin/darwin/amd64/gaurun-${VERSION}/gaurun_recover cmd/gaurun_recover/gaurun_recover.go
+	GO111MODULE=on GOOS=windows GOARCH=amd64 go build -o bin/windows/amd64/gaurun-${VERSION}/gaurun.exe cmd/gaurun/gaurun.go
+	GO111MODULE=on GOOS=windows GOARCH=amd64 go build -o bin/windows/amd64/gaurun-${VERSION}/gaurun_recover.exe cmd/gaurun_recover/gaurun_recover.go
 
 dist: build-cross
 	cd bin/linux/amd64 && tar zcvf gaurun-linux-amd64-${VERSION}.tar.gz gaurun-${VERSION}
 	cd bin/darwin/amd64 && tar zcvf gaurun-darwin-amd64-${VERSION}.tar.gz gaurun-${VERSION}
+	cd bin/windows/amd64 && tar zcvf gaurun-windows-amd64-${VERSION}.tar.gz gaurun-${VERSION}
 
 bin/gaurun: cmd/gaurun/gaurun.go gaurun/*.go
 	GO111MODULE=on go build -o bin/gaurun cmd/gaurun/gaurun.go
