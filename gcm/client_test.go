@@ -30,7 +30,7 @@ func startTestServer(t *testing.T, resp *testResponse) *httptest.Server {
 
 func TestNewClient(t *testing.T) {
 	if _, err := NewClient("", ""); err == nil {
-		t.Fatalf("expect to be faied (missing GCM/FCM endpoint)")
+		t.Fatalf("expect to be faied (missing FCM endpoint)")
 	}
 
 	if _, err := NewClient(FCMSendEndpoint, ""); err == nil {

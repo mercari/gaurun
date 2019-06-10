@@ -18,12 +18,12 @@ const (
 	// maxRegistrationIDs are max number of registration IDs in one message.
 	maxRegistrationIDs = 1000
 
-	// maxTimeToLive is max time GCM storage can store messages when the device is offline
+	// maxTimeToLive is max time FCM storage can store messages when the device is offline
 	maxTimeToLive = 2419200 // 4 weeks
 )
 
 // Client abstracts the interaction between the application server and the
-// GCM server. The developer must obtain an API key from the Google APIs
+// FCM server. The developer must obtain an API key from the Google APIs
 // Console page and pass it to the Client so that it can perform authorized
 // requests on the application server's behalf. To send a message to one or
 // more devices use the Client's Send methods.
@@ -39,7 +39,7 @@ type Client struct {
 // If you need our own configuration overwrite it.
 func NewClient(urlString, apiKey string) (*Client, error) {
 	if len(urlString) == 0 {
-		return nil, fmt.Errorf("missing GCM/FCM endpoint url")
+		return nil, fmt.Errorf("missing FCM endpoint url")
 	}
 
 	if len(apiKey) == 0 {
@@ -57,7 +57,7 @@ func NewClient(urlString, apiKey string) (*Client, error) {
 	}, nil
 }
 
-// Send sends a message to the GCM server without retrying in case of
+// Send sends a message to the FCM server without retrying in case of
 // service unavailability. A non-nil error is returned if a non-recoverable
 // error occurs (i.e. if the response status is not "200 OK").
 func (c *Client) Send(msg *Message) (*Response, error) {
