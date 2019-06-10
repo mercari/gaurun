@@ -1,6 +1,6 @@
 language: go
 go:
-  - 1.8
+  - 1.11.x
   - tip
 
 os:
@@ -8,10 +8,5 @@ os:
 
 sudo: false
 
-install:
-  - go get -v github.com/Masterminds/glide
-
 script:
-  - make bundle
   - make check
-  

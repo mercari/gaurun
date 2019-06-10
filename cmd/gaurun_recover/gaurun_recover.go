@@ -47,13 +47,9 @@ func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive
 
-	resp, err := GCMClient.SendNoRetry(msg)
+	_, err := GCMClient.Send(msg)
 	if err != nil {
 		return false
-	}
-
-	if resp.Failure > 0 {
-		return true
 	}
 
 	return true

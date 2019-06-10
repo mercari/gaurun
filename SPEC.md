@@ -1,10 +1,10 @@
 # Specification for Gaurun
 
-Gaurun is the general push notification server. It accepts the HTTP request.
+Gaurun is a general push notification server. It accepts HTTP requests.
 
 ## API
 
-Gaurun has some APIs.
+Gaurun APIs:
 
  * [POST /push](#post-push)
  * [GET /stat/go](#get-statgo)
@@ -48,12 +48,12 @@ The JSON below is the request-body example.
 }
 ```
 
-The request-body must has the `notifications` array. There is the parameter table for each notification below.
+The request-body must have the `notifications` array. Table below shows the parameters of each notification:
 
 |name             |type        |description                              |required|default|note                                      |
 |-----------------|------------|-----------------------------------------|--------|-------|------------------------------------------|
 |token            |string array|device tokens                            |o       |       |                                          |
-|platform         |int         |platform(iOS,Android)                    |o       |       |1=iOS, 2=Android                          |
+|platform         |int         |platform(iOS, Android)                   |o       |       |1=iOS, 2=Android                          |
 |message          |string      |message for notification                 |o       |       |                                          |
 |title            |string      |title for notification                   |-       |       |only iOS                                  |
 |subtitle         |string      |subtitle for notification                |-       |       |only iOS                                  |
@@ -77,16 +77,16 @@ The JSON below is the response-body example from Gaurun. In this case, the statu
 }
 ```
 
-When Gaurun receives the invalid request(for example, malformed body is included), the status of response it returns is 400(Bad Request).
+When Gaurun receives an invalid request(for example: malformed body), the status of response it returns is 400(Bad Request).
 
 
 ### GET /stat/go
 
-Returns the statictics for golang-runtime. See [golang-stats-api-handler](https://github.com/fukata/golang-stats-api-handler) about details.
+Returns the statistics for Golang-runtime. See [golang-stats-api-handler](https://github.com/fukata/golang-stats-api-handler) about details.
 
 ### GET /stat/app
 
-Returns the statictics for Gaurun. The JSON below is the example.
+Returns the statistics for Gaurun. The JSON below is an example:
 
 ```json
 {
@@ -105,7 +105,7 @@ Returns the statictics for Gaurun. The JSON below is the example.
 }
 ```
 
-There is the parameter table below.
+Table below shows the parameters:
 
 |name        |description                                          |note       |
 |------------|-----------------------------------------------------|-----------|
@@ -113,8 +113,8 @@ There is the parameter table below.
 |queue_usage |usage of internal queue for push notification        |           |
 |pusher_max  |maximum number of goroutines for asynchronous pushing|           |
 |pusher_count|current number of goroutines for asynchronous pushing|           |
-|push_success|number of succeeded push notification                |           |
-|push_error  |number of failed push notification                   |           |
+|push_success|number of succeeded push notifications               |           |
+|push_error  |number of failed push notifications                  |           |
 
 ### PUT /config/pushers
 
@@ -124,4 +124,4 @@ Adjusts the `core.pusher_max`. Give the new value of `core.pusher_max` to `PUT /
 /config/pushers?max=24
 ```
 
-**Notice**: Not give too large value.
+**Note**: Do not give too large value.

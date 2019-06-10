@@ -135,20 +135,13 @@ func pushNotificationAndroid(req RequestGaurunNotification) error {
 	msg.TimeToLive = req.TimeToLive
 
 	stime := time.Now()
-	resp, err := GCMClient.SendNoRetry(msg)
+	_, err := GCMClient.Send(msg)
 	etime := time.Now()
 	ptime := etime.Sub(stime).Seconds()
 	if err != nil {
 		atomic.AddInt64(&StatGaurun.Android.PushError, 1)
 		LogPush(req.ID, StatusFailedPush, token, ptime, req, err)
 		return err
-	}
-
-	if resp.Failure > 0 {
-		atomic.AddInt64(&StatGaurun.Android.PushSuccess, int64(resp.Success))
-		atomic.AddInt64(&StatGaurun.Android.PushError, int64(resp.Failure))
-		LogPush(req.ID, StatusFailedPush, token, ptime, req, errors.New(resp.Results[0].Error))
-		return errors.New(resp.Results[0].Error)
 	}
 
 	LogPush(req.ID, StatusSucceededPush, token, ptime, req, nil)

@@ -25,7 +25,7 @@ There are two way to install Gaurun; using a precompiled binary or install from 
 
 To install a precompiled binary, download the appropriate zip package for your OS and architecture from [here](https://github.com/mercari/gaurun/releases). Once the zip is downloaded, unzip it and place the binary where you want to use (if you want to access it from the command-line, make sure to put it on `$PATH`).
 
-To compile from source, you need Go1.8 or later (including `$GOPATH` setup) and [glide](https://github.com/Masterminds/glide) for dependency management. After setup, then clone the source code by running the following command,
+To compile from source, you need Go1.11 or later (including `$GOPATH` setup). After setup, then clone the source code by running the following command,
 
 ```bash
 $ mkdir -p $GOPATH/src/github.com/mercari
@@ -36,7 +36,6 @@ $ git clone https://github.com/mercari/gaurun
 To fetch dependencies and build, run the following make tasks,
 
 ```bash
-make bundle
 make
 ```
 
@@ -52,7 +51,7 @@ Use `-help` to see more options.
 
 ### Crash Recovery
 
-Gaurun can recover from sever crashes or hardware failures while pushing. It can use its access log for kind of transaction journal and can re-push only failed notifications later. We provide the special command for this, use it like the following (assuming that access log is generated to `/tmp/gaurun.log`),
+Gaurun can recover from server crashes or hardware failures while pushing. It can use its access log for kind of transaction journal and can re-push only failed notifications later. We provide the special command for this, use it like the following (assuming that access log is generated to `/tmp/gaurun.log`),
 
 ```bash
 $ bin/gaurun_recover -c conf/gaurun.toml -l /tmp/gaurun.log
