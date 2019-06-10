@@ -65,7 +65,7 @@ The request-body must have the `notifications` array. Table below shows the para
 |mutable_content  |bool        |enable Notification Service app extension|-       |false  |only iOS(10.0+).                          |
 |collapse_key     |string      |the key for collapsing notifications     |-       |       |only Android                              |
 |delay_while_idle |bool        |the flag for device idling               |-       |false  |only Android                              |
-|time_to_live     |int         |expiration of message kept on GCM storage|-       |0      |only Android                              |
+|time_to_live     |int         |expiration of message kept on FCM storage|-       |0      |only Android                              |
 |extend           |string array|extensible partition                     |-       |       |                                          |
 |identifier       |string      |notification identifier                  |-       |       |an optional value to identify notification|
 

@@ -33,7 +33,7 @@ func TestNewClient(t *testing.T) {
 		t.Fatalf("expect to be faied (missing GCM/FCM endpoint)")
 	}
 
-	if _, err := NewClient(GCMSendEndpoint, ""); err == nil {
+	if _, err := NewClient(FCMSendEndpoint, ""); err == nil {
 		t.Fatalf("expect to be faied (missing API Key)")
 	}
 }

@@ -42,13 +42,12 @@ The configuration for Gaurun has some sections. The example is [here](conf/gauru
 
 |name             |type  |description                                     |default|note|
 |-----------------|------|------------------------------------------------|-------|----|
-|enabled          |bool  |On/Off for push notication to GCM               |true   |    |
-|apikey           |string|API key string for GCM                          |       |    |
-|timeout          |int   |timeout for push notication to GCM              |5(sec) |    |
-|keepalive_timeout|int   |time for continuing keep-alive connection to GCM|90     |    |
-|keepalive_conns  |int   |number of keep-alive connection to GCM          |runtime.NumCPU()||
-|retry_max        |int   |maximum retry count for push notication to GCM  |1      |    |
-|use_fcm          |bool  |Use FCM endpoint instead of GCM (by default, `gaurun` uses FCM endpoint)  |true      |    |
+|enabled          |bool  |On/Off for push notication to FCM               |true   |    |
+|apikey           |string|API key string for FCM                          |       |    |
+|timeout          |int   |timeout for push notication to FCM              |5(sec) |    |
+|keepalive_timeout|int   |time for continuing keep-alive connection to FCM|90     |    |
+|keepalive_conns  |int   |number of keep-alive connection to FCM          |runtime.NumCPU()||
+|retry_max        |int   |maximum retry count for push notication to FCM  |1      |    |
 
 ## Log Section
 
