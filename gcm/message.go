@@ -5,9 +5,9 @@ import (
 )
 
 // Message is used by the application server to send a message to
-// the GCM server. See the documentation for GCM Architectural
+// the FCM server. See the documentation for FCM Architectural
 // Overview for more information:
-// http://developer.android.com/google/gcm/gcm.html#send-msg
+// https://firebase.google.com/docs/cloud-messaging/http-server-ref
 type Message struct {
 	RegistrationIDs       []string               `json:"registration_ids"`
 	CollapseKey           string                 `json:"collapse_key,omitempty"`
