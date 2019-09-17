@@ -41,6 +41,24 @@ func TestValidateNotification(t *testing.T) {
 			},
 			nil,
 		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 1,
+				Message:  "test message with identifier",
+				PushType: "alert",
+			},
+			nil,
+		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 1,
+				Message:  "test message with identifier",
+				PushType: "background",
+			},
+			nil,
+		},
 
 		// negative cases
 		{
@@ -63,6 +81,15 @@ func TestValidateNotification(t *testing.T) {
 				Message:  "",
 			},
 			errors.New("empty message"),
+		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 1,
+				Message:  "test message with identifier",
+				PushType: "notpushtype",
+			},
+			errors.New("push_type must be alert or background"),
 		},
 	}
 

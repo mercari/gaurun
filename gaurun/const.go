@@ -15,3 +15,8 @@ const (
 	StatusFailedPush    = "failed-push"
 	StatusDisabledPush  = "disabled-push"
 )
+
+const (
+	ApnsPushTypeAlert      = "alert"
+	ApnsPushTypeBackground = "background"
+)
