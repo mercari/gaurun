@@ -121,8 +121,19 @@ func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} 
 }
 
 func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
+	var pushType push.PushType
+
+	// Required when delivering notifications to devices running iOS 13 and later, or watchOS 6 and later. Ignored on earlier system versions.
+	// cf: https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/sending_notification_requests_to_apns
+	if req.PushType == ApnsPushTypeBackground {
+		pushType = push.PushTypeBackground
+	} else {
+		pushType = push.PushTypeAlert
+	}
+
 	headers := &push.Headers{
-		Topic: ConfGaurun.Ios.Topic,
+		Topic:    ConfGaurun.Ios.Topic,
+		PushType: pushType,
 	}
 
 	if req.Expiry > 0 {

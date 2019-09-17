@@ -32,6 +32,7 @@ type RequestGaurunNotification struct {
 	// iOS
 	Title            string       `json:"title,omitempty"`
 	Subtitle         string       `json:"subtitle,omitempty"`
+	PushType         string       `json:"push_type,omitempty"`
 	Badge            int          `json:"badge,omitempty"`
 	Category         string       `json:"category,omitempty"`
 	Sound            string       `json:"sound,omitempty"`
@@ -166,6 +167,12 @@ func validateNotification(notification *RequestGaurunNotification) error {
 
 	if len(notification.Message) == 0 {
 		return errors.New("empty message")
+	}
+
+	if notification.PushType != "" {
+		if notification.PushType != ApnsPushTypeAlert && notification.PushType != ApnsPushTypeBackground {
+			return fmt.Errorf("push_type must be %s or %s", ApnsPushTypeAlert, ApnsPushTypeBackground)
+		}
 	}
 
 	return nil
