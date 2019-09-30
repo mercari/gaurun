@@ -80,7 +80,7 @@ func TestValidateNotification(t *testing.T) {
 				Platform: 1,
 				Message:  "",
 			},
-			errors.New("empty message"),
+			nil,
 		},
 		{
 			RequestGaurunNotification{
