@@ -54,7 +54,7 @@ The request-body must have the `notifications` array. Table below shows the para
 |-----------------|------------|-----------------------------------------|--------|-------|------------------------------------------|
 |token            |string array|device tokens                            |o       |       |                                          |
 |platform         |int         |platform(iOS, Android)                   |o       |       |1=iOS, 2=Android                          |
-|message          |string      |message for notification                 |o       |       |                                          |
+|message          |string      |message for notification                 |-       |       |                                          |
 |title            |string      |title for notification                   |-       |       |only iOS                                  |
 |subtitle         |string      |subtitle for notification                |-       |       |only iOS                                  |
 |badge            |int         |badge count                              |-       |0      |only iOS                                  |
