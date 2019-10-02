@@ -6,6 +6,7 @@ queues = 8192
 notification_max = 100
 shutdown_timeout = 30
 # pid = "/tmp/gaurun.pid"
+# allows_empty_message = true
 
 [android]
 apikey = "apikey for FCM"

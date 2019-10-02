@@ -18,13 +18,14 @@ type ConfToml struct {
 }
 
 type SectionCore struct {
-	Port            string `toml:"port"`
-	WorkerNum       int64  `toml:"workers"`
-	QueueNum        int64  `toml:"queues"`
-	NotificationMax int64  `toml:"notification_max"`
-	PusherMax       int64  `toml:"pusher_max"`
-	ShutdownTimeout int64  `toml:"shutdown_timeout"`
-	Pid             string `toml:"pid"`
+	Port               string `toml:"port"`
+	WorkerNum          int64  `toml:"workers"`
+	QueueNum           int64  `toml:"queues"`
+	NotificationMax    int64  `toml:"notification_max"`
+	PusherMax          int64  `toml:"pusher_max"`
+	ShutdownTimeout    int64  `toml:"shutdown_timeout"`
+	Pid                string `toml:"pid"`
+	AllowsEmptyMessage bool   `toml:"allows_empty_message"`
 }
 
 type SectionAndroid struct {
@@ -67,6 +68,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Core.PusherMax = 0
 	conf.Core.ShutdownTimeout = 10
 	conf.Core.Pid = ""
+	conf.Core.AllowsEmptyMessage = false
 	// Android
 	conf.Android.ApiKey = ""
 	conf.Android.Enabled = true
