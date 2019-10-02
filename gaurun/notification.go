@@ -165,6 +165,10 @@ func validateNotification(notification *RequestGaurunNotification) error {
 		return errors.New("invalid platform")
 	}
 
+	if !ConfGaurun.Core.AllowsEmptyMessage && len(notification.Message) == 0 {
+		return errors.New("empty message")
+	}
+
 	if notification.PushType != "" {
 		if notification.PushType != ApnsPushTypeAlert && notification.PushType != ApnsPushTypeBackground {
 			return fmt.Errorf("push_type must be %s or %s", ApnsPushTypeAlert, ApnsPushTypeBackground)
