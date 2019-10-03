@@ -99,6 +99,21 @@ func TestValidateNotification(t *testing.T) {
 	}
 }
 
+func TestValidateNotificationWithAllowingEmptyMessage(t *testing.T) {
+	allowsEmptyBefore := ConfGaurun.Core.AllowsEmptyMessage
+	ConfGaurun.Core.AllowsEmptyMessage = true
+	defer func() {
+		ConfGaurun.Core.AllowsEmptyMessage = allowsEmptyBefore
+	}()
+	notification := RequestGaurunNotification{
+		Tokens:   []string{"test token"},
+		Platform: 1,
+		Message:  "",
+	}
+
+	assert.Nil(t, validateNotification(&notification))
+}
+
 func TestSendResponse(t *testing.T) {
 	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		sendResponse(w, "valid message", http.StatusOK)

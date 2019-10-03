@@ -37,6 +37,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, int64(100))
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.PusherMax, int64(0))
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.Pid, "")
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.AllowsEmptyMessage, false)
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.ApiKey, "")
@@ -68,6 +69,7 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.NotificationMax, int64(100))
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.PusherMax, int64(0))
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.Pid, "")
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.AllowsEmptyMessage, false)
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.ApiKey, "apikey for FCM")
