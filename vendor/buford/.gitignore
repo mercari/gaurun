@@ -1,0 +1,9 @@
+*.p12
+*.pem
+*.cer
+c.out
+*.pass
+*.pkpass
+!testdata/*
+*.sublime-project
+coverage.txt
