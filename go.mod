@@ -10,10 +10,10 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v0.0.0-20161117074351-18a02ba4a312
-	go.uber.org/atomic v1.1.0
+	go.uber.org/atomic v1.1.0 // indirect
 	go.uber.org/zap v0.0.0-20170224221842-12592ca48efc
 	golang.org/x/crypto v0.0.0-20190911031432-227b76d455e7 // indirect
 	golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3
 )
 
-replace github.com/RobotsAndPencils/buford => github.com/flexfrank/buford v0.13.1-0.20190906024551-21672ff2794e
+replace github.com/RobotsAndPencils/buford => ./vendor/buford
