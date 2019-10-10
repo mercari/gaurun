@@ -3,7 +3,7 @@ package payload_test
 import (
 	"testing"
 
-	"github.com/RobotsAndPencils/buford/payload"
+	"github.com/mercari/gaurun/buford/payload"
 )
 
 func TestMDM(t *testing.T) {

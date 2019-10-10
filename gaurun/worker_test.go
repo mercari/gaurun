@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/RobotsAndPencils/buford/push"
+	"github.com/mercari/gaurun/buford/push"
 	"github.com/stretchr/testify/assert"
 )
 

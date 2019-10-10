@@ -3,7 +3,7 @@ package payload
 import (
 	"encoding/json"
 
-	"github.com/RobotsAndPencils/buford/payload/badge"
+	"github.com/mercari/gaurun/buford/payload/badge"
 )
 
 // APS is Apple's reserved namespace.
