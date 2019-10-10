@@ -2,9 +2,7 @@
 
 Apple Push Notification (APN) Provider library for Go 1.6 and HTTP/2. Send remote notifications to iOS, macOS, tvOS and watchOS. Buford can also sign push packages for Safari notifications and Wallet passes.
 
-Please see [releases](https://github.com/RobotsAndPencils/buford/releases) for updates.
-
-[![GoDoc](https://godoc.org/github.com/RobotsAndPencils/buford?status.svg)](https://godoc.org/github.com/RobotsAndPencils/buford) [![Build Status](https://travis-ci.org/RobotsAndPencils/buford.svg?branch=ci)](https://travis-ci.org/RobotsAndPencils/buford) ![MIT](https://img.shields.io/badge/license-MIT-blue.svg) [![codecov](https://codecov.io/gh/RobotsAndPencils/buford/branch/master/graph/badge.svg)](https://codecov.io/gh/RobotsAndPencils/buford)
+This package is forked from [RobotsAndPencils/buford](https://github.com/RobotsAndPencils/buford).
 
 ### Documentation
 
@@ -35,24 +33,6 @@ Also see Apple's [Local and Remote Notification Programming Guide][notification]
 **Payload** The JSON sent to a device.
 
 **Headers** HTTP/2 headers are used to set priority and expiration.
-
-### Installation
-
-This library requires [Go 1.6.3](https://golang.org/dl/) or better.
-
-```
-go get -u -d github.com/RobotsAndPencils/buford
-```
-
-Buford depends on several packages outside of the standard library, including the http2 package. Its certificate package depends on the pkcs12 and pushpackage depends on pkcs7. They can be retrieved or updated with:
-
-```
-go get -u golang.org/x/net/http2
-go get -u golang.org/x/crypto/pkcs12
-go get -u github.com/aai/gocrypto/pkcs7
-```
-
-I am still looking for feedback on the API so it may change. Please copy Buford and its dependencies into a `vendor/` folder at the root of your project.
 
 ### Examples
 
