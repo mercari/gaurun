@@ -9,11 +9,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
-	"strings"
 	"time"
-
-	"golang.org/x/net/http2"
 )
 
 // Apple host locations for configuring Service.
@@ -46,10 +42,9 @@ func NewClient(cert tls.Certificate) (*http.Client, error) {
 		Certificates: []tls.Certificate{cert},
 	}
 	config.BuildNameToCertificate()
-	transport := &http.Transport{TLSClientConfig: config}
-
-	if err := http2.ConfigureTransport(transport); err != nil {
-		return nil, err
+	transport := &http.Transport{
+		TLSClientConfig:   config,
+		ForceAttemptHTTP2: true,
 	}
 
 	return &http.Client{Transport: transport}, nil
@@ -77,12 +72,6 @@ func (s *Service) Push(deviceToken string, headers *Headers, payload []byte) (st
 	resp, err := s.Client.Do(req)
 
 	if err != nil {
-		if e, ok := err.(*url.Error); ok {
-			if e, ok := e.Err.(http2.GoAwayError); ok {
-				// parse DebugData as JSON. no status code known (0)
-				return "", parseErrorResponse(strings.NewReader(e.DebugData), 0)
-			}
-		}
 		return "", err
 	}
 	defer resp.Body.Close()
