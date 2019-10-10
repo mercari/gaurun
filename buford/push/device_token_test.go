@@ -3,7 +3,7 @@ package push_test
 import (
 	"testing"
 
-	"github.com/RobotsAndPencils/buford/push"
+	"github.com/mercari/gaurun/buford/push"
 )
 
 func TestInvalidDeviceTokens(t *testing.T) {
