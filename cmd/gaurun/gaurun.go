@@ -179,13 +179,10 @@ func main() {
 }
 
 func signalHandler(ch <-chan os.Signal, sighupFn func()) {
-	for {
-		select {
-		case sig := <-ch:
-			switch sig {
-			case syscall.SIGHUP:
-				sighupFn()
-			}
+	for sig := range ch {
+		switch sig {
+		case syscall.SIGHUP:
+			sighupFn()
 		}
 	}
 }
