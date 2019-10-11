@@ -218,8 +218,8 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 	)
 
 	if ConfGaurun.Log.Level == "debug" {
-		reqBody, err := ioutil.ReadAll(r.Body)
-		if err != nil {
+		reqBody, ierr := ioutil.ReadAll(r.Body)
+		if ierr != nil {
 			sendResponse(w, "failed to read request-body", http.StatusInternalServerError)
 			return
 		}
