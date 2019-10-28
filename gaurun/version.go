@@ -8,7 +8,7 @@ import (
 func PrintVersion() {
 	fmt.Printf(`Gaurun %s
 Compiler: %s %s
-Copyright (C) 2014-2017 Mercari, Inc.
+Copyright (C) 2014-2019 Mercari, Inc.
 `,
 		Version,
 		runtime.Compiler,
