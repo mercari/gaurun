@@ -65,12 +65,6 @@ See [CONFIGURATION.md](/CONFIGURATION.md) about details.
 
 API specification is defined on [SPEC.md](/SPEC.md).
 
-## Committers
-
- * Tatsuhiko Kubo([@cubicdaiya](https://github.com/cubicdaiya))
- * Masahiro Sano([@kazegusuri](https://github.com/kazegusuri))
- * Taichi Nakashima([@tcnksm](https://github.com/tcnksm))
-
 ## Contribution
 
 Please read the CLA below carefully before submitting your contribution.
