@@ -1,7 +1,7 @@
 package gaurun
 
 import (
-	"net/http"
+	"crypto/ecdsa"
 
 	"github.com/mercari/gaurun/gcm"
 
@@ -15,10 +15,12 @@ var (
 	QueueNotification chan RequestGaurunNotification
 	// TLS certificate and key for APNs
 	CertificatePemIos CertificatePem
+	// AuthKey is the result of loading the .p8 certificate
+	AuthKey *ecdsa.PrivateKey
 	// Stat for Gaurun
 	StatGaurun StatApp
 	// http client for APNs and GCM/FCM
-	APNSClient *http.Client
+	APNSClient APNsClient
 	GCMClient  *gcm.Client
 	// access and error logger
 	LogAccess *zap.Logger

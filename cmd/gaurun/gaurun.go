@@ -13,6 +13,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/mercari/gaurun/buford/token"
 	"github.com/mercari/gaurun/gaurun"
 )
 
@@ -76,14 +77,23 @@ func main() {
 	}
 
 	if gaurun.ConfGaurun.Ios.Enabled {
-		gaurun.CertificatePemIos.Cert, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
-		if err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("the certification file for iOS was not found"))
-		}
+		if gaurun.ConfGaurun.Ios.PemCertPath != "" && gaurun.ConfGaurun.Ios.PemKeyPath != "" {
+			gaurun.CertificatePemIos.Cert, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
+			if err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("the certification file for iOS was not found"))
+			}
 
-		gaurun.CertificatePemIos.Key, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
-		if err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("the key file for iOS was not found"))
+			gaurun.CertificatePemIos.Key, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
+			if err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("the key file for iOS was not found"))
+			}
+		} else if gaurun.ConfGaurun.Ios.AuthKeyPath != "" && conf.Ios.KeyID != "" && conf.Ios.TeamID != "" {
+			gaurun.AuthKey, err = token.AuthKeyFromFile(gaurun.ConfGaurun.Ios.AuthKeyPath)
+			if err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("the auth key file for iOS was not loading: %v", err))
+			}
+		} else {
+			gaurun.LogSetupFatal(fmt.Errorf("the key file or APNsAuthKey file for iOS was not found"))
 		}
 
 	}

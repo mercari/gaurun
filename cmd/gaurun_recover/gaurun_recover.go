@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	APNSClient *http.Client
+	APNSClient gaurun.APNsClient
 	GCMClient  *gcm.Client
 )
 
@@ -131,15 +131,23 @@ func main() {
 		}
 	}
 
-	APNSClient, err = gaurun.NewApnsClientHttp2(
-		gaurun.ConfGaurun.Ios.PemCertPath,
-		gaurun.ConfGaurun.Ios.PemKeyPath,
-		gaurun.ConfGaurun.Ios.PemKeyPassphrase,
-	)
+	if gaurun.ConfGaurun.Ios.PemCertPath != "" {
+		APNSClient, err = gaurun.NewApnsClientHttp2(
+			gaurun.ConfGaurun.Ios.PemCertPath,
+			gaurun.ConfGaurun.Ios.PemKeyPath,
+			gaurun.ConfGaurun.Ios.PemKeyPassphrase,
+		)
+	} else {
+		APNSClient, err = gaurun.NewApnsClientHttp2ForToken(
+			gaurun.AuthKey,
+			gaurun.ConfGaurun.Ios.KeyID,
+			gaurun.ConfGaurun.Ios.TeamID,
+		)
+	}
 	if err != nil {
 		gaurun.LogSetupFatal(err)
 	}
-	APNSClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
+	APNSClient.HTTPClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
 
 	GCMClient, err := gcm.NewClient(gcm.FCMSendEndpoint, gaurun.ConfGaurun.Android.ApiKey)
 	if err != nil {

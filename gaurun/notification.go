@@ -96,6 +96,9 @@ func pushNotificationIos(req RequestGaurunNotification) error {
 	token := req.Tokens[0]
 
 	headers := NewApnsHeadersHttp2(&req)
+	if APNSClient.Token != nil {
+		headers.AuthToken = APNSClient.Token
+	}
 	payload := NewApnsPayloadHttp2(&req)
 
 	stime := time.Now()
