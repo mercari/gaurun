@@ -69,18 +69,20 @@ func NewApnsClientHttp2ForToken(authKey *ecdsa.PrivateKey, keyID, teamID string)
 		TeamID:  teamID,
 	}
 
+	transport := &http.Transport{
+		MaxIdleConnsPerHost: ConfGaurun.Ios.KeepAliveConns,
+		Dial: (&net.Dialer{
+			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+			KeepAlive: time.Duration(keepAliveInterval(ConfGaurun.Ios.KeepAliveTimeout)) * time.Second,
+		}).Dial,
+		IdleConnTimeout:   time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
+		ForceAttemptHTTP2: true,
+	}
+
 	return APNsClient{
 		HTTPClient: &http.Client{
-			Transport: &http.Transport{
-				MaxIdleConnsPerHost: ConfGaurun.Ios.KeepAliveConns,
-				Dial: (&net.Dialer{
-					Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
-					KeepAlive: time.Duration(keepAliveInterval(ConfGaurun.Ios.KeepAliveTimeout)) * time.Second,
-				}).Dial,
-				IdleConnTimeout:   time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
-				ForceAttemptHTTP2: true,
-			},
-			Timeout: time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+			Transport: transport,
+			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
 		},
 		Token: authToken,
 	}, nil
