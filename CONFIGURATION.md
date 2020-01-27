@@ -23,21 +23,21 @@ The configuration for Gaurun has some sections. The example is [here](conf/gauru
 
 ## iOS Section
 
-| name               | type   | description                                              | default          | note |
-| ------------------ | ------ | -------------------------------------------------------- | ---------------- | ---- |
-| enabled            | bool   | On/Off for push notication to APNs                       | true             |      |
-| pem_cert_path      | string | certification file path for APNs                         |                  |      |
-| pem_key_path       | string | secret key file path for APNs                            |                  |      |
-| pem_key_passphrase | string | secret key file pass phrase for APNs                     |                  |      |
-| auth_key_path      | string | secret APNs auth key file (.p8) for token based provider |                  |      |
-| key_id             | string | APNs key id for token based provider                     |                  |      |
-| team_id            | string | APNs team id for token based provider                    |                  |      |
-| sandbox            | bool   | On/Off for sandbox environment                           | true             |      |
-| retry_max          | int    | maximum retry count for push notication to APNs          | 1                |      |
-| timeout            | int    | timeout for push notification to APNs                    | 5                |      |
-| keepalive_timeout  | int    | time for continuing keep-alive connection to APNs        | 90               |      |
-| keepalive_conns    | int    | number of keep-alive connection to APNs                  | runtime.NumCPU() |      |
-| topic              | string | the assigned value of `apns-topic` for Request headers   |                  |      |
+| name                | type   | description                                              | default          | note |
+| ------------------- | ------ | -------------------------------------------------------- | ---------------- | ---- |
+| enabled             | bool   | On/Off for push notication to APNs                       | true             |      |
+| pem_cert_path       | string | certification file path for APNs                         |                  |      |
+| pem_key_path        | string | secret key file path for APNs                            |                  |      |
+| pem_key_passphrase  | string | secret key file pass phrase for APNs                     |                  |      |
+| token_auth_key_path | string | secret APNs auth key file (.p8) for token based provider |                  |      |
+| token_auth_key_id   | string | APNs key id for token based provider                     |                  |      |
+| token_auth_team_id  | string | APNs team id for token based provider                    |                  |      |
+| sandbox             | bool   | On/Off for sandbox environment                           | true             |      |
+| retry_max           | int    | maximum retry count for push notication to APNs          | 1                |      |
+| timeout             | int    | timeout for push notification to APNs                    | 5                |      |
+| keepalive_timeout   | int    | time for continuing keep-alive connection to APNs        | 90               |      |
+| keepalive_conns     | int    | number of keep-alive connection to APNs                  | runtime.NumCPU() |      |
+| topic               | string | the assigned value of `apns-topic` for Request headers   |                  |      |
 
 `topic` is mandatory when the client is connected using the certificate that supports multiple topics.
 

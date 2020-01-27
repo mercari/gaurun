@@ -140,8 +140,8 @@ func main() {
 	} else {
 		APNSClient, err = gaurun.NewApnsClientHttp2ForToken(
 			gaurun.AuthKey,
-			gaurun.ConfGaurun.Ios.KeyID,
-			gaurun.ConfGaurun.Ios.TeamID,
+			gaurun.ConfGaurun.Ios.TokenAuthKeyID,
+			gaurun.ConfGaurun.Ios.TokenAuthTeamID,
 		)
 	}
 	if err != nil {

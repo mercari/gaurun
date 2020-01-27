@@ -42,9 +42,9 @@ type SectionIos struct {
 	PemCertPath      string `toml:"pem_cert_path"`
 	PemKeyPath       string `toml:"pem_key_path"`
 	PemKeyPassphrase string `toml:"pem_key_passphrase"`
-	AuthKeyPath      string `toml:"auth_key_path"`
-	KeyID            string `toml:"key_id"`
-	TeamID           string `toml:"team_id"`
+	TokenAuthKeyPath string `toml:"token_auth_key_path"`
+	TokenAuthKeyID   string `toml:"token_auth_key_id"`
+	TokenAuthTeamID  string `toml:"token_auth_team_id"`
 	Sandbox          bool   `toml:"sandbox"`
 	RetryMax         int    `toml:"retry_max"`
 	Timeout          int    `toml:"timeout"`
@@ -83,9 +83,9 @@ func BuildDefaultConf() ConfToml {
 	conf.Ios.Enabled = true
 	conf.Ios.PemCertPath = ""
 	conf.Ios.PemKeyPath = ""
-	conf.Ios.AuthKeyPath = ""
-	conf.Ios.KeyID = ""
-	conf.Ios.TeamID = ""
+	conf.Ios.TokenAuthKeyPath = ""
+	conf.Ios.TokenAuthKeyID = ""
+	conf.Ios.TokenAuthTeamID = ""
 	conf.Ios.Sandbox = true
 	conf.Ios.RetryMax = 1
 	conf.Ios.Timeout = 5

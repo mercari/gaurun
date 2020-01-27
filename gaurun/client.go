@@ -60,8 +60,8 @@ func InitAPNSClient() error {
 	} else {
 		APNSClient, err = NewApnsClientHttp2ForToken(
 			AuthKey,
-			ConfGaurun.Ios.KeyID,
-			ConfGaurun.Ios.TeamID,
+			ConfGaurun.Ios.TokenAuthKeyID,
+			ConfGaurun.Ios.TokenAuthTeamID,
 		)
 	}
 	if err != nil {
