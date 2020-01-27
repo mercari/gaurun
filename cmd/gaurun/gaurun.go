@@ -87,7 +87,7 @@ func main() {
 			if err != nil {
 				gaurun.LogSetupFatal(fmt.Errorf("the key file for iOS was not found"))
 			}
-		} else if gaurun.ConfGaurun.Ios.AuthKeyPath != "" && conf.Ios.KeyID != "" && conf.Ios.TeamID != "" {
+		} else if gaurun.ConfGaurun.Ios.AuthKeyPath != "" && gaurun.ConfGaurun.Ios.KeyID != "" && gaurun.ConfGaurun.Ios.TeamID != "" {
 			gaurun.AuthKey, err = token.AuthKeyFromFile(gaurun.ConfGaurun.Ios.AuthKeyPath)
 			if err != nil {
 				gaurun.LogSetupFatal(fmt.Errorf("the auth key file for iOS was not loading: %v", err))
