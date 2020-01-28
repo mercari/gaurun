@@ -173,6 +173,13 @@ func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
 	return headers
 }
 
+func NewApnsHeadersHttp2WithToken(req *RequestGaurunNotification, t *token.Token) *push.Headers {
+	headers := NewApnsHeadersHttp2(req)
+	headers.AuthToken = t
+
+	return headers
+}
+
 func ApnsPushHttp2(token string, service *push.Service, headers *push.Headers, payload map[string]interface{}) error {
 	b, err := json.Marshal(payload)
 	if err != nil {
