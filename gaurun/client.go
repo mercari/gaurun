@@ -62,6 +62,9 @@ func InitAPNSClient() error {
 	} else {
 		var authKey *ecdsa.PrivateKey
 		authKey, err = token.AuthKeyFromFile(ConfGaurun.Ios.TokenAuthKeyPath)
+		if err != nil {
+			return err
+		}
 		APNSClient, err = NewApnsClientHttp2ForToken(
 			authKey,
 			ConfGaurun.Ios.TokenAuthKeyID,
