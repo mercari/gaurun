@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"crypto/ecdsa"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -12,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/mercari/gaurun/buford/token"
 	"github.com/mercari/gaurun/gaurun"
 	"github.com/mercari/gaurun/gcm"
 )
@@ -138,8 +140,13 @@ func main() {
 			gaurun.ConfGaurun.Ios.PemKeyPassphrase,
 		)
 	} else {
+		var authKey *ecdsa.PrivateKey
+		authKey, err = token.AuthKeyFromFile(gaurun.ConfGaurun.Ios.TokenAuthKeyPath)
+		if err != nil {
+			gaurun.LogSetupFatal(err)
+		}
 		APNSClient, err = gaurun.NewApnsClientHttp2ForToken(
-			gaurun.AuthKey,
+			authKey,
 			gaurun.ConfGaurun.Ios.TokenAuthKeyID,
 			gaurun.ConfGaurun.Ios.TokenAuthTeamID,
 		)

@@ -78,24 +78,23 @@ func main() {
 
 	if gaurun.ConfGaurun.Ios.Enabled {
 		if gaurun.ConfGaurun.Ios.PemCertPath != "" && gaurun.ConfGaurun.Ios.PemKeyPath != "" {
-			gaurun.CertificatePemIos.Cert, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
+			_, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
 			if err != nil {
 				gaurun.LogSetupFatal(fmt.Errorf("the certification file for iOS was not found"))
 			}
 
-			gaurun.CertificatePemIos.Key, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
+			_, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
 			if err != nil {
 				gaurun.LogSetupFatal(fmt.Errorf("the key file for iOS was not found"))
 			}
 		} else if gaurun.ConfGaurun.Ios.TokenAuthKeyPath != "" && gaurun.ConfGaurun.Ios.TokenAuthKeyID != "" && gaurun.ConfGaurun.Ios.TokenAuthTeamID != "" {
-			gaurun.AuthKey, err = token.AuthKeyFromFile(gaurun.ConfGaurun.Ios.TokenAuthKeyPath)
+			_, err = token.AuthKeyFromFile(gaurun.ConfGaurun.Ios.TokenAuthKeyPath)
 			if err != nil {
 				gaurun.LogSetupFatal(fmt.Errorf("the auth key file for iOS was not loading: %v", err))
 			}
 		} else {
 			gaurun.LogSetupFatal(fmt.Errorf("the key file or APNsAuthKey file for iOS was not found"))
 		}
-
 	}
 
 	if gaurun.ConfGaurun.Android.Enabled {
@@ -137,6 +136,7 @@ func main() {
 			gaurun.LogSetupFatal(fmt.Errorf("failed to init http client for APNs: %v", err))
 		}
 	}
+
 	gaurun.InitStat()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
 

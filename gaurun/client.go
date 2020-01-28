@@ -1,10 +1,12 @@
 package gaurun
 
 import (
+	"crypto/ecdsa"
 	"net"
 	"net/http"
 	"time"
 
+	"github.com/mercari/gaurun/buford/token"
 	"github.com/mercari/gaurun/gcm"
 )
 
@@ -58,8 +60,10 @@ func InitAPNSClient() error {
 			ConfGaurun.Ios.PemKeyPassphrase,
 		)
 	} else {
+		var authKey *ecdsa.PrivateKey
+		authKey, err = token.AuthKeyFromFile(ConfGaurun.Ios.TokenAuthKeyPath)
 		APNSClient, err = NewApnsClientHttp2ForToken(
-			AuthKey,
+			authKey,
 			ConfGaurun.Ios.TokenAuthKeyID,
 			ConfGaurun.Ios.TokenAuthTeamID,
 		)
