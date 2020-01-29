@@ -1,9 +1,12 @@
 package push
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/mercari/gaurun/buford/token"
 )
 
 // Headers sent with a push to control the notification (optional)
@@ -25,6 +28,8 @@ type Headers struct {
 
 	// Topic for certificates with multiple topics.
 	Topic string
+
+	AuthToken *token.Token
 
 	PushType PushType
 }
@@ -65,5 +70,9 @@ func (h *Headers) set(reqHeader http.Header) {
 
 	if h.PushType != "" {
 		reqHeader.Set("apns-push-type", string(h.PushType))
+	}
+
+	if h.AuthToken != nil {
+		reqHeader.Set("authorization", fmt.Sprintf("bearer %s", h.AuthToken.GenerateBearerIfExpired()))
 	}
 }

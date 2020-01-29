@@ -13,6 +13,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/mercari/gaurun/buford/token"
 	"github.com/mercari/gaurun/gaurun"
 )
 
@@ -76,16 +77,28 @@ func main() {
 	}
 
 	if gaurun.ConfGaurun.Ios.Enabled {
-		gaurun.CertificatePemIos.Cert, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
-		if err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("the certification file for iOS was not found"))
+		if gaurun.ConfGaurun.Ios.IsCertificateBasedProvider() && gaurun.ConfGaurun.Ios.IsTokenBasedProvider() {
+			gaurun.LogSetupFatal(fmt.Errorf("you can use only one of certificate-based provider or token-based provider connection trust"))
 		}
 
-		gaurun.CertificatePemIos.Key, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
-		if err != nil {
-			gaurun.LogSetupFatal(fmt.Errorf("the key file for iOS was not found"))
-		}
+		if gaurun.ConfGaurun.Ios.IsCertificateBasedProvider() {
+			_, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
+			if err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("the certification file for iOS was not found"))
+			}
 
+			_, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemKeyPath)
+			if err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("the key file for iOS was not found"))
+			}
+		} else if gaurun.ConfGaurun.Ios.IsTokenBasedProvider() {
+			_, err = token.AuthKeyFromFile(gaurun.ConfGaurun.Ios.TokenAuthKeyPath)
+			if err != nil {
+				gaurun.LogSetupFatal(fmt.Errorf("the auth key file for iOS was not loading: %v", err))
+			}
+		} else {
+			gaurun.LogSetupFatal(fmt.Errorf("the key file or APNsAuthKey file for iOS was not found"))
+		}
 	}
 
 	if gaurun.ConfGaurun.Android.Enabled {
@@ -127,6 +140,7 @@ func main() {
 			gaurun.LogSetupFatal(fmt.Errorf("failed to init http client for APNs: %v", err))
 		}
 	}
+
 	gaurun.InitStat()
 	gaurun.StartPushWorkers(gaurun.ConfGaurun.Core.WorkerNum, gaurun.ConfGaurun.Core.QueueNum)
 

@@ -1,8 +1,6 @@
 package gaurun
 
 import (
-	"net/http"
-
 	"github.com/mercari/gaurun/gcm"
 
 	"go.uber.org/zap"
@@ -13,12 +11,10 @@ var (
 	ConfGaurun ConfToml
 	// push notification Queue
 	QueueNotification chan RequestGaurunNotification
-	// TLS certificate and key for APNs
-	CertificatePemIos CertificatePem
 	// Stat for Gaurun
 	StatGaurun StatApp
 	// http client for APNs and GCM/FCM
-	APNSClient *http.Client
+	APNSClient APNsClient
 	GCMClient  *gcm.Client
 	// access and error logger
 	LogAccess *zap.Logger

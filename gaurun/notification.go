@@ -10,6 +10,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/mercari/gaurun/buford/push"
 	"github.com/mercari/gaurun/gcm"
 
 	"go.uber.org/zap"
@@ -95,7 +96,12 @@ func pushNotificationIos(req RequestGaurunNotification) error {
 
 	token := req.Tokens[0]
 
-	headers := NewApnsHeadersHttp2(&req)
+	var headers *push.Headers
+	if APNSClient.Token != nil {
+		headers = NewApnsHeadersHttp2WithToken(&req, APNSClient.Token)
+	} else {
+		headers = NewApnsHeadersHttp2(&req)
+	}
 	payload := NewApnsPayloadHttp2(&req)
 
 	stime := time.Now()

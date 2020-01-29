@@ -40,6 +40,12 @@ var (
 	ErrUnregistered              = errors.New("Unregistered")
 	ErrDeviceTokenNotForTopic    = errors.New("DeviceTokenNotForTopic")
 
+	// Token authentication errors.
+	ErrMissingProviderToken        = errors.New("MissingProviderToken")
+	ErrInvalidProviderToken        = errors.New("InvalidProviderToken")
+	ErrExpiredProviderToken        = errors.New("ExpiredProviderToken")
+	ErrTooManyProviderTokenUpdates = errors.New("TooManyProviderTokenUpdates")
+
 	// These errors should never happen when using Push.
 	ErrDuplicateHeaders = errors.New("DuplicateHeaders")
 	ErrBadPath          = errors.New("BadPath")
@@ -105,6 +111,14 @@ func mapErrorReason(reason string) error {
 		e = ErrMissingTopic
 	case "InvalidPushType":
 		e = ErrInvalidPushType
+	case "MissingProviderToken":
+		e = ErrMissingProviderToken
+	case "InvalidProviderToken":
+		e = ErrInvalidProviderToken
+	case "ExpiredProviderToken":
+		e = ErrExpiredProviderToken
+	case "TooManyProviderTokenUpdates":
+		e = ErrTooManyProviderTokenUpdates
 	default:
 		e = errors.New(reason)
 	}
@@ -141,6 +155,14 @@ func (e *Error) Error() string {
 		return "the Topic header of the request was not specified and was required"
 	case ErrInvalidPushType:
 		return "the apns-push-type value is invalid"
+	case ErrMissingProviderToken:
+		return "no provider certificate was used to connect to APNs and Authorization header was missing or no provider token was specified"
+	case ErrInvalidProviderToken:
+		return "the provider token is not valid or the token signature could not be verified"
+	case ErrExpiredProviderToken:
+		return "the provider token is stale and a new token should be generated"
+	case ErrTooManyProviderTokenUpdates:
+		return "the provider token is being updated too often"
 	case ErrTopicDisallowed:
 		return "pushing to this topic is not allowed"
 	case ErrUnregistered:

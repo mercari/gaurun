@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"crypto/ecdsa"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -12,12 +13,13 @@ import (
 	"sync"
 	"time"
 
+	"github.com/mercari/gaurun/buford/token"
 	"github.com/mercari/gaurun/gaurun"
 	"github.com/mercari/gaurun/gcm"
 )
 
 var (
-	APNSClient *http.Client
+	APNSClient gaurun.APNsClient
 	GCMClient  *gcm.Client
 )
 
@@ -131,15 +133,30 @@ func main() {
 		}
 	}
 
-	APNSClient, err = gaurun.NewApnsClientHttp2(
-		gaurun.ConfGaurun.Ios.PemCertPath,
-		gaurun.ConfGaurun.Ios.PemKeyPath,
-		gaurun.ConfGaurun.Ios.PemKeyPassphrase,
-	)
+	if gaurun.ConfGaurun.Ios.IsCertificateBasedProvider() {
+		APNSClient, err = gaurun.NewApnsClientHttp2(
+			gaurun.ConfGaurun.Ios.PemCertPath,
+			gaurun.ConfGaurun.Ios.PemKeyPath,
+			gaurun.ConfGaurun.Ios.PemKeyPassphrase,
+		)
+	} else if gaurun.ConfGaurun.Ios.IsTokenBasedProvider() {
+		var authKey *ecdsa.PrivateKey
+		authKey, err = token.AuthKeyFromFile(gaurun.ConfGaurun.Ios.TokenAuthKeyPath)
+		if err != nil {
+			gaurun.LogSetupFatal(err)
+		}
+		APNSClient, err = gaurun.NewApnsClientHttp2ForToken(
+			authKey,
+			gaurun.ConfGaurun.Ios.TokenAuthKeyID,
+			gaurun.ConfGaurun.Ios.TokenAuthTeamID,
+		)
+	} else {
+		gaurun.LogSetupFatal(fmt.Errorf("should be specify Token-based provider or Certificate-based provider"))
+	}
 	if err != nil {
 		gaurun.LogSetupFatal(err)
 	}
-	APNSClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
+	APNSClient.HTTPClient.Timeout = time.Duration(gaurun.ConfGaurun.Ios.Timeout) * time.Second
 
 	GCMClient, err := gcm.NewClient(gcm.FCMSendEndpoint, gaurun.ConfGaurun.Android.ApiKey)
 	if err != nil {

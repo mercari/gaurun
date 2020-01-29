@@ -42,6 +42,9 @@ type SectionIos struct {
 	PemCertPath      string `toml:"pem_cert_path"`
 	PemKeyPath       string `toml:"pem_key_path"`
 	PemKeyPassphrase string `toml:"pem_key_passphrase"`
+	TokenAuthKeyPath string `toml:"token_auth_key_path"`
+	TokenAuthKeyID   string `toml:"token_auth_key_id"`
+	TokenAuthTeamID  string `toml:"token_auth_team_id"`
 	Sandbox          bool   `toml:"sandbox"`
 	RetryMax         int    `toml:"retry_max"`
 	Timeout          int    `toml:"timeout"`
@@ -80,6 +83,9 @@ func BuildDefaultConf() ConfToml {
 	conf.Ios.Enabled = true
 	conf.Ios.PemCertPath = ""
 	conf.Ios.PemKeyPath = ""
+	conf.Ios.TokenAuthKeyPath = ""
+	conf.Ios.TokenAuthKeyID = ""
+	conf.Ios.TokenAuthTeamID = ""
 	conf.Ios.Sandbox = true
 	conf.Ios.RetryMax = 1
 	conf.Ios.Timeout = 5
@@ -142,4 +148,12 @@ func ConfigPushersHandler(w http.ResponseWriter, r *http.Request) {
 	atomic.StoreInt64(&ConfGaurun.Core.PusherMax, newPusherMax)
 
 	sendResponse(w, "ok", http.StatusOK)
+}
+
+func (s *SectionIos) IsTokenBasedProvider() bool {
+	return s.TokenAuthKeyPath != "" && s.TokenAuthKeyID != "" && s.TokenAuthTeamID != ""
+}
+
+func (s *SectionIos) IsCertificateBasedProvider() bool {
+	return s.PemCertPath != "" && s.PemKeyPath != ""
 }
