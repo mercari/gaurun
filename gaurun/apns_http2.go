@@ -20,7 +20,8 @@ import (
 
 type APNsClient struct {
 	HTTPClient *http.Client
-	Token      *token.Token
+	// Token is set only for token-based provider connection trust
+	Token *token.Token
 }
 
 func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {

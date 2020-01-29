@@ -77,6 +77,10 @@ func main() {
 	}
 
 	if gaurun.ConfGaurun.Ios.Enabled {
+		if gaurun.ConfGaurun.Ios.IsCertificateBasedProvider() && gaurun.ConfGaurun.Ios.IsTokenBasedProvider() {
+			gaurun.LogSetupFatal(fmt.Errorf("you can use only one of certificate-based provider or token-based provider connection trust"))
+		}
+
 		if gaurun.ConfGaurun.Ios.IsCertificateBasedProvider() {
 			_, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
 			if err != nil {
