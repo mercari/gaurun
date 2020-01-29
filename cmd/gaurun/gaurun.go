@@ -77,7 +77,7 @@ func main() {
 	}
 
 	if gaurun.ConfGaurun.Ios.Enabled {
-		if gaurun.ConfGaurun.Ios.PemCertPath != "" && gaurun.ConfGaurun.Ios.PemKeyPath != "" {
+		if gaurun.ConfGaurun.Ios.IsCertificateBasedProvider() {
 			_, err = ioutil.ReadFile(gaurun.ConfGaurun.Ios.PemCertPath)
 			if err != nil {
 				gaurun.LogSetupFatal(fmt.Errorf("the certification file for iOS was not found"))
@@ -87,7 +87,7 @@ func main() {
 			if err != nil {
 				gaurun.LogSetupFatal(fmt.Errorf("the key file for iOS was not found"))
 			}
-		} else if gaurun.ConfGaurun.Ios.TokenAuthKeyPath != "" && gaurun.ConfGaurun.Ios.TokenAuthKeyID != "" && gaurun.ConfGaurun.Ios.TokenAuthTeamID != "" {
+		} else if gaurun.ConfGaurun.Ios.IsTokenBasedProvider() {
 			_, err = token.AuthKeyFromFile(gaurun.ConfGaurun.Ios.TokenAuthKeyPath)
 			if err != nil {
 				gaurun.LogSetupFatal(fmt.Errorf("the auth key file for iOS was not loading: %v", err))

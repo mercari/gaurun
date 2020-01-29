@@ -149,3 +149,11 @@ func ConfigPushersHandler(w http.ResponseWriter, r *http.Request) {
 
 	sendResponse(w, "ok", http.StatusOK)
 }
+
+func (s *SectionIos) IsTokenBasedProvider() bool {
+	return s.TokenAuthKeyPath != "" && s.TokenAuthKeyID != "" && s.TokenAuthTeamID != ""
+}
+
+func (s *SectionIos) IsCertificateBasedProvider() bool {
+	return s.PemCertPath != "" && s.PemKeyPath != ""
+}

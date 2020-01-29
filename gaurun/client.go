@@ -2,6 +2,7 @@ package gaurun
 
 import (
 	"crypto/ecdsa"
+	"fmt"
 	"net"
 	"net/http"
 	"time"
@@ -53,13 +54,13 @@ func InitGCMClient() error {
 
 func InitAPNSClient() error {
 	var err error
-	if ConfGaurun.Ios.PemCertPath != "" {
+	if ConfGaurun.Ios.IsCertificateBasedProvider() {
 		APNSClient, err = NewApnsClientHttp2(
 			ConfGaurun.Ios.PemCertPath,
 			ConfGaurun.Ios.PemKeyPath,
 			ConfGaurun.Ios.PemKeyPassphrase,
 		)
-	} else {
+	} else if ConfGaurun.Ios.IsTokenBasedProvider() {
 		var authKey *ecdsa.PrivateKey
 		authKey, err = token.AuthKeyFromFile(ConfGaurun.Ios.TokenAuthKeyPath)
 		if err != nil {
@@ -70,6 +71,8 @@ func InitAPNSClient() error {
 			ConfGaurun.Ios.TokenAuthKeyID,
 			ConfGaurun.Ios.TokenAuthTeamID,
 		)
+	} else {
+		return fmt.Errorf("should be specify Token-based provider or Certificate-based provider")
 	}
 	if err != nil {
 		return err
