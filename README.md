@@ -1,7 +1,6 @@
-# Gaurun [![GitHub release](https://img.shields.io/github/release/mercari/gaurun.svg?style=flat-square)][release] [![Travis](https://img.shields.io/travis/mercari/gaurun.svg?style=flat-square)][travis]
+# Gaurun [![GitHub release](https://img.shields.io/github/release/mercari/gaurun.svg?style=flat-square)][release] ![GitHub Actions](https://github.com/mercari/gaurun/workflows/Go/badge.svg)
 
 [release]: https://github.com/mercari/gaurun/releases
-[travis]: https://travis-ci.org/mercari/gaurun
 
 <img src="https://raw.githubusercontent.com/mercari/gaurun/master/img/logo.png" alt="logo" align="right"/>
 
