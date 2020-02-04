@@ -15,6 +15,13 @@ const (
 )
 
 const (
+	// GcmPushPriorityHigh and GcmPushPriorityNormal is priority of a delivery message options
+	// See more on https://firebase.google.com/docs/cloud-messaging/concept-options?hl=en#setting-the-priority-of-a-message
+	GcmPushPriorityHigh   = "high"
+	GcmPushPriorityNormal = "normal"
+)
+
+const (
 	// maxRegistrationIDs are max number of registration IDs in one message.
 	maxRegistrationIDs = 1000
 

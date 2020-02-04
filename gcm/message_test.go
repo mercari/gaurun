@@ -58,6 +58,41 @@ func TestValidateMessage(t *testing.T) {
 			},
 			false,
 		},
+		// test should pass when Priority is empty
+		{
+			&Message{
+				RegistrationIDs: []string{"1"},
+				Priority:        "",
+			},
+			true,
+		},
+
+		// test should pass when Priority is high
+		{
+			&Message{
+				RegistrationIDs: []string{"1"},
+				Priority:        "high",
+			},
+			true,
+		},
+
+		// test should pass when Priority is normal
+		{
+			&Message{
+				RegistrationIDs: []string{"1"},
+				Priority:        "normal",
+			},
+			true,
+		},
+
+		// test should fail when message Priority is not high nor normal
+		{
+			&Message{
+				RegistrationIDs: []string{"1"},
+				Priority:        "invalid_priority",
+			},
+			false,
+		},
 	}
 
 	for i, tc := range cases {
