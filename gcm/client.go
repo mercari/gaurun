@@ -15,10 +15,10 @@ const (
 )
 
 const (
-	// GcmPushPriorityHigh and GcmPushPriorityNormal is priority of a delivery message options
+	// fcmPushPriorityHigh and fcmPushPriorityNormal is priority of a delivery message options
 	// See more on https://firebase.google.com/docs/cloud-messaging/concept-options?hl=en#setting-the-priority-of-a-message
-	GcmPushPriorityHigh   = "high"
-	GcmPushPriorityNormal = "normal"
+	fcmPushPriorityHigh   = "high"
+	fcmPushPriorityNormal = "normal"
 )
 
 const (

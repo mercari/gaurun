@@ -51,8 +51,8 @@ func (m *Message) validate() error {
 		)
 	}
 
-	if m.Priority != "" && m.Priority != GcmPushPriorityHigh && m.Priority != GcmPushPriorityNormal {
-		return fmt.Errorf("push_type must be %s or %s", GcmPushPriorityHigh, GcmPushPriorityNormal)
+	if m.Priority != "" && m.Priority != fcmPushPriorityHigh && m.Priority != fcmPushPriorityNormal {
+		return fmt.Errorf("priority must be %s or %s", fcmPushPriorityHigh, fcmPushPriorityNormal)
 	}
 
 	return nil
