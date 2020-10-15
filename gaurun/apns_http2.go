@@ -1,6 +1,7 @@
 package gaurun
 
 import (
+	"crypto/ecdsa"
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/json"
@@ -11,12 +12,17 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/RobotsAndPencils/buford/payload"
-	"github.com/RobotsAndPencils/buford/payload/badge"
-	"github.com/RobotsAndPencils/buford/push"
-
-	"golang.org/x/net/http2"
+	"github.com/mercari/gaurun/buford/payload"
+	"github.com/mercari/gaurun/buford/payload/badge"
+	"github.com/mercari/gaurun/buford/push"
+	"github.com/mercari/gaurun/buford/token"
 )
+
+type APNsClient struct {
+	HTTPClient *http.Client
+	// Token is set only for token-based provider connection trust
+	Token *token.Token
+}
 
 func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {
 	config := &tls.Config{
@@ -31,30 +37,55 @@ func NewTransportHttp2(cert tls.Certificate) (*http.Transport, error) {
 			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
 			KeepAlive: time.Duration(keepAliveInterval(ConfGaurun.Ios.KeepAliveTimeout)) * time.Second,
 		}).Dial,
-		IdleConnTimeout: time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
-	}
-
-	if err := http2.ConfigureTransport(transport); err != nil {
-		return nil, err
+		IdleConnTimeout:   time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
+		ForceAttemptHTTP2: true,
 	}
 
 	return transport, nil
 }
 
-func NewApnsClientHttp2(certPath, keyPath, keyPassphrase string) (*http.Client, error) {
+func NewApnsClientHttp2(certPath, keyPath, keyPassphrase string) (APNsClient, error) {
 	cert, err := loadX509KeyPairWithPassword(certPath, keyPath, keyPassphrase)
 	if err != nil {
-		return nil, err
+		return APNsClient{}, err
 	}
 
 	transport, err := NewTransportHttp2(cert)
 	if err != nil {
-		return nil, err
+		return APNsClient{}, err
 	}
 
-	return &http.Client{
-		Transport: transport,
-		Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+	return APNsClient{
+		HTTPClient: &http.Client{
+			Transport: transport,
+			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+		},
+	}, nil
+}
+
+func NewApnsClientHttp2ForToken(authKey *ecdsa.PrivateKey, keyID, teamID string) (APNsClient, error) {
+	authToken := &token.Token{
+		AuthKey: authKey,
+		KeyID:   keyID,
+		TeamID:  teamID,
+	}
+
+	transport := &http.Transport{
+		MaxIdleConnsPerHost: ConfGaurun.Ios.KeepAliveConns,
+		Dial: (&net.Dialer{
+			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+			KeepAlive: time.Duration(keepAliveInterval(ConfGaurun.Ios.KeepAliveTimeout)) * time.Second,
+		}).Dial,
+		IdleConnTimeout:   time.Duration(ConfGaurun.Ios.KeepAliveTimeout) * time.Second,
+		ForceAttemptHTTP2: true,
+	}
+
+	return APNsClient{
+		HTTPClient: &http.Client{
+			Transport: transport,
+			Timeout:   time.Duration(ConfGaurun.Ios.Timeout) * time.Second,
+		},
+		Token: authToken,
 	}, nil
 }
 
@@ -86,7 +117,7 @@ func loadX509KeyPairWithPassword(certPath, keyPath, keyPassphrase string) (tls.C
 	return cert, nil
 }
 
-func NewApnsServiceHttp2(client *http.Client) *push.Service {
+func NewApnsServiceHttp2(apnsClient APNsClient) *push.Service {
 	var host string
 	if ConfGaurun.Ios.Sandbox {
 		host = push.Development
@@ -94,7 +125,7 @@ func NewApnsServiceHttp2(client *http.Client) *push.Service {
 		host = push.Production
 	}
 	return &push.Service{
-		Client: client,
+		Client: apnsClient.HTTPClient,
 		Host:   host,
 	}
 }
@@ -121,13 +152,31 @@ func NewApnsPayloadHttp2(req *RequestGaurunNotification) map[string]interface{} 
 }
 
 func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
+	var pushType push.PushType
+
+	// Required when delivering notifications to devices running iOS 13 and later, or watchOS 6 and later. Ignored on earlier system versions.
+	// cf: https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/sending_notification_requests_to_apns
+	if req.PushType == ApnsPushTypeBackground {
+		pushType = push.PushTypeBackground
+	} else {
+		pushType = push.PushTypeAlert
+	}
+
 	headers := &push.Headers{
-		Topic: ConfGaurun.Ios.Topic,
+		Topic:    ConfGaurun.Ios.Topic,
+		PushType: pushType,
 	}
 
 	if req.Expiry > 0 {
 		headers.Expiration = time.Now().Add(time.Duration(int64(req.Expiry)) * time.Second).UTC()
 	}
+
+	return headers
+}
+
+func NewApnsHeadersHttp2WithToken(req *RequestGaurunNotification, t *token.Token) *push.Headers {
+	headers := NewApnsHeadersHttp2(req)
+	headers.AuthToken = t
 
 	return headers
 }

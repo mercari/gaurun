@@ -37,6 +37,7 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.NotificationMax, int64(100))
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.PusherMax, int64(0))
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.Pid, "")
+	assert.Equal(suite.T(), suite.ConfGaurunDefault.Core.AllowsEmptyMessage, false)
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.ApiKey, "")
@@ -44,7 +45,6 @@ func (suite *ConfigTestSuite) TestValidateConfDefault() {
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.KeepAliveTimeout, 90)
 	assert.Equal(suite.T(), int64(suite.ConfGaurunDefault.Android.KeepAliveConns), suite.ConfGaurunDefault.Core.WorkerNum)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.RetryMax, 1)
-	assert.Equal(suite.T(), suite.ConfGaurunDefault.Android.UseFCM, true)
 	// Ios
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurunDefault.Ios.PemCertPath, "")
@@ -69,14 +69,14 @@ func (suite *ConfigTestSuite) TestValidateConf() {
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.NotificationMax, int64(100))
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.PusherMax, int64(0))
 	assert.Equal(suite.T(), suite.ConfGaurun.Core.Pid, "")
+	assert.Equal(suite.T(), suite.ConfGaurun.Core.AllowsEmptyMessage, false)
 	// Android
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.Enabled, true)
-	assert.Equal(suite.T(), suite.ConfGaurun.Android.ApiKey, "apikey for GCM")
+	assert.Equal(suite.T(), suite.ConfGaurun.Android.ApiKey, "apikey for FCM")
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.Timeout, 5)
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.KeepAliveTimeout, 30)
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.KeepAliveConns, 4)
 	assert.Equal(suite.T(), suite.ConfGaurun.Android.RetryMax, 1)
-	assert.Equal(suite.T(), suite.ConfGaurun.Android.UseFCM, false)
 	// Ios
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.Enabled, true)
 	assert.Equal(suite.T(), suite.ConfGaurun.Ios.PemCertPath, "cert.pem")

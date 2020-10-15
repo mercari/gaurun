@@ -1,15 +1,17 @@
 module github.com/mercari/gaurun
 
+go 1.13
+
 require (
-	github.com/BurntSushi/toml v0.2.0
-	github.com/RobotsAndPencils/buford v0.12.0
-	github.com/client9/reopen v0.0.0-20160619053521-4b86f9c0ead5
-	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/fukata/golang-stats-api-handler v0.0.0-20160325105040-ab9f90f16caa
-	github.com/lestrrat/go-server-starter v0.0.0-20151125041704-901cec093d58
-	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/stretchr/testify v0.0.0-20161117074351-18a02ba4a312
-	go.uber.org/atomic v1.1.0
-	go.uber.org/zap v0.0.0-20170224221842-12592ca48efc
-	golang.org/x/net v0.0.0-20161116075034-4971afdc2f16
+	github.com/BurntSushi/toml v0.3.1
+	github.com/client9/reopen v1.0.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/fukata/golang-stats-api-handler v1.0.0
+	github.com/lestrrat/go-server-starter v0.0.0-20180220115249-6ac0b358431b
+	github.com/pkg/errors v0.8.1 // indirect
+	github.com/stretchr/testify v1.4.0
+	go.uber.org/atomic v1.4.0 // indirect
+	go.uber.org/multierr v1.2.0 // indirect
+	go.uber.org/zap v1.10.0
+	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 )
