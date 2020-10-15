@@ -6,15 +6,15 @@ queues = 8192
 notification_max = 100
 shutdown_timeout = 30
 # pid = "/tmp/gaurun.pid"
+# allows_empty_message = true
 
 [android]
-apikey = "apikey for GCM"
+apikey = "apikey for FCM"
 enabled = true
 timeout = 5 # sec
 keepalive_timeout = 30
 keepalive_conns = 4
 retry_max = 1
-use_fcm = false
 
 [ios]
 pem_cert_path = "cert.pem"

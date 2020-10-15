@@ -10,6 +10,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/mercari/gaurun/buford/push"
 	"github.com/mercari/gaurun/gcm"
 
 	"go.uber.org/zap"
@@ -32,6 +33,7 @@ type RequestGaurunNotification struct {
 	// iOS
 	Title            string       `json:"title,omitempty"`
 	Subtitle         string       `json:"subtitle,omitempty"`
+	PushType         string       `json:"push_type,omitempty"`
 	Badge            int          `json:"badge,omitempty"`
 	Category         string       `json:"category,omitempty"`
 	Sound            string       `json:"sound,omitempty"`
@@ -94,7 +96,12 @@ func pushNotificationIos(req RequestGaurunNotification) error {
 
 	token := req.Tokens[0]
 
-	headers := NewApnsHeadersHttp2(&req)
+	var headers *push.Headers
+	if APNSClient.Token != nil {
+		headers = NewApnsHeadersHttp2WithToken(&req, APNSClient.Token)
+	} else {
+		headers = NewApnsHeadersHttp2(&req)
+	}
 	payload := NewApnsPayloadHttp2(&req)
 
 	stime := time.Now()
@@ -164,8 +171,14 @@ func validateNotification(notification *RequestGaurunNotification) error {
 		return errors.New("invalid platform")
 	}
 
-	if len(notification.Message) == 0 {
+	if !ConfGaurun.Core.AllowsEmptyMessage && len(notification.Message) == 0 {
 		return errors.New("empty message")
+	}
+
+	if notification.PushType != "" {
+		if notification.PushType != ApnsPushTypeAlert && notification.PushType != ApnsPushTypeBackground {
+			return fmt.Errorf("push_type must be %s or %s", ApnsPushTypeAlert, ApnsPushTypeBackground)
+		}
 	}
 
 	return nil
@@ -211,8 +224,8 @@ func PushNotificationHandler(w http.ResponseWriter, r *http.Request) {
 	)
 
 	if ConfGaurun.Log.Level == "debug" {
-		reqBody, err := ioutil.ReadAll(r.Body)
-		if err != nil {
+		reqBody, ierr := ioutil.ReadAll(r.Body)
+		if ierr != nil {
 			sendResponse(w, "failed to read request-body", http.StatusInternalServerError)
 			return
 		}

@@ -41,6 +41,24 @@ func TestValidateNotification(t *testing.T) {
 			},
 			nil,
 		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 1,
+				Message:  "test message with identifier",
+				PushType: "alert",
+			},
+			nil,
+		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 1,
+				Message:  "test message with identifier",
+				PushType: "background",
+			},
+			nil,
+		},
 
 		// negative cases
 		{
@@ -64,12 +82,36 @@ func TestValidateNotification(t *testing.T) {
 			},
 			errors.New("empty message"),
 		},
+		{
+			RequestGaurunNotification{
+				Tokens:   []string{"test token"},
+				Platform: 1,
+				Message:  "test message with identifier",
+				PushType: "notpushtype",
+			},
+			errors.New("push_type must be alert or background"),
+		},
 	}
 
 	for _, c := range cases {
 		actual := validateNotification(&c.Notification)
 		assert.Equal(t, actual, c.Expected)
 	}
+}
+
+func TestValidateNotificationWithAllowingEmptyMessage(t *testing.T) {
+	allowsEmptyBefore := ConfGaurun.Core.AllowsEmptyMessage
+	ConfGaurun.Core.AllowsEmptyMessage = true
+	defer func() {
+		ConfGaurun.Core.AllowsEmptyMessage = allowsEmptyBefore
+	}()
+	notification := RequestGaurunNotification{
+		Tokens:   []string{"test token"},
+		Platform: 1,
+		Message:  "",
+	}
+
+	assert.Nil(t, validateNotification(&notification))
 }
 
 func TestSendResponse(t *testing.T) {

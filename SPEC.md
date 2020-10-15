@@ -54,7 +54,7 @@ The request-body must have the `notifications` array. Table below shows the para
 |-----------------|------------|-----------------------------------------|--------|-------|------------------------------------------|
 |token            |string array|device tokens                            |o       |       |                                          |
 |platform         |int         |platform(iOS, Android)                   |o       |       |1=iOS, 2=Android                          |
-|message          |string      |message for notification                 |o       |       |                                          |
+|message          |string      |message for notification                 |-       |       |                                          |
 |title            |string      |title for notification                   |-       |       |only iOS                                  |
 |subtitle         |string      |subtitle for notification                |-       |       |only iOS                                  |
 |badge            |int         |badge count                              |-       |0      |only iOS                                  |
@@ -62,12 +62,13 @@ The request-body must have the `notifications` array. Table below shows the para
 |sound            |string      |sound type                               |-       |       |only iOS                                  |
 |expiry           |int         |expiration for notification              |-       |0      |only iOS.                                 |
 |content_available|bool        |indicate that new content is available   |-       |false  |only iOS.                                 |
-|mutable_content  |bool        |enable Notification Service app extension|-       |false  |only iOS(10.0+).                          |
+|mutable_content  |bool        |enable Notification Service app extension|-       |false  |only iOS(10.0+)                           |
 |collapse_key     |string      |the key for collapsing notifications     |-       |       |only Android                              |
 |delay_while_idle |bool        |the flag for device idling               |-       |false  |only Android                              |
-|time_to_live     |int         |expiration of message kept on GCM storage|-       |0      |only Android                              |
+|time_to_live     |int         |expiration of message kept on FCM storage|-       |0      |only Android                              |
 |extend           |string array|extensible partition                     |-       |       |                                          |
 |identifier       |string      |notification identifier                  |-       |       |an optional value to identify notification|
+|push_type        |string      |apns-push-type                           |-       |alert  |only iOS(13.0+)                           |
 
 The JSON below is the response-body example from Gaurun. In this case, the status is 200(OK).
 

@@ -1,19 +1,18 @@
-# Gaurun [![GitHub release](https://img.shields.io/github/release/mercari/gaurun.svg?style=flat-square)][release] [![Travis](https://img.shields.io/travis/mercari/gaurun.svg?style=flat-square)][travis]
+# Gaurun [![GitHub release](https://img.shields.io/github/release/mercari/gaurun.svg?style=flat-square)][release] ![GitHub Actions](https://github.com/mercari/gaurun/workflows/Go/badge.svg)
 
 [release]: https://github.com/mercari/gaurun/releases
-[travis]: https://travis-ci.org/mercari/gaurun
 
 <img src="https://raw.githubusercontent.com/mercari/gaurun/master/img/logo.png" alt="logo" align="right"/>
 
 
-Gaurun is a general push notification server written in Golang. It proxies push requests to APNs and GCM/FCM and asynchronously executes them via HTTP/2. It helps you when you need to bulkly sends push notification to your users (e.g., when you need to exec 10 million push at once!) or when some other API server which must response quickly needs to push. Since it leverages Golang's powerful concurrent feature, it gives high performance. 
+Gaurun is a general push notification server written in Golang. It proxies push requests to APNs and FCM and asynchronously executes them via HTTP/2. It helps you when you need to bulkly sends push notification to your users (e.g., when you need to exec 10 million push at once!) or when some other API server which must response quickly needs to push. Since it leverages Golang's powerful concurrent feature, it gives high performance. 
 
 In addition to performance, it's important not to lost pushes over sever crashes or hardware failures. Gaurun can use its access log for kind of transaction journal and can re-push only failed notification later (We provide a special command for this. See [Usage](#usage)). 
 
 Currently we support the following platforms:
 
 - [Apple APNs](https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/APNSOverview.html)
-- [Google GCM](https://developers.google.com/cloud-messaging/) / [Google FCM](https://firebase.google.com/docs/cloud-messaging/)
+- [Google FCM](https://firebase.google.com/docs/cloud-messaging/)
 
 ## Status
 
@@ -25,13 +24,11 @@ There are two way to install Gaurun; using a precompiled binary or install from 
 
 To install a precompiled binary, download the appropriate zip package for your OS and architecture from [here](https://github.com/mercari/gaurun/releases). Once the zip is downloaded, unzip it and place the binary where you want to use (if you want to access it from the command-line, make sure to put it on `$PATH`).
 
-To compile from source, you need Go1.11 or later (including `$GOPATH` setup). After setup, then clone the source code by running the following command,
+To compile from source, you need Go1.13 or later. After setup, then clone the source code by running the following command,
 
 ```bash
-$ mkdir -p $GOPATH/src/github.com/mercari
-$ cd $GOPATH/src/github.com/mercari
-$ git clone https://github.com/mercari/gaurun
-``` 
+$ git clone https://github.com/mercari/gaurun.git
+```
 
 To fetch dependencies and build, run the following make tasks,
 
@@ -67,12 +64,6 @@ See [CONFIGURATION.md](/CONFIGURATION.md) about details.
 
 API specification is defined on [SPEC.md](/SPEC.md).
 
-## Committers
-
- * Tatsuhiko Kubo([@cubicdaiya](https://github.com/cubicdaiya))
- * Masahiro Sano([@kazegusuri](https://github.com/kazegusuri))
- * Taichi Nakashima([@tcnksm](https://github.com/tcnksm))
-
 ## Contribution
 
 Please read the CLA below carefully before submitting your contribution.
@@ -81,7 +72,7 @@ https://www.mercari.com/cla/
 
 ## License
 
-Copyright 2014-2017 Mercari, Inc.
+Copyright 2014-2019 Mercari, Inc.
 
 
 Licensed under the MIT License.
