@@ -4,8 +4,8 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"errors"
 	"io/ioutil"
+	"runtime"
 	"testing"
 	"time"
 
@@ -27,9 +27,15 @@ func TestValidTokenFromP8Bytes(t *testing.T) {
 }
 
 func TestNoSuchFileP8File(t *testing.T) {
-	token, err := token.AuthKeyFromFile("")
-	assert.Equal(t, errors.New("open : no such file or directory").Error(), err.Error())
-	assert.Nil(t, token)
+	// assume *nix 'system file not found' error is returned by default.
+	expected := "open : no such file or directory"
+	if runtime.GOOS == "windows" {
+		expected = "open : The system cannot find the file specified."
+	}
+
+	privateKey, err := token.AuthKeyFromFile("")
+	assert.Equal(t, expected, err.Error())
+	assert.Nil(t, privateKey)
 }
 
 func TestInvalidP8File(t *testing.T) {
