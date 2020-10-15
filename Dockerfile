@@ -1,4 +1,4 @@
-FROM golang:1.12 as build-env
+FROM golang:1.13 as build-env
 ADD . /opt/gaurun
 RUN cd /opt/gaurun/cmd/gaurun &&\
     go build -tags=internal -a -ldflags="-s -w -linkmode external -extldflags -static" -v  &&\
