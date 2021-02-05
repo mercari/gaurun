@@ -42,7 +42,8 @@ The JSON below is the request-body example.
             "message" : "Hello, Android!",
             "collapse_key" : "update",
             "delay_while_idle" : true,
-            "time_to_live" : 10
+            "time_to_live" : 10,
+            "priority" : "normal"
         }
     ]
 }
@@ -66,8 +67,9 @@ The request-body must have the `notifications` array. Table below shows the para
 |collapse_key     |string      |the key for collapsing notifications     |-       |       |only Android                              |
 |delay_while_idle |bool        |the flag for device idling               |-       |false  |only Android                              |
 |time_to_live     |int         |expiration of message kept on FCM storage|-       |0      |only Android                              |
+|priority         |string      |deliver immediately or save battery ( high or normal)      |-       |normal   |only Android        | 
 |extend           |string array|extensible partition                     |-       |       |                                          |
-|identifier       |string      |notification identifier                  |-       |       |an optional value to identify notification|
+|identifier        |string      |notification identifier                    |-       |       |an optional value to identify notification|
 |push_type        |string      |apns-push-type                           |-       |alert  |only iOS(13.0+)                           |
 
 The JSON below is the response-body example from Gaurun. In this case, the status is 200(OK).

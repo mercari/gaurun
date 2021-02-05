@@ -14,6 +14,7 @@ type Message struct {
 	Data                  map[string]interface{} `json:"data,omitempty"`
 	DelayWhileIdle        bool                   `json:"delay_while_idle,omitempty"`
 	TimeToLive            int                    `json:"time_to_live,omitempty"`
+	Priority              string                 `json:"priority,omitempty"`
 	RestrictedPackageName string                 `json:"restricted_package_name,omitempty"`
 	DryRun                bool                   `json:"dry_run,omitempty"`
 }
@@ -48,6 +49,10 @@ func (m *Message) validate() error {
 			"the message's TimeToLive field must be an integer between 0 and %d (4 weeks)",
 			maxTimeToLive,
 		)
+	}
+
+	if m.Priority != "" && m.Priority != fcmPushPriorityHigh && m.Priority != fcmPushPriorityNormal {
+		return fmt.Errorf("priority must be %s or %s", fcmPushPriorityHigh, fcmPushPriorityNormal)
 	}
 
 	return nil
