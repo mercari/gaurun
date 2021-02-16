@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	statsGo "github.com/fukata/golang-stats-api-handler"
-	"github.com/lestrrat/go-server-starter/listener"
+	"github.com/lestrrat-go/server-starter/listener"
 )
 
 func RegisterHandlers(mux *http.ServeMux) {
