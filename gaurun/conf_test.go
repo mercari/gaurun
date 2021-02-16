@@ -4,7 +4,6 @@ import (
 	"runtime"
 	"testing"
 
-	_ "github.com/BurntSushi/toml"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -23,7 +22,7 @@ func (suite *ConfigTestSuite) SetupTest() {
 	suite.ConfGaurunDefault = BuildDefaultConf()
 	suite.ConfGaurun = BuildDefaultConf()
 	var err error
-	suite.ConfGaurun, err = LoadConf(suite.ConfGaurun, ConfGaurunPath)
+	suite.ConfGaurun, err = LoadConf(ConfGaurunPath)
 	if err != nil {
 		panic("failed to load " + ConfGaurunPath)
 	}

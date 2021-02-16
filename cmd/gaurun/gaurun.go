@@ -38,7 +38,7 @@ func main() {
 	gaurun.ConfGaurun = gaurun.BuildDefaultConf()
 
 	// load configuration
-	conf, err := gaurun.LoadConf(gaurun.ConfGaurun, *confPath)
+	conf, err := gaurun.LoadConf(*confPath)
 	if err != nil {
 		gaurun.LogSetupFatal(err)
 	}
