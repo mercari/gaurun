@@ -1,13 +1,14 @@
 package gaurun
 
 import (
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"runtime"
 	"strconv"
 	"sync/atomic"
 
-	"github.com/BurntSushi/toml"
+	"github.com/pelletier/go-toml"
 )
 
 type ConfToml struct {
@@ -100,7 +101,11 @@ func BuildDefaultConf() ConfToml {
 }
 
 func LoadConf(confGaurun ConfToml, confPath string) (ConfToml, error) {
-	_, err := toml.DecodeFile(confPath, &confGaurun)
+	doc, err := ioutil.ReadFile(confPath)
+	if err != nil {
+		return confGaurun, err
+	}
+	err = toml.Unmarshal(doc, &confGaurun)
 	if err != nil {
 		return confGaurun, err
 	}
