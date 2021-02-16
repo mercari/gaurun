@@ -100,17 +100,16 @@ func BuildDefaultConf() ConfToml {
 	return conf
 }
 
-func LoadConf(confPath string) (ConfToml, error) {
-	conf := ConfToml{}
+func LoadConf(confGaurun ConfToml, confPath string) (ConfToml, error) {
 	doc, err := ioutil.ReadFile(confPath)
 	if err != nil {
-		return conf, err
+		return confGaurun, err
 	}
-	err = toml.Unmarshal(doc, &conf)
+	err = toml.Unmarshal(doc, &confGaurun)
 	if err != nil {
-		return conf, err
+		return confGaurun, err
 	}
-	return conf, nil
+	return confGaurun, nil
 }
 
 func ConfigPushersHandler(w http.ResponseWriter, r *http.Request) {

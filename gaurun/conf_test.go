@@ -22,7 +22,7 @@ func (suite *ConfigTestSuite) SetupTest() {
 	suite.ConfGaurunDefault = BuildDefaultConf()
 	suite.ConfGaurun = BuildDefaultConf()
 	var err error
-	suite.ConfGaurun, err = LoadConf(ConfGaurunPath)
+	suite.ConfGaurun, err = LoadConf(suite.ConfGaurun, ConfGaurunPath)
 	if err != nil {
 		panic("failed to load " + ConfGaurunPath)
 	}
