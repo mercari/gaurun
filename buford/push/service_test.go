@@ -10,23 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mercari/gaurun/buford/certificate"
 	"github.com/mercari/gaurun/buford/push"
 )
-
-func TestNewClient(t *testing.T) {
-	const name = "../testdata/cert.p12"
-
-	cert, err := certificate.Load(name, "")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	_, err = push.NewClient(cert)
-	if err != nil {
-		t.Fatal(err)
-	}
-}
 
 func TestPush(t *testing.T) {
 	deviceToken := "c2732227a1d8021cfaf781d71fb2f908c61f5861079a00954a5453f1d0281433"

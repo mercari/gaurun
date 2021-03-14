@@ -48,6 +48,7 @@ func pushNotificationAndroid(req gaurun.RequestGaurunNotification) bool {
 	msg.CollapseKey = req.CollapseKey
 	msg.DelayWhileIdle = req.DelayWhileIdle
 	msg.TimeToLive = req.TimeToLive
+	msg.Priority = req.Priority
 
 	_, err := GCMClient.Send(msg)
 	if err != nil {
