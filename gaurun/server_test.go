@@ -61,8 +61,3 @@ func TestGetListener(t *testing.T) {
 		assert.NotNil(t, err)
 	}
 }
-
-// platformWindows detects if the runtime is being tested under windows.
-func platformWindows() bool {
-	return runtime.GOOS == "windows"
-}
