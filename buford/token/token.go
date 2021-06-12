@@ -41,6 +41,7 @@ type Token struct {
 }
 
 // AuthKeyFromFile loads a .p8 certificate from a local file and returns a
+// private key.
 func AuthKeyFromFile(filename string) (*ecdsa.PrivateKey, error) {
 	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -50,6 +51,7 @@ func AuthKeyFromFile(filename string) (*ecdsa.PrivateKey, error) {
 }
 
 // AuthKeyFromBytes loads a .p8 certificate from an in memory byte array and
+// returns a private key.
 func AuthKeyFromBytes(bytes []byte) (*ecdsa.PrivateKey, error) {
 	block, _ := pem.Decode(bytes)
 	if block == nil {
