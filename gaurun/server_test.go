@@ -3,6 +3,7 @@ package gaurun
 import (
 	"net/http"
 	"net/url"
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -31,8 +32,16 @@ func TestRegisterHandlers(t *testing.T) {
 func TestGetListener(t *testing.T) {
 	validConfigs := []ConfToml{
 		{Core: SectionCore{Port: "8080"}},
-		{Core: SectionCore{Port: "unix:/tmp/gaurun.sock"}},
 	}
+
+	if runtime.GOOS != "windows" {
+		// Only provide a config with a unix socket if *nix based.
+		validConfigs = append(
+			validConfigs,
+			ConfToml{Core: SectionCore{Port: "unix:/tmp/gaurun.sock"}},
+		)
+	}
+
 	invalidConfigs := []ConfToml{
 		// port is empty
 		{},
