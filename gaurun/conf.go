@@ -52,6 +52,7 @@ type SectionIos struct {
 	KeepAliveTimeout int    `toml:"keepalive_timeout"`
 	KeepAliveConns   int    `toml:"keepalive_conns"`
 	Topic            string `toml:"topic"`
+	ApnsId           string `toml:"apns_id"`
 }
 
 type SectionLog struct {
@@ -93,6 +94,7 @@ func BuildDefaultConf() ConfToml {
 	conf.Ios.KeepAliveTimeout = 90
 	conf.Ios.KeepAliveConns = numCPU
 	conf.Ios.Topic = ""
+	conf.Ios.ApnsId = ""
 	// log
 	conf.Log.AccessLog = "stdout"
 	conf.Log.ErrorLog = "stderr"
