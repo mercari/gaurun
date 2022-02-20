@@ -16,6 +16,7 @@ import (
 	"github.com/mercari/gaurun/buford/payload/badge"
 	"github.com/mercari/gaurun/buford/push"
 	"github.com/mercari/gaurun/buford/token"
+
 )
 
 type APNsClient struct {
@@ -164,8 +165,11 @@ func NewApnsHeadersHttp2(req *RequestGaurunNotification) *push.Headers {
 
 	headers := &push.Headers{
 		Topic:    ConfGaurun.Ios.Topic,
+		ID:	  ConfGaurun.Ios.ApnsId,
 		PushType: pushType,
 	}
+
+	LogError.Debug("apns_https2.go topic:" + ConfGaurun.Ios.Topic +", apns-id:" + ConfGaurun.Ios.ApnsId)
 
 	if req.Expiry > 0 {
 		headers.Expiration = time.Now().Add(time.Duration(int64(req.Expiry)) * time.Second).UTC()
