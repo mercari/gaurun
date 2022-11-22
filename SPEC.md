@@ -34,6 +34,7 @@ The JSON below is the request-body example.
             "content_available" : false,
             "mutable_content" : false,
             "expiry" : 10,
+            "interruption": "active",
             "extend" : [{ "key": "url", "val": "..." }, { "key": "intent", "val": "..." }]
         },
         {
@@ -71,6 +72,7 @@ The request-body must have the `notifications` array. Table below shows the para
 |extend           |string array|extensible partition                     |-       |       |                                          |
 |identifier        |string      |notification identifier                    |-       |       |an optional value to identify notification|
 |push_type        |string      |apns-push-type                           |-       |alert  |only iOS(13.0+)                           |
+|interruption     |string      |the importance and delivery timing of a notification|-    |active |onlt iOS(15.0+)                   |
 
 The JSON below is the response-body example from Gaurun. In this case, the status is 200(OK).
 
