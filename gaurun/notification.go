@@ -42,6 +42,7 @@ type RequestGaurunNotification struct {
 	MutableContent   bool         `json:"mutable_content,omitempty"`
 	Expiry           int          `json:"expiry,omitempty"`
 	Retry            int          `json:"retry,omitempty"`
+	Interruption     string       `json:"interruption,omitempty"`
 	Extend           []ExtendJSON `json:"extend,omitempty"`
 	// meta
 	ID uint64 `json:"seq_id,omitempty"`

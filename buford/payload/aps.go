@@ -30,6 +30,10 @@ type APS struct {
 	// Mutable is used for Service Extensions introduced in iOS 10.
 	MutableContent bool
 
+	// Interruption is the importance and delivery timing of a notification.
+	// The string values “passive”, “active”, “time-sensitive”, or “critical”
+	Interruption string
+
 	// Thread identifier to create notification groups in iOS 12 or newer.
 	ThreadID string
 }
@@ -95,6 +99,9 @@ func (a *APS) Map() map[string]interface{} {
 	}
 	if a.MutableContent {
 		aps["mutable-content"] = 1
+	}
+	if a.Interruption != "" {
+		aps["interruption-level"] = a.Interruption
 	}
 	if a.ThreadID != "" {
 		aps["thread-id"] = a.ThreadID
